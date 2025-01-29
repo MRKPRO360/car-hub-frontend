@@ -1,5 +1,10 @@
-function App() {
-  return <h1 className="text-4xl text-blue-600">Hello</h1>;
-}
+import MainLayout from './components/layout/MainLayout';
 
+function App() {
+  return (
+    <>
+      <MainLayout />
+    </>
+  );
+}
 export default App;
