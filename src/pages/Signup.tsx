@@ -1,13 +1,28 @@
-import { FaFacebook, FaGoogle, FaLock, FaTwitter } from 'react-icons/fa';
+import {
+  FaFacebook,
+  FaGoogle,
+  FaLock,
+  FaTwitter,
+  FaUser,
+} from 'react-icons/fa';
 import loginBg from '../assets/login.jpg';
 import CarInput from '../components/form/CarInput';
 import Button from './shared/Button';
 import CarForm from '../components/form/CarForm';
-import { MdEmail } from 'react-icons/md';
+import { MdEmail, MdHome, MdLocalPhone, MdLocationOn } from 'react-icons/md';
 import Checkbox from '../components/form/CheckBox';
 import { Link } from 'react-router';
 
-function Login() {
+// {
+//   "name": "admin",
+//   "email": "admin@example.com",
+//   "password": "admin1234",
+//   "role": "admin",
+//   "phone": "01581409228",
+//   "address": "Feni, Bangladesh",
+//  "city":"Feni"
+// }
+function Signup() {
   const onSubmit = (data) => {
     console.log('Form submitted', data);
   };
@@ -17,7 +32,7 @@ function Login() {
       style={{
         backgroundImage: `linear-gradient(to right, rgba(13, 27, 42, 0.65), rgba(13, 27, 42, 0.8)), url(${loginBg})`,
       }}
-      className="w-full pt-25 min-h-screen bg-cover bg-center bg-no-repeat pb-10"
+      className="w-full pt-25 min-h-full bg-cover bg-center bg-no-repeat pb-10"
     >
       <div className="bg-light mx-auto max-w-96 relative sm:max-w-[450px] rounded-sm shadow-2xl shadow-blue px-5 md:px-0">
         <div
@@ -32,12 +47,12 @@ function Login() {
           className="text-light z-30 rounded-md"
         >
           <div>
-            <h3 className="text-center text-3xl font-semibold mt-5">Login</h3>
+            <h3 className="text-center text-3xl font-semibold mt-5">Signup</h3>
             <div
               style={{
                 width: 'calc(100% - 200px)',
               }}
-              className="flex itmes-center py-7 justify-between mx-auto text-3xl sm:text-2xl"
+              className="flex itmes-center py-7 justify-between mx-auto text-xl sm:text-2xl"
             >
               <FaGoogle />
               <FaFacebook />
@@ -45,10 +60,18 @@ function Login() {
             </div>
           </div>
         </div>
-        <div className="pt-20">
+        <div className="pt-14">
           <CarForm onSubmit={onSubmit}>
             {(methods) => (
               <>
+                <CarInput
+                  type="text"
+                  name="name"
+                  label="Name"
+                  icon={<FaUser />}
+                  register={methods.register}
+                />
+
                 <CarInput
                   type="email"
                   name="email"
@@ -63,19 +86,40 @@ function Login() {
                   icon={<FaLock />}
                   register={methods.register}
                 />
+                <CarInput
+                  type="text"
+                  name="phone"
+                  label="Phone"
+                  icon={<MdLocalPhone />}
+                  register={methods.register}
+                />
+                <CarInput
+                  type="text"
+                  name="address"
+                  label="Address"
+                  icon={<MdLocationOn />}
+                  register={methods.register}
+                />
+                <CarInput
+                  type="text"
+                  name="city"
+                  label="City"
+                  icon={<MdHome />}
+                  register={methods.register}
+                />
 
                 <div>
                   <Checkbox text="Remember Me" />
-                  <div className="flex items-center gap-4 w-full md:w-[80%] mx-auto mt-8">
+                  <div className="flex items-center gap-4 w-full md:w-[80%] mx-auto mt-5">
                     <Button type="submit" size="lg" text="Login" />
                     <Button variant="outlined" text="Forget Password?" />
                   </div>
                 </div>
 
-                <p className="text-blue/80 w-full md:w-[80%] relative mx-auto pb-5 mt-7 ">
-                  Don't have an account?{' '}
-                  <Link to="/signup" className="text-blue font-semibold ">
-                    Signup
+                <p className="text-blue/80 w-full md:w-[80%] relative mx-auto pb-5 mt-5">
+                  Have an account already?{' '}
+                  <Link to={'/login'} className="text-blue font-semibold ">
+                    Login
                   </Link>
                 </p>
               </>
@@ -87,4 +131,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

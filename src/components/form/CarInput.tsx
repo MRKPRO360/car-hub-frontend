@@ -19,7 +19,7 @@ const CarInput = ({
   register,
 }: ICarInputProps) => {
   return (
-    <div className="mb-8 flex items-center flex-col gap-5 justify-center">
+    <div className="mb-4 flex items-center flex-col gap-5 justify-center">
       {/* username input with icon */}
       <div className="w-full md:w-[80%] relative">
         <label
