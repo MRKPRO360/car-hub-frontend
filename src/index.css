@@ -1,1 +1,10 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Nunito, serif';
+  --color-light-blue: #1b263b;
+  --color-light: #fff;
+  --color-ymn-blue: #415a77;
+  --color-blue: #0d1b2a;
+}

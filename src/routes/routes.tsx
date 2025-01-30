@@ -16,6 +16,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: '/products',
+        element: <Home />,
+      },
+      {
         path: '/change-password',
         element: <ChangePassword />,
       },

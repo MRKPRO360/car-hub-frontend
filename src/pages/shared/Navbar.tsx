@@ -1,5 +1,69 @@
+import { NavLink } from 'react-router';
+import logo from '../../assets/images/logo.png';
+import { FaCarSide } from 'react-icons/fa';
 function Navbar() {
-  return <div>Navbar</div>;
+  const items = [
+    {
+      path: '/',
+      text: 'Home',
+    },
+    {
+      path: '/products',
+      text: 'Products',
+    },
+
+    {
+      path: '/About',
+      text: 'About',
+    },
+  ];
+
+  const userItems = [
+    {
+      path: '/cart',
+      text: 'Cart',
+    },
+    {
+      path: '/my-profile',
+      text: 'My Profile',
+    },
+    {
+      path: '/logout',
+      text: 'Logout',
+    },
+  ];
+
+  return (
+    <div className="max-w-[1536px] mx-auto flex items-center justify-between p-2">
+      <div className="flex items-center gap-0.5">
+        <FaCarSide className="text-4xl text-blue" />
+        <h3 className="text-xl md:text-2xl">Car Hub</h3>
+      </div>
+      <ul className="flex items-center md:text-lg gap-8">
+        {items.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              isActive
+                ? 'px-3 py-1 text-blue sm:text-lg sm:font-semibold'
+                : 'text-blue/70 px-3 py-1 sm:font-semibold sm:text-lg'
+            }
+          >
+            {item.text}
+          </NavLink>
+        ))}
+      </ul>
+      <ul>
+        <NavLink
+          to="/login"
+          className="bg-blue shadow-sm shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
+        >
+          Login
+        </NavLink>
+      </ul>
+    </div>
+  );
 }
 
 export default Navbar;
