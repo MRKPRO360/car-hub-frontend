@@ -55,6 +55,7 @@ function Login() {
                   label="Email"
                   icon={<MdEmail />}
                   register={methods.register}
+                  error={methods.formState.errors.email}
                 />
                 <CarInput
                   type="password"
@@ -62,6 +63,7 @@ function Login() {
                   label="Password"
                   icon={<FaLock />}
                   register={methods.register}
+                  error={methods.formState.errors.password}
                 />
 
                 <div>

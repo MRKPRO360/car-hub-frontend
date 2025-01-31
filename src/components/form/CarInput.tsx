@@ -8,6 +8,7 @@ interface ICarInputProps {
   label: string;
   disabled?: boolean;
   register: UseFormRegister<any>;
+  error?: { message: string };
 }
 
 const CarInput = ({
@@ -17,6 +18,7 @@ const CarInput = ({
   label,
   disabled,
   register,
+  error,
 }: ICarInputProps) => {
   return (
     <div className="mb-4 flex items-center flex-col gap-5 justify-center">
@@ -29,14 +31,19 @@ const CarInput = ({
           {icon}
         </label>
         <input
-          {...register(name)}
+          {...register(name, { required: `${label} is required!` })}
           type={type}
           name={name}
           id={name}
           placeholder={label}
           disabled={disabled}
-          className="peer border-b-2 outline-none pl-8 pr-2 py-3 w-full focus:border-primary transition-colors duration-300 text-base sm:text-md"
+          className={`peer border-b-2 outline-none pl-8 pr-2 py-3 w-full focus:border-primary transition-colors duration-300 text-base sm:text-md ${
+            error?.message ? 'border-red-500' : 'focus:border-primary'
+          }`}
         />
+        {error?.message && (
+          <p className="text-red-500 text-sm mt-1">{error?.message}</p>
+        )}
       </div>
     </div>
   );

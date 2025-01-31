@@ -70,6 +70,7 @@ function Signup() {
                   label="Name"
                   icon={<FaUser />}
                   register={methods.register}
+                  error={methods.formState.errors.name}
                 />
 
                 <CarInput
@@ -78,6 +79,7 @@ function Signup() {
                   label="Email"
                   icon={<MdEmail />}
                   register={methods.register}
+                  error={methods.formState.errors.email}
                 />
                 <CarInput
                   type="password"
@@ -85,6 +87,7 @@ function Signup() {
                   label="Password"
                   icon={<FaLock />}
                   register={methods.register}
+                  error={methods.formState.errors.password}
                 />
                 <CarInput
                   type="text"
@@ -92,6 +95,7 @@ function Signup() {
                   label="Phone"
                   icon={<MdLocalPhone />}
                   register={methods.register}
+                  error={methods.formState.errors.phone}
                 />
                 <CarInput
                   type="text"
@@ -99,6 +103,7 @@ function Signup() {
                   label="Address"
                   icon={<MdLocationOn />}
                   register={methods.register}
+                  error={methods.formState.errors.address}
                 />
                 <CarInput
                   type="text"
@@ -106,12 +111,13 @@ function Signup() {
                   label="City"
                   icon={<MdHome />}
                   register={methods.register}
+                  error={methods.formState.errors.city}
                 />
 
                 <div>
                   <Checkbox text="Remember Me" />
                   <div className="flex items-center gap-4 w-full md:w-[80%] mx-auto mt-5">
-                    <Button type="submit" size="lg" text="Login" />
+                    <Button type="submit" size="lg" text="Signup" />
                     <Button variant="outlined" text="Forget Password?" />
                   </div>
                 </div>
