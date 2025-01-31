@@ -12,19 +12,31 @@ import CarForm from '../components/form/CarForm';
 import { MdEmail, MdHome, MdLocalPhone, MdLocationOn } from 'react-icons/md';
 import Checkbox from '../components/form/CheckBox';
 import { Link } from 'react-router';
+import { IoMdCloudUpload } from 'react-icons/io';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 
-// {
-//   "name": "admin",
-//   "email": "admin@example.com",
-//   "password": "admin1234",
-//   "role": "admin",
-//   "phone": "01581409228",
-//   "address": "Feni, Bangladesh",
-//  "city":"Feni"
-// }
 function Signup() {
-  const onSubmit = (data) => {
-    console.log('Form submitted', data);
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const formData = new FormData();
+    const file = data.file;
+    console.log({ data, file });
+
+    const userData = {
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+      address: data.address,
+      city: data.city,
+    };
+
+    formData.append('data', JSON.stringify(userData));
+
+    // if (file) {
+    //   formData.append('file', file);
+    // }
+
+    // console.log('Form submitted', formData);
+    // console.log(file);
   };
 
   return (
@@ -71,6 +83,7 @@ function Signup() {
                   icon={<FaUser />}
                   register={methods.register}
                   error={methods.formState.errors.name}
+                  required={true}
                 />
 
                 <CarInput
@@ -80,6 +93,7 @@ function Signup() {
                   icon={<MdEmail />}
                   register={methods.register}
                   error={methods.formState.errors.email}
+                  required={true}
                 />
                 <CarInput
                   type="password"
@@ -88,6 +102,17 @@ function Signup() {
                   icon={<FaLock />}
                   register={methods.register}
                   error={methods.formState.errors.password}
+                  required={true}
+                />
+                <CarInput
+                  type="file"
+                  name="file"
+                  label="Upload Profile Photo"
+                  icon={<IoMdCloudUpload />}
+                  register={methods.register}
+                  error={methods.formState.errors.file}
+                  required={true}
+                  setValue={methods.setValue}
                 />
                 <CarInput
                   type="text"

@@ -8,7 +8,6 @@ import {
 
 interface IFormConfig {
   defaultValues?: Record<string, any>;
-  resolver?: any;
 }
 
 interface IFormProps extends IFormConfig {
@@ -16,15 +15,11 @@ interface IFormProps extends IFormConfig {
   children: (methods: any) => ReactNode;
 }
 
-function CarForm({ onSubmit, children, defaultValues, resolver }: IFormProps) {
+function CarForm({ onSubmit, children, defaultValues }: IFormProps) {
   const formConfig: IFormConfig = {};
 
   if (defaultValues) {
     formConfig['defaultValues'] = defaultValues;
-  }
-
-  if (resolver) {
-    formConfig['resolver'] = resolver;
   }
 
   const methods = useForm(formConfig);

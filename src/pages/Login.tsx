@@ -5,11 +5,45 @@ import Button from './shared/Button';
 import CarForm from '../components/form/CarForm';
 import { MdEmail } from 'react-icons/md';
 import Checkbox from '../components/form/CheckBox';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { useAppDispatch } from '../redux/hooks';
+import { useLoginMutation } from '../redux/features/auth/authApi';
+import { toast } from 'sonner';
+import { FieldValues } from 'react-hook-form';
+import { verifyToken } from '../utils/verifyToken';
+import { setUser } from '../redux/features/auth/authSlice';
+import { IUser } from '../types';
 
 function Login() {
-  const onSubmit = (data) => {
+  const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
+  const [login] = useLoginMutation();
+
+  const onSubmit = async (data: FieldValues) => {
     console.log('Form submitted', data);
+    const toastId = toast.loading('Logging in...');
+
+    try {
+      const userInfo = {
+        email: data.email,
+        password: data.password,
+      };
+
+      const res = await login(userInfo).unwrap();
+
+      const user = verifyToken(res.data.token) as IUser;
+
+      dispatch(setUser({ user: user, token: res.data.token }));
+
+      toast.success('Logged in', { id: toastId, duration: 2000 });
+      navigate(`/${user.role}/dashboard`);
+    } catch (err) {
+      console.log(err);
+
+      toast.error('Something went wrong', { id: toastId, duration: 2000 });
+    }
   };
 
   return (
@@ -56,6 +90,7 @@ function Login() {
                   icon={<MdEmail />}
                   register={methods.register}
                   error={methods.formState.errors.email}
+                  required={true}
                 />
                 <CarInput
                   type="password"
@@ -64,6 +99,7 @@ function Login() {
                   icon={<FaLock />}
                   register={methods.register}
                   error={methods.formState.errors.password}
+                  required={true}
                 />
 
                 <div>
