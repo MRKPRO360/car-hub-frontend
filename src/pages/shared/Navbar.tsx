@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router';
-import logo from '../../assets/images/logo.png';
 import { FaCarSide } from 'react-icons/fa';
 function Navbar() {
   const items = [
@@ -8,8 +7,8 @@ function Navbar() {
       text: 'Home',
     },
     {
-      path: '/products',
-      text: 'Products',
+      path: '/cars',
+      text: 'Cars',
     },
 
     {

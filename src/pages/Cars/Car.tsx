@@ -13,7 +13,7 @@ function Car() {
 
   const { data: car, isLoading } = useGetACarQuery(id);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -25,7 +25,7 @@ function Car() {
 
   if (car?.data)
     return (
-      <div className="py-6 bg-white max-w-4xl mx-auto  ">
+      <div className=" bg-white max-w-4xl mx-auto my-10 ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Image Section */}
           <div>
