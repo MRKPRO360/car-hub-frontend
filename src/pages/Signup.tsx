@@ -104,7 +104,7 @@ function Signup() {
                   error={methods.formState.errors.password}
                   required={true}
                 />
-                <CarInput
+                {/* <CarInput
                   type="file"
                   name="file"
                   label="Upload Profile Photo"
@@ -113,7 +113,7 @@ function Signup() {
                   error={methods.formState.errors.file}
                   required={true}
                   setValue={methods.setValue}
-                />
+                /> */}
                 <CarInput
                   type="text"
                   name="phone"

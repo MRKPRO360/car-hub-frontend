@@ -9,6 +9,7 @@ import AdminLayout from '../components/layout/AdminLayout';
 import Orders from '../pages/admin/Orders';
 import Users from '../pages/admin/Users';
 import Cars from '../pages/admin/Cars';
+import CreateACar from '../pages/admin/CreateACar';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/dashboard/cars',
         element: <Cars />,
+      },
+      {
+        path: '/admin/dashboard/add-car',
+        element: <CreateACar />,
       },
       {
         path: '/admin/dashboard/users',

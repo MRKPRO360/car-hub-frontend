@@ -8,3 +8,34 @@
   --color-ymn-blue: #415a77;
   --color-blue: #0d1b2a;
 }
+
+.swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  background-color: #788184 !important; /* Inactive dot color */
+  opacity: 0.85 !important;
+  margin: 0 4px !important;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+/* Style the active pagination bullet */
+.swiper-pagination-bullet-active {
+  background-color: '#1b263b' !important; /* Active dot color */
+  box-shadow: 0 0 0 2px white;
+  opacity: 1;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important;
+  padding: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  transition: duration 0.3 ease-in-out;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  transform: scale(1.1);
+}

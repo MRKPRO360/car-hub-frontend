@@ -97,7 +97,7 @@ const Table: React.FC = () => {
     );
   }
 
-  console.log(isConfirm);
+  console.log(cars);
   const handleClick = (item: ICar) => {
     setIsModalOpen(true);
   };

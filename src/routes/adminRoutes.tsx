@@ -4,6 +4,10 @@ const adminNavItems = [
     text: 'All Cars',
   },
   {
+    path: '/admin/dashboard/add-car',
+    text: 'Add Car',
+  },
+  {
     path: '/admin/dashboard/orders',
     text: 'All orders',
   },
