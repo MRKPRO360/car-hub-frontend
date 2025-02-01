@@ -42,16 +42,16 @@ const carsApi = baseApi.injectEndpoints({
       }),
     }),
     deleteACar: builder.mutation({
-      query: () => ({
-        url: '/cars',
+      query: (id) => ({
+        url: `/cars/${id}`,
         method: 'DELETE',
       }),
     }),
     updateCar: builder.mutation({
-      query: (data) => ({
-        url: '/cars',
+      query: (args) => ({
+        url: `/cars/${args.id}`,
         method: 'PATCH',
-        body: data,
+        body: args.data,
       }),
     }),
   }),

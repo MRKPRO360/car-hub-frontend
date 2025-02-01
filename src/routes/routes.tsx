@@ -11,6 +11,7 @@ import Users from '../pages/admin/Users';
 import CreateACar from '../pages/admin/CreateACar';
 import Cars from '../pages/Cars/Cars';
 import Car from '../pages/Cars/Car';
+import ProtectedRoute from '../components/layout/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin/dashboard',
-    element: <AdminLayout />,
+    element: (
+      <ProtectedRoute role="admin">
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: '/admin/dashboard/',
@@ -47,16 +52,43 @@ const router = createBrowserRouter([
         path: '/admin/dashboard/orders',
         element: <Orders />,
       },
-      // {
-      //   path: '/admin/dashboard/cars',
-      //   element: <Cars />,
-      // },
+      {
+        path: '/admin/dashboard/cars',
+        element: <Cars />,
+      },
       {
         path: '/admin/dashboard/add-car',
         element: <CreateACar />,
       },
       {
         path: '/admin/dashboard/users',
+        element: <Users />,
+      },
+    ],
+  },
+  {
+    path: '/user/dashboard',
+    element: (
+      <ProtectedRoute role="user">
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: '/user/dashboard/',
+        element: <Cars />,
+      },
+      {
+        path: '/user/dashboard/orders',
+        element: <Orders />,
+      },
+
+      {
+        path: '/user/dashboard/add-car',
+        element: <CreateACar />,
+      },
+      {
+        path: '/user/dashboard/users',
         element: <Users />,
       },
     ],

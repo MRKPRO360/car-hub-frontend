@@ -8,7 +8,6 @@ function Cars() {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
 
   const [inputText, setInputText] = useState('');
-  const [inputFocus, setInputFocus] = useState(true);
 
   const [minPrice, setMinPrice] = useState<number | string>('');
   const [maxPrice, setMaxPrice] = useState<number | string>('');
@@ -56,7 +55,6 @@ function Cars() {
           className="px-4 py-2 shadow-sm shadow-blue/15 rounded-sm w-full pl-[40px] outline-none focus:border-blue"
           placeholder="Search by category, brand, name, stock etc..."
           onChange={(e) => setInputText(e.target.value)}
-          onClick={() => setInputFocus(true)}
         />
         <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
       </div>
@@ -122,7 +120,7 @@ function Cars() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8 overflow-hidden">
         {filteredData && filteredData?.length > 0 ? (
-          filteredData?.map((el) => <CarsCard car={el} />)
+          filteredData?.map((el) => <CarsCard key={el._id} car={el} />)
         ) : (
           <p className="text-gray-500">No results found.</p>
         )}

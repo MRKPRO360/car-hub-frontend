@@ -1,6 +1,13 @@
-export type IUser = {
+export interface IUser {
+  _id: string;
+  name: string;
   email: string;
   role: string;
-  iat: string;
-  exp: string;
-};
+  profileImg: string;
+  isBlocked: boolean;
+  isDeleted: boolean;
+  isPasswordChangedAt: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
