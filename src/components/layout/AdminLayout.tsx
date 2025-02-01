@@ -6,7 +6,9 @@ function AdminLayout() {
   return (
     <div className="flex">
       <Sidebar items={adminNavItems} />
-      <Outlet />
+      <div className="md:ml-48 flex-1">
+        <Outlet />
+      </div>
     </div>
   );
 }

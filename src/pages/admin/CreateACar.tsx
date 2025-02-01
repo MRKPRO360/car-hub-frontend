@@ -38,78 +38,96 @@ const CreateACar = () => {
     formData.append('file', img);
 
     console.log(formData);
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
     reset();
   };
 
   return (
     <div className="w-full mx-auto p-6 ">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="category">Brand</label>
-          <select
-            id="brand"
-            className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register('brand', { required: true })}
-          >
-            {brandOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="mb-1 inline-block" htmlFor="category">
+              Brand
+            </label>
+            <select
+              id="brand"
+              className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
+              {...register('brand', { required: true })}
+            >
+              {brandOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="mb-1 inline-block" htmlFor="category">
+              Category
+            </label>
+            <select
+              id="category"
+              className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
+              {...register('category', { required: true })}
+            >
+              {categoryOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register('category', { required: true })}
-          >
-            {categoryOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label
+              htmlFor="Model"
+              className="inline-block mb-1 text-[15px] text-text font-[400]"
+            >
+              Model <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="model"
+              placeholder="Car Model"
+              className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
+              {...register('model', { required: true })}
+            />
 
-        <div>
-          <label htmlFor="Model" className="text-[15px] text-text font-[400]">
-            Model <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="model"
-            placeholder="Car Model"
-            className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register('model', { required: true })}
-          />
-
-          {errors.model && (
-            <span className="text-red-500">Model name is required!</span>
-          )}
-        </div>
-        <div>
-          <label htmlFor="Price" className="text-[15px] text-text font-[400]">
-            Price <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            id="price"
-            placeholder="Car price exmp. 3000"
-            className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register('price', { required: true })}
-          />
-          {errors.price && (
-            <span className="text-red-500">Price is required!</span>
-          )}
+            {errors.model && (
+              <span className="text-red-500">Model name is required!</span>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="Price"
+              className="inline-block mb-1 text-[15px] text-text font-[400]"
+            >
+              Price <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              id="price"
+              placeholder="Car price exmp. 3000"
+              className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
+              {...register('price', { required: true })}
+            />
+            {errors.price && (
+              <span className="text-red-500">Price is required!</span>
+            )}
+          </div>
         </div>
 
         <div>
           <label
             htmlFor="Quantity"
-            className="text-[15px] text-text font-[400]"
+            className="inline-block mb-1 text-[15px] text-text font-[400]"
           >
             Quantity <span className="text-red-500">*</span>
           </label>
@@ -117,7 +135,7 @@ const CreateACar = () => {
             type="number"
             id="quantity"
             placeholder="Car quantity exmp. 3"
-            className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
             {...register('quantity', { required: true })}
           />
           {errors.quantity && (
@@ -128,14 +146,14 @@ const CreateACar = () => {
         <div className="w-full">
           <label
             htmlFor="description"
-            className="block text-lg font-medium text-gray-700"
+            className="inline-block mb-1 text-[15px] text-text font-[400]"
           >
-            Car Description
+            Car Description <span className="text-red-500">*</span>
           </label>
           <textarea
             id="description"
             rows={4}
-            className="w-full block mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
             placeholder="Write car description here..."
             {...register('description', { required: true })}
           ></textarea>
@@ -149,7 +167,7 @@ const CreateACar = () => {
         <div className="w-full">
           <label
             htmlFor="file-upload"
-            className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition"
+            className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue transition"
           >
             <FaCloudUploadAlt className="w-8 h-8 text-gray-500" />
             <span className="mt-2 text-gray-700">Click to upload</span>
