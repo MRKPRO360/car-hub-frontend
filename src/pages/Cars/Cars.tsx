@@ -10,6 +10,9 @@ function Cars() {
   const [inputText, setInputText] = useState('');
   const [inputFocus, setInputFocus] = useState(true);
 
+  const [minPrice, setMinPrice] = useState<number | string>('');
+  const [maxPrice, setMaxPrice] = useState<number | string>('');
+
   const [filters, setFilters] = useState<Record<string, string>>({
     brand: 'All',
     model: 'All',
@@ -30,7 +33,9 @@ function Cars() {
       (filters.model === 'All' || item.model === filters.model) &&
       (filters.category === 'All' || item.category === filters.category) &&
       (filters.inStock === 'All' ||
-        item.inStock === (filters.inStock === 'true'));
+        item.inStock === (filters.inStock === 'true')) &&
+      (minPrice === '' || item.price >= Number(minPrice)) &&
+      (maxPrice === '' || item.price <= Number(maxPrice));
 
     const matchesSearch =
       inputText.trim() === '' ||
@@ -85,6 +90,34 @@ function Cars() {
           <option value="true">In Stock</option>
           <option value="false">Out of Stock</option>
         </select>
+
+        <div className="flex flex-col">
+          <label htmlFor="minPrice" className="text-sm">
+            Min Price
+          </label>
+          <input
+            type="number"
+            id="minPrice"
+            placeholder="Min"
+            className="p-3 rounded-sm bg-white shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue/50"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="maxPrice" className="text-sm">
+            Max Price
+          </label>
+          <input
+            type="number"
+            id="maxPrice"
+            placeholder="Max"
+            className="p-3 rounded-sm bg-white shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue/50"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8 overflow-hidden">
