@@ -8,8 +8,9 @@ import Signup from '../pages/Signup';
 import AdminLayout from '../components/layout/AdminLayout';
 import Orders from '../pages/admin/Orders';
 import Users from '../pages/admin/Users';
-import Cars from '../pages/admin/Cars';
 import CreateACar from '../pages/admin/CreateACar';
+import Cars from '../pages/Cars/Cars';
+import Car from '../pages/Cars/Car';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/products',
-        element: <Home />,
+        path: '/cars',
+        element: <Cars />,
+      },
+      {
+        path: '/cars/:id',
+        element: <Car />,
       },
       {
         path: '/change-password',
@@ -42,10 +47,10 @@ const router = createBrowserRouter([
         path: '/admin/dashboard/orders',
         element: <Orders />,
       },
-      {
-        path: '/admin/dashboard/cars',
-        element: <Cars />,
-      },
+      // {
+      //   path: '/admin/dashboard/cars',
+      //   element: <Cars />,
+      // },
       {
         path: '/admin/dashboard/add-car',
         element: <CreateACar />,

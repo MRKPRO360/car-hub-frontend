@@ -29,7 +29,7 @@ function Carousel() {
       spaceBetween={50}
       loop={true}
       autoplay={{
-        delay: 3000,
+        delay: 10000,
         disableOnInteraction: false,
       }}
     >

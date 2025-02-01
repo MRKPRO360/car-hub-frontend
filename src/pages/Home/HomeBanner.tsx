@@ -1,14 +1,11 @@
 import Carousel from '../../components/carousel/Carousel';
-import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
+import Cars from './Cars';
 
 const HomeBanner = () => {
-  const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
-
-  console.log(cars?.data);
-
   return (
     <div>
       <Carousel />
+      <Cars />
     </div>
   );
 };

@@ -1,3 +1,6 @@
+import { Link } from 'react-router';
+import HomeButton from '../../pages/shared/HomeButton';
+
 function Slide({ data }: { data: { text: string; img: string } }) {
   return (
     <div
@@ -5,17 +8,18 @@ function Slide({ data }: { data: { text: string; img: string } }) {
         backgroundImage: `linear-gradient(to right, rgba(13, 27, 42, 1), rgba(13, 27, 42, 0.5)), url(${data.img})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: '85vh',
       }}
-      className="min-w-screen text-light relative"
+      className="min-w-screen text-light relative h-[80vh] sm:h-[85vh]"
     >
-      <div className="absolute top-[40%] left-40">
-        <h1 className="mb-2 font-semibold text-2xl ">{data.text}</h1>
-        <p className="font-light text-3xl">30 MONTHS | 0%</p>
+      <div className="absolute top-[40%] sm:left-40 left-20">
+        <h1 className="mb-2 font-semibold text-xl sm:text-2xl ">{data.text}</h1>
+        <p className="font-light text-2xl sm:text-3xl">30 MONTHS | 0%</p>
         <span className="font-light">Our birthday. Your gift</span>
-        <button className="block mt-3 md:text-xl border-2 bg-light text-blue px-2 py-1">
-          View More
-        </button>
+        <div className="mt-5">
+          <Link to="/cars">
+            <HomeButton type="light" text="View More" />
+          </Link>
+        </div>
       </div>
     </div>
   );
