@@ -42,6 +42,12 @@ const usersApi = baseApi.injectEndpoints({
         body: args.data,
       }),
     }),
+    deactivateUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/deactivate-user/${id}`,
+        method: 'PATCH',
+      }),
+    }),
   }),
 });
 

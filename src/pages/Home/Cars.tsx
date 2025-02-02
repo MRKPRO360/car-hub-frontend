@@ -4,8 +4,7 @@ import HomeButton from '../shared/HomeButton';
 import CarsCard from './CarsCard';
 
 function Cars() {
-  const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
-  console.log(cars);
+  const { data: cars } = useGetAllCarsQuery(undefined);
 
   return (
     <div className="py-18">
@@ -15,7 +14,7 @@ function Cars() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-8 overflow-hidden">
         {cars?.data?.slice(0, 4).map((el) => (
-          <CarsCard car={el} />
+          <CarsCard key={el._id} car={el} />
         ))}
       </div>
 

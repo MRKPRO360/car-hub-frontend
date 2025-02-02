@@ -1,6 +1,19 @@
 import { NavLink } from 'react-router';
 import { FaCarSide } from 'react-icons/fa';
+import { useAppSelector } from '../../redux/hooks';
+import { selectCurrentToken } from '../../redux/features/auth/authSlice';
+import { verifyToken } from '../../utils/verifyToken';
 function Navbar() {
+  const token = useAppSelector(selectCurrentToken);
+
+  let user;
+
+  if (token) {
+    user = verifyToken(token);
+  }
+
+  console.log(user);
+
   const items = [
     {
       path: '/',
@@ -19,11 +32,11 @@ function Navbar() {
 
   const userItems = [
     {
-      path: '/cart',
-      text: 'Cart',
+      path: '/my-profile',
+      text: 'My Profile',
     },
     {
-      path: '/my-profile',
+      path: '/chage-password',
       text: 'My Profile',
     },
     {
@@ -52,6 +65,19 @@ function Navbar() {
             {item.text}
           </NavLink>
         ))}
+
+        {user?.role && (
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? 'px-3 py-1 text-blue sm:text-lg sm:font-semibold'
+                : 'text-blue/70 px-3 py-1 sm:font-semibold sm:text-lg'
+            }
+            to={`/${user.role}/dashboard`}
+          >
+            Dashboard
+          </NavLink>
+        )}
       </ul>
       <ul>
         <NavLink
