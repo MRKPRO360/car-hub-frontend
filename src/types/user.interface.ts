@@ -4,6 +4,7 @@ export interface IUser {
   email: string;
   role: string;
   profileImg: string;
+  phone: string;
   isBlocked: boolean;
   isDeleted: boolean;
   isPasswordChangedAt: boolean;

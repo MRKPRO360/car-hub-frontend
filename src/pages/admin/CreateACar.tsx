@@ -2,6 +2,10 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../shared/Button';
 
 import { FieldValues, useForm } from 'react-hook-form';
+import { useAddCarMutation } from '../../redux/features/admin/carManagement.api';
+import { toast } from 'sonner';
+import { IResponse } from '../../types';
+import { useState } from 'react';
 
 const CreateACar = () => {
   const {
@@ -11,7 +15,8 @@ const CreateACar = () => {
     reset,
   } = useForm();
 
-  // img?: string;
+  const [addCar] = useAddCarMutation();
+  const [imgFile, setImgFile] = useState<File>();
 
   const categoryOptions = [
     { value: 'Sedan', label: 'Sedan' },
@@ -28,21 +33,43 @@ const CreateACar = () => {
     { value: 'Tesla', label: 'Tesla' },
   ];
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading('Adding ...');
     const formData = new FormData();
 
-    const img = data.img[0];
+    // console.log('checking', data?.img);
 
-    formData.append('data', JSON.stringify(data));
-    formData.append('file', img);
+    const carData = {
+      ...data,
+      price: parseFloat(data.price),
+      quantity: parseFloat(data.quantity),
+    };
 
-    console.log(formData);
+    console.log(imgFile);
+
+    formData.append('data', JSON.stringify(carData));
+    formData.append('file', imgFile as File);
 
     for (const pair of formData.entries()) {
       console.log(pair[0] + ': ' + pair[1]);
     }
-    reset();
+
+    try {
+      const res = (await addCar(formData)) as IResponse<any>;
+
+      console.log(res);
+
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        toast.success('Car added successfully', { id: toastId });
+      }
+
+      // reset();
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong', { id: toastId });
+    }
   };
 
   return (
@@ -176,6 +203,7 @@ const CreateACar = () => {
               id="file-upload"
               className="hidden"
               {...register('img', { required: true })}
+              onChange={(e) => setImgFile(e.target.files?.[0])}
             />
             {errors?.img && (
               <p className="text-red-500">Car image must be provided</p>

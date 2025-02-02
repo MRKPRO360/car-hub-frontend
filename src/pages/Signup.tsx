@@ -19,7 +19,6 @@ function Signup() {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const formData = new FormData();
     const file = data.file;
-    console.log({ data, file });
 
     const userData = {
       email: data.email,
@@ -31,10 +30,13 @@ function Signup() {
 
     formData.append('data', JSON.stringify(userData));
 
-    // if (file) {
-    //   formData.append('file', file);
-    // }
+    if (file) {
+      formData.append('file', file);
+    }
 
+    for (const pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
     // console.log('Form submitted', formData);
     // console.log(file);
   };
@@ -104,7 +106,7 @@ function Signup() {
                   error={methods.formState.errors.password}
                   required={true}
                 />
-                {/* <CarInput
+                <CarInput
                   type="file"
                   name="file"
                   label="Upload Profile Photo"
@@ -112,8 +114,8 @@ function Signup() {
                   register={methods.register}
                   error={methods.formState.errors.file}
                   required={true}
-                  setValue={methods.setValue}
-                /> */}
+                  // setValue={methods.setValue}
+                />
                 <CarInput
                   type="text"
                   name="phone"

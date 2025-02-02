@@ -5,21 +5,25 @@ import {
   BsChevronRight,
   BsThreeDotsVertical,
 } from 'react-icons/bs';
-import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
+import { MdDeleteOutline } from 'react-icons/md';
 import { IoEyeOutline } from 'react-icons/io5';
-import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
-import { ICar, IUser } from '../../types';
-import { FiSearch } from 'react-icons/fi';
-import Modal from '../shared/Modal';
-import { useGetAllUsersQuery } from '../../redux/features/admin/userManagement.api';
+
+import { IResponse, IUser } from '../../types';
+
+import {
+  useDeactivateUserMutation,
+  useDeleteAUserMutation,
+  useGetAllUsersQuery,
+} from '../../redux/features/admin/userManagement.api';
 import { IoIosSearch } from 'react-icons/io';
+import { toast } from 'sonner';
 
 const Users: React.FC = () => {
-  const { data: users, userIsLoading } = useGetAllUsersQuery(undefined);
+  const { data: users, isLoading } = useGetAllUsersQuery(undefined);
+  const [deleteUser] = useDeleteAUserMutation();
+  const [blockUser] = useDeactivateUserMutation();
 
-  const [data, setData] = useState<Partial<IUser>[]>(users?.data || []);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirm, setIsConfirm] = useState(false);
+  const [data, setData] = useState<IUser[]>(users?.data || []);
 
   const [search, setSearch] = useState('');
   const [sortConfig, setSortConfig] = useState<{
@@ -92,17 +96,53 @@ const Users: React.FC = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  if (userIsLoading) {
+  const handleDelete = async (item: IUser) => {
+    const toastId = toast.loading('Deleting...');
+
+    try {
+      const res = (await deleteUser(item._id)) as IResponse<any>;
+
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        toast.success('User deleted successfully!', {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong!', { id: toastId, duration: 2000 });
+    }
+  };
+
+  const handleBlock = async (item: IUser) => {
+    const toastId = toast.loading('Blocking user...');
+
+    try {
+      const res = (await blockUser(item._id)) as IResponse<any>;
+
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        toast.success('User blocked successfully!', {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong!', { id: toastId, duration: 2000 });
+    }
+  };
+
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <p className="text-lg font-semibold text-gray-500">Loading...</p>
       </div>
     );
   }
-
-  const handleClick = (item: IUser) => {
-    setIsModalOpen(true);
-  };
 
   return (
     <div className="w-full mx-auto p-6 ">
@@ -193,21 +233,24 @@ const Users: React.FC = () => {
                           index > 0 ? 'bottom-[90%]' : 'top-[90%]'
                         } zenui-table absolute right-[80%] p-2 rounded-md bg-white shadow-md min-w-[160px] transition-all duration-100`}
                       >
-                        <p className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200">
+                        {/* <p className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200">
                           <MdOutlineEdit />
                           Edit
-                        </p>
+                        </p> */}
                         <button
-                          onClick={() => handleClick(item)}
+                          onClick={() => handleDelete(item)}
                           className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200"
                         >
                           <MdDeleteOutline />
                           Delete
                         </button>
-                        <p className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200">
+                        <button
+                          onClick={() => handleBlock(item)}
+                          className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200"
+                        >
                           <IoEyeOutline />
-                          View Details
-                        </p>
+                          Block
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -258,12 +301,6 @@ const Users: React.FC = () => {
             </div>
           )}
         </div>
-
-        <Modal
-          setIsModalOpen={setIsModalOpen}
-          isModalOpen={isModalOpen}
-          setIsConfirm={setIsConfirm}
-        />
       </div>
     </div>
   );

@@ -12,8 +12,6 @@ function Navbar() {
     user = verifyToken(token);
   }
 
-  console.log(user);
-
   const items = [
     {
       path: '/',
