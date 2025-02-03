@@ -9,9 +9,10 @@ import AdminLayout from '../components/layout/AdminLayout';
 import Orders from '../pages/admin/Orders';
 import Users from '../pages/admin/Users';
 import CreateACar from '../pages/admin/CreateACar';
-import Cars from '../pages/Cars/Cars';
 import Car from '../pages/Cars/Car';
 import ProtectedRoute from '../components/layout/ProtectedRoute';
+import Cars from '../pages/Home/Cars';
+import ManageCars from '../pages/admin/ManageCars';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/dashboard/users',
         element: <Users />,
+      },
+      {
+        path: '/admin/dashboard/manage-cars',
+        element: <ManageCars />,
       },
     ],
   },

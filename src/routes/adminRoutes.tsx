@@ -1,7 +1,15 @@
 const adminNavItems = [
   {
+    path: '/',
+    text: 'Home',
+  },
+  {
     path: '/admin/dashboard/cars',
     text: 'All Cars',
+  },
+  {
+    path: '/admin/dashboard/manage-cars',
+    text: 'Manage Cars',
   },
   {
     path: '/admin/dashboard/add-car',
@@ -9,7 +17,7 @@ const adminNavItems = [
   },
   {
     path: '/admin/dashboard/orders',
-    text: 'All orders',
+    text: 'All Orders',
   },
   {
     path: '/admin/dashboard/users',

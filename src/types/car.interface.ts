@@ -1,3 +1,5 @@
+import { IUser } from './user.interface';
+
 export interface ICar {
   _id: string;
   brand: string;
@@ -12,4 +14,5 @@ export interface ICar {
   createdAt: string;
   updatedAt: string;
   id: string;
+  author: IUser;
 }

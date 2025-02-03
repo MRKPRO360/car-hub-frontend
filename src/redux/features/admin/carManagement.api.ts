@@ -19,6 +19,7 @@ const carsApi = baseApi.injectEndpoints({
           params: params,
         };
       },
+      providesTags: ['cars'],
       transformResponse: (response: IResponseRedux<ICar[]>) => {
         return {
           data: response.data,
@@ -46,6 +47,7 @@ const carsApi = baseApi.injectEndpoints({
         url: `/cars/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['cars'],
     }),
     updateCar: builder.mutation({
       query: (args) => ({
@@ -53,6 +55,7 @@ const carsApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: args.data,
       }),
+      invalidatesTags: ['cars'],
     }),
   }),
 });
