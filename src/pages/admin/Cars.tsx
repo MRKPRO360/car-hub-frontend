@@ -10,13 +10,13 @@ import { IoEyeOutline } from 'react-icons/io5';
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
 import { ICar } from '../../types';
 import { FiSearch } from 'react-icons/fi';
-import Modal from '../shared/Modal';
+// import Modal from '../shared/Modal';
 
 const Table: React.FC = () => {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
   const [data, setData] = useState<Partial<ICar>[]>(cars?.data || []);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirm, setIsConfirm] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isConfirm, setIsConfirm] = useState(false);
 
   const [search, setSearch] = useState('');
   const [sortConfig, setSortConfig] = useState<{
@@ -97,10 +97,9 @@ const Table: React.FC = () => {
     );
   }
 
-  console.log(cars);
-  const handleClick = (item: ICar) => {
-    setIsModalOpen(true);
-  };
+  // const handleClick = (item: ICar) => {
+  //   setIsModalOpen(true);
+  // };
 
   return (
     <div className="customTable overflow-y-auto p-8 mb-4 w-full flex items-center flex-col gap-5 justify-center">
@@ -184,7 +183,7 @@ const Table: React.FC = () => {
                         Edit
                       </p>
                       <button
-                        onClick={() => handleClick(item)}
+                        // onClick={() => handleClick(item)}
                         className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200"
                       >
                         <MdDeleteOutline />
@@ -245,11 +244,11 @@ const Table: React.FC = () => {
         )}
       </div>
 
-      <Modal
+      {/* <Modal
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
         setIsConfirm={setIsConfirm}
-      />
+      /> */}
     </div>
   );
 };

@@ -36,23 +36,8 @@ function Navbar() {
     },
   ];
 
-  const userItems = [
-    {
-      path: '/my-profile',
-      text: 'My Profile',
-    },
-    {
-      path: '/chage-password',
-      text: 'My Profile',
-    },
-    {
-      path: '/logout',
-      text: 'Logout',
-    },
-  ];
-
   return (
-    <div className="max-w-[1536px] mx-auto flex items-center justify-between p-2">
+    <div className="max-w-[1536px] mx-auto flex items-center justify-between px-2 py-3">
       <Link to="/" className="flex items-center gap-0.5 cursor-pointer">
         <FaCarSide className="text-4xl text-blue" />
         <h3 className="text-xl md:text-2xl">Car Hub</h3>

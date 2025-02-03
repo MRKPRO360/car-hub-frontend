@@ -11,10 +11,6 @@ const userNavItems = [
     path: '/user/dashboard/orders',
     text: 'My Orders',
   },
-  {
-    path: '/user/dashboard/verify',
-    text: 'Verify Orders',
-  },
 
   {
     path: '/user/dashboard/my-profile',
