@@ -45,8 +45,6 @@ const CreateACar = () => {
       quantity: parseFloat(data.quantity),
     };
 
-    console.log(imgFile);
-
     formData.append('data', JSON.stringify(carData));
     formData.append('file', imgFile as File);
 

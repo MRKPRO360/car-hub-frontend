@@ -72,7 +72,7 @@ function Car() {
             <img
               src={car.data.img}
               alt={car.data.model}
-              className="w-full h-auto rounded-lg"
+              className="w-full h-[280px] object-cover object-center"
             />
           </div>
           {/* Important Info Section */}
