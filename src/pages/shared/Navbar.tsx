@@ -1,10 +1,18 @@
 import { NavLink } from 'react-router';
 import { FaCarSide } from 'react-icons/fa';
-import { useAppSelector } from '../../redux/hooks';
-import { selectCurrentToken } from '../../redux/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import {
+  logout,
+  selectCurrentToken,
+} from '../../redux/features/auth/authSlice';
 import { verifyToken } from '../../utils/verifyToken';
 function Navbar() {
   const token = useAppSelector(selectCurrentToken);
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   let user;
 
@@ -77,13 +85,25 @@ function Navbar() {
           </NavLink>
         )}
       </ul>
+
       <ul>
-        <NavLink
-          to="/login"
-          className="bg-blue shadow-sm shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
-        >
-          Login
-        </NavLink>
+        {user?.role ? (
+          <button
+            onClick={handleLogout}
+            className="bg-blue cursor-pointer shadow-sm shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
+          >
+            Logout
+          </button>
+        ) : (
+          <ul>
+            <NavLink
+              to="/login"
+              className="bg-blue shadow-sm cursor-pointer shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
+            >
+              Login
+            </NavLink>
+          </ul>
+        )}
       </ul>
     </div>
   );
