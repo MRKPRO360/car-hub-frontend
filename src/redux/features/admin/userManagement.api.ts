@@ -29,6 +29,14 @@ const usersApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getMe: builder.query({
+      query: () => {
+        return {
+          url: '/users/me',
+          method: 'GET',
+        };
+      },
+    }),
 
     deleteAUser: builder.mutation({
       query: (id) => ({
@@ -61,4 +69,5 @@ export const {
   useDeleteAUserMutation,
   useUpdateUserMutation,
   useDeactivateUserMutation,
+  useGetMeQuery,
 } = usersApi;

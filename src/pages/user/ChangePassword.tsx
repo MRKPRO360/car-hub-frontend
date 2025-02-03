@@ -1,10 +1,8 @@
 import { Link, useNavigate } from 'react-router';
 import { useAppDispatch } from '../../redux/hooks';
-import { useLoginMutation } from '../../redux/features/auth/authApi';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
-import { verifyToken } from '../../utils/verifyToken';
-import { logout, setUser } from '../../redux/features/auth/authSlice';
+import { logout } from '../../redux/features/auth/authSlice';
 import loginBg from '../../assets/login.jpg';
 import { FaLock } from 'react-icons/fa';
 import CarForm from '../../components/form/CarForm';
@@ -86,7 +84,7 @@ function ChangePassword() {
                   label="Your Current Password"
                   icon={<FaLock />}
                   register={methods.register}
-                  error={methods.formState.errors.password}
+                  error={methods.formState.errors.oldPassword}
                   required={true}
                 />
                 <CarInput
@@ -95,7 +93,7 @@ function ChangePassword() {
                   label="New Password"
                   icon={<FaLock />}
                   register={methods.register}
-                  error={methods.formState.errors.password}
+                  error={methods.formState.errors.newPassword}
                   required={true}
                 />
 

@@ -21,7 +21,13 @@ function Car() {
     });
   };
 
-  if (isLoading) return 'Loading ...';
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-lg font-semibold text-gray-500">Loading...</p>
+      </div>
+    );
+  }
 
   if (car?.data)
     return (
