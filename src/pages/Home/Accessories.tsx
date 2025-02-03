@@ -1,6 +1,9 @@
 // react icons
 import { HiArrowRight } from 'react-icons/hi';
-
+import img1 from '../../assets/images/car accessories.jpg';
+import img2 from '../../assets/images/car accessories 2.jpg';
+import img3 from '../../assets/images/car accessories 3.jpg';
+import { FaAngleRight } from 'react-icons/fa';
 const Accessories = () => {
   return (
     <div className="py-18">
@@ -12,53 +15,43 @@ const Accessories = () => {
         <div className="col-span-1 overflow-hidden flex justify-between flex-col rounded-sm row-span-2 bg-[#f2f4f6] h-full py-8">
           <div className="px-8">
             <h4 className="text-[1.5rem] font-medium text-gray-900">
-              Living Room
+              Headlight
             </h4>
-            <button className="flex w-max items-center hover:text-[#0FABCA] hover:border-[#0FABCA] transition-all duration-300 gap-[10px] border-gray-900 text-[0.9rem] mt-2 group border-b">
-              Shop Now
-              <HiArrowRight className="group-hover:ml-1 transition-all duration-200" />
-            </button>
+            <div className="flex items-center hover:gap-3 w-max transition-all duration-300 gap-[10px] text-[0.9rem] mt-3 ">
+              <span className="text-md">Shop Now</span>
+              <FaAngleRight className="text-xl" />
+            </div>
           </div>
 
-          <img
-            alt="product/image"
-            src="https://i.ibb.co.com/F7MBZqh/Paste-image-removebg-preview.png"
-            className="w-[500px]"
-          />
+          <img alt="product/image" src={img1} className="w-full" />
         </div>
 
         {/* right top card */}
         <div className="bg-[#f2f4f6] rounded-sm col-span-1 flex justify-between items-center px-4 overflow-hidden">
           <div className="px-6 mt-auto pb-9">
-            <h4 className="text-[1.5rem] font-medium text-gray-900">Bedroom</h4>
-            <button className="flex w-max items-center hover:text-[#0FABCA] hover:border-[#0FABCA] transition-all duration-300 gap-[10px] border-gray-900 text-[0.9rem] mt-2 group border-b">
-              Shop Now
-              <HiArrowRight className="group-hover:ml-1 transition-all duration-200" />
-            </button>
+            <h4 className="text-[1.5rem] font-medium text-gray-900">
+              Steering
+            </h4>
+            <div className="flex items-center hover:gap-3 w-max transition-all duration-300 gap-[10px] text-[0.9rem] mt-3 ">
+              <span className="text-md">Shop Now</span>
+              <FaAngleRight className="text-xl" />
+            </div>
           </div>
 
-          <img
-            alt="product/image"
-            src="https://i.ibb.co.com/PCw23Vs/Paste-image-1-removebg-preview.png"
-            className="w-[200px] h-[200px]"
-          />
+          <img alt="product/image" src={img2} className="w-[200px] h-full" />
         </div>
 
         {/* right bottom card */}
         <div className="bg-[#f2f4f6] rounded-sm col-span-1 flex justify-between items-center px-4 overflow-hidden">
           <div className="px-6 mt-auto pb-9">
-            <h4 className="text-[1.5rem] font-medium text-gray-900">Kitchen</h4>
-            <button className="flex w-max items-center hover:text-[#0FABCA] hover:border-[#0FABCA] transition-all duration-300 gap-[10px] border-gray-900 text-[0.9rem] mt-2 group border-b">
-              Shop Now
-              <HiArrowRight className="group-hover:ml-1 transition-all duration-200" />
-            </button>
+            <h4 className="text-[1.5rem] font-medium text-gray-900">Wheel</h4>
+            <div className="flex items-center hover:gap-3 w-max transition-all duration-300 gap-[10px] text-[0.9rem] mt-3 ">
+              <span className="text-md">Shop Now</span>
+              <FaAngleRight className="text-xl" />
+            </div>
           </div>
 
-          <img
-            alt="product/image"
-            src="https://i.ibb.co.com/4FjR02m/Paste-image-2-removebg-preview.png"
-            className="w-[200px] h-max"
-          />
+          <img alt="product/image" src={img3} className="w-[200px] h-full" />
         </div>
       </div>
     </div>
