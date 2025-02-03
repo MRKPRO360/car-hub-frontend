@@ -29,7 +29,11 @@ const OfferedCar = () => {
             $1999
           </p>
 
-          <img alt="product/image" src={img} className="w-[450px] " />
+          <img
+            alt="product/image"
+            src={img}
+            className="w-[450px] md:w-[650px] "
+          />
         </div>
       </div>
     </div>

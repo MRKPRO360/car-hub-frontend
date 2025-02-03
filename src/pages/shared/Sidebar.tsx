@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { LiaTimesSolid } from 'react-icons/lia';
 import { ISidebarItems } from '../../types/sidebarItems.interface';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 const Sidebar = ({ items }: { items: ISidebarItems[] }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +46,9 @@ const Sidebar = ({ items }: { items: ISidebarItems[] }) => {
   ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
   md:relative md:translate-x-0 transition-transform `}
       >
-        <h2 className="text-xl font-bold">Car Hub</h2>
+        <Link to="/">
+          <h2 className="text-xl font-bold">Car Hub</h2>
+        </Link>
         <ul className="mt-4 flex flex-col space-y-2">
           {items.map((el) => (
             <NavLink

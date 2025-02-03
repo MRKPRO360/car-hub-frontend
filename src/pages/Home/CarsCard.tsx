@@ -32,7 +32,7 @@ function CarsCard({ car }: { car: ICar }) {
           to={`/cars/${car._id}`}
           className="  border-b-2 shadow-sm shadow-blue/20 "
         >
-          <div className="flex items-center hover:gap-3">
+          <div className="flex items-center hover:gap-3 cursor-pointer">
             <span className="text-md">More</span>
             <FaAngleRight className="text-xl" />
           </div>

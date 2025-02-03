@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { FaCarSide } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
@@ -53,10 +53,10 @@ function Navbar() {
 
   return (
     <div className="max-w-[1536px] mx-auto flex items-center justify-between p-2">
-      <div className="flex items-center gap-0.5">
+      <Link to="/" className="flex items-center gap-0.5 cursor-pointer">
         <FaCarSide className="text-4xl text-blue" />
         <h3 className="text-xl md:text-2xl">Car Hub</h3>
-      </div>
+      </Link>
       <ul className="flex items-center md:text-lg gap-8">
         {items.map((item) => (
           <NavLink

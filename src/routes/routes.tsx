@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import App from '../App';
 import Login from '../pages/Login';
-import ChangePassword from '../pages/ChangePassword';
+import ChangePassword from '../pages/user/ChangePassword';
 import Home from '../pages/Home/Home';
 import About from '../pages/About';
 import Signup from '../pages/Signup';
@@ -13,6 +13,9 @@ import Car from '../pages/Cars/Car';
 import ProtectedRoute from '../components/layout/ProtectedRoute';
 import Cars from '../pages/Home/Cars';
 import ManageCars from '../pages/admin/ManageCars';
+import UserLayout from '../components/layout/UserLayout';
+import MyOrders from '../pages/user/MyOrders';
+import ManageProfile from '../pages/user/ManageProfile';
 
 const router = createBrowserRouter([
   {
@@ -25,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/cars',
-        element: <Cars />,
+        element: <Cars renderBtn={true} />,
       },
       {
         path: '/cars/:id',
@@ -47,7 +50,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/admin/dashboard/',
-        element: <Cars />,
+        element: <Cars renderBtn={false} />,
       },
       {
         path: '/admin/dashboard/orders',
@@ -55,7 +58,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin/dashboard/cars',
-        element: <Cars />,
+        element: <Cars renderBtn={false} />,
       },
       {
         path: '/admin/dashboard/add-car',
@@ -75,26 +78,30 @@ const router = createBrowserRouter([
     path: '/user/dashboard',
     element: (
       <ProtectedRoute role="user">
-        <AdminLayout />
+        <UserLayout />
       </ProtectedRoute>
     ),
     children: [
       {
         path: '/user/dashboard/',
-        element: <Cars />,
+        element: <Cars renderBtn={false} />,
+      },
+      {
+        path: '/user/dashboard/cars/',
+        element: <Cars renderBtn={false} />,
       },
       {
         path: '/user/dashboard/orders',
-        element: <Orders />,
+        element: <MyOrders />,
       },
 
       {
-        path: '/user/dashboard/add-car',
-        element: <CreateACar />,
+        path: '/user/dashboard/my-profile',
+        element: <ManageProfile />,
       },
       {
-        path: '/user/dashboard/users',
-        element: <Users />,
+        path: '/user/dashboard/change-password',
+        element: <ChangePassword />,
       },
     ],
   },

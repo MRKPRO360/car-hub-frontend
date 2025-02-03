@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import HomeButton from '../shared/HomeButton';
 import CarsCard from './CarsCard';
 
-function Cars() {
+function Cars({ renderBtn }: { renderBtn: boolean }) {
   const { data: cars } = useGetAllCarsQuery(undefined);
 
   return (
@@ -18,11 +18,13 @@ function Cars() {
         ))}
       </div>
 
-      <div className="flex items-center justify-center">
-        <Link to="/cars">
-          <HomeButton type="blue" text="View More" />
-        </Link>
-      </div>
+      {renderBtn && (
+        <div className="flex items-center justify-center">
+          <Link to="/cars">
+            <HomeButton type="blue" text="View More" />
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -26,7 +26,7 @@ function CarForm({ onSubmit, children, defaultValues }: IFormProps) {
 
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
-    // methods.reset();
+    methods.reset();
   };
 
   return (
