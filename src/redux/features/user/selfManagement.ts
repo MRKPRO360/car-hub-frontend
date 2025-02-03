@@ -14,7 +14,7 @@ const selfApi = baseApi.injectEndpoints({
         }
 
         return {
-          url: '/ordrs/my-orders',
+          url: '/orders/my-orders',
           method: 'GET',
           params: params,
         };

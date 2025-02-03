@@ -16,6 +16,7 @@ import ManageCars from '../pages/admin/ManageCars';
 import UserLayout from '../components/layout/UserLayout';
 import MyOrders from '../pages/user/MyOrders';
 import ManageProfile from '../pages/user/ManageProfile';
+import VerifyOrder from '../pages/user/VerifyOrder';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/cars',
-        element: <Cars renderBtn={true} />,
+        element: <Cars renderBtn={false} />,
       },
       {
         path: '/cars/:id',
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: '/user/dashboard/orders',
         element: <MyOrders />,
+      },
+      {
+        path: '/user/dashboard/verify',
+        element: <VerifyOrder />,
       },
 
       {

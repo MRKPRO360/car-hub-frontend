@@ -7,11 +7,17 @@ import {
   FaCheckCircle,
   FaTimesCircle,
 } from 'react-icons/fa';
+import { ICar } from '../../types';
+import { useCreateOrderMutation } from '../../redux/features/admin/orderManagement.api';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 function Car() {
   const { id } = useParams();
 
-  const { data: car, isLoading } = useGetACarQuery(id);
+  const { data: car } = useGetACarQuery(id);
+  const [creatOrder, { isLoading, isSuccess, data, isError, error }] =
+    useCreateOrderMutation();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -21,13 +27,41 @@ function Car() {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-lg font-semibold text-gray-500">Loading...</p>
-      </div>
-    );
-  }
+  const handleClick = async (car: ICar) => {
+    const data = [];
+    const carData = {
+      car: car._id,
+      quantity: 1,
+    };
+
+    data.push(carData);
+
+    await creatOrder({ cars: data });
+  };
+
+  const toastId = 'car';
+  useEffect(() => {
+    if (isLoading) toast.loading('Processing ...', { id: toastId });
+
+    if (isSuccess) {
+      toast.success(data?.message, { id: toastId });
+      if (data?.data) {
+        setTimeout(() => {
+          window.location.href = data.data;
+        }, 1000);
+      }
+    }
+
+    if (isError) toast.error(JSON.stringify(error), { id: toastId });
+  }, [data?.data, data?.message, error, isError, isLoading, isSuccess]);
+
+  // if (isCarLoading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-64">
+  //       <p className="text-lg font-semibold text-gray-500">Loading...</p>
+  //     </div>
+  //   );
+  // }
 
   if (car?.data)
     return (
@@ -55,7 +89,13 @@ function Car() {
               </p>
               <p className="mt-2 text-gray-700">{car.data.description}</p>
             </div>
-            <HomeButton text="Checkout" type="blue" />
+            <div className="block" onClick={() => handleClick(car.data)}>
+              <HomeButton
+                disabled={car.data.quantity === 0}
+                text="Checkout"
+                type="blue"
+              />
+            </div>
           </div>
         </div>
         {/* Additional Details */}
