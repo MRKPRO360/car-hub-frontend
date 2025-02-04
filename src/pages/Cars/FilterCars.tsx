@@ -56,7 +56,7 @@ function FilterCars() {
     );
   }
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="p-6 bg-white shadow-lg rounded-sm">
       <div className="relative w-full mb-4 product_search_input">
         <input
           className="px-4 py-2 shadow-sm shadow-blue/15 rounded-sm w-full pl-[40px] outline-none focus:border-blue"

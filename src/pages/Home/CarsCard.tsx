@@ -23,9 +23,15 @@ function CarsCard({ car }: { car: ICar }) {
         </div>
 
         <div className="flex items-center gap-1">
-          <p>Published Year</p>
+          <p>Published Year:</p>
           <span className="text-gray-500 text-sm font-semibold">
             {car.year}
+          </span>
+        </div>
+        <div className="flex items-center gap-1">
+          <p>Price:</p>
+          <span className="text-sm font-semibold text-green-700">
+            {car.price}$
           </span>
         </div>
         <Link
