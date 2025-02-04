@@ -11,7 +11,6 @@ import Users from '../pages/admin/Users';
 import CreateACar from '../pages/admin/CreateACar';
 import Car from '../pages/Cars/Car';
 import ProtectedRoute from '../components/layout/ProtectedRoute';
-import Cars from '../pages/Home/Cars';
 import ManageCars from '../pages/admin/ManageCars';
 import UserLayout from '../components/layout/UserLayout';
 import MyOrders from '../pages/user/MyOrders';
@@ -19,6 +18,7 @@ import ManageProfile from '../pages/user/ManageProfile';
 import VerifyOrder from '../pages/user/VerifyOrder';
 import FilterCars from '../pages/Cars/FilterCars';
 import UpdateCar from '../pages/admin/UpdateCar';
+import Error from '../pages/Error';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +46,7 @@ const router = createBrowserRouter([
         element: <About />,
       },
     ],
+    errorElement: <Error />,
   },
   {
     path: '/admin/dashboard',
@@ -84,6 +85,7 @@ const router = createBrowserRouter([
         element: <UpdateCar />,
       },
     ],
+    errorElement: <Error />,
   },
   {
     path: '/user/dashboard',
@@ -119,6 +121,7 @@ const router = createBrowserRouter([
         element: <ChangePassword />,
       },
     ],
+    errorElement: <Error />,
   },
   {
     path: '/login',
