@@ -12,7 +12,7 @@ import { IError } from '../../types';
 import { logout, setUser } from '../features/auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:5000/api/v1',
+  baseUrl: 'https://car-hub-puce-three.vercel.app/api/v1',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -42,10 +42,13 @@ const baseQueryWihRefreshToken: BaseQueryFn<
 
     toast.error((result.error as IError).data.message);
 
-    const res = await fetch('http://localhost:5000/api/v1/auth/refresh-token', {
-      method: 'POST',
-      credentials: 'include',
-    });
+    const res = await fetch(
+      'https://car-hub-puce-three.vercel.app/api/v1/auth/refresh-token',
+      {
+        method: 'POST',
+        credentials: 'include',
+      }
+    );
 
     const data = await res.json();
 
