@@ -5,7 +5,6 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { useAddCarMutation } from '../../redux/features/admin/carManagement.api';
 import { toast } from 'sonner';
 import { IResponse } from '../../types';
-import { useState } from 'react';
 
 const CreateACar = () => {
   const {
@@ -16,7 +15,6 @@ const CreateACar = () => {
   } = useForm();
 
   const [addCar] = useAddCarMutation();
-  const [imgFile, setImgFile] = useState<File>();
 
   const categoryOptions = [
     { value: 'Sedan', label: 'Sedan' },
@@ -37,8 +35,6 @@ const CreateACar = () => {
     const toastId = toast.loading('Adding ...');
     const formData = new FormData();
 
-    // console.log('checking', data?.img);
-
     const carData = {
       ...data,
       price: parseFloat(data.price),
@@ -46,12 +42,19 @@ const CreateACar = () => {
     };
 
     formData.append('data', JSON.stringify(carData));
-    formData.append('file', imgFile as File);
 
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
+    const image = data?.img[0];
+
+    if (image instanceof File) {
+      formData.append('image', image);
+
+      // Debugging: Log FormData entries
+      for (const pair of formData.entries()) {
+        console.log(pair[0], pair[1], typeof pair[1]);
+      }
+    } else {
+      console.error('image is not a valid File object', image);
     }
-
     try {
       const res = (await addCar(formData)) as IResponse<any>;
 
@@ -188,7 +191,6 @@ const CreateACar = () => {
             </span>
           )}
         </div>
-
         <div className="w-full">
           <label
             htmlFor="file-upload"
@@ -201,7 +203,6 @@ const CreateACar = () => {
               id="file-upload"
               className="hidden"
               {...register('img', { required: true })}
-              onChange={(e) => setImgFile(e.target.files?.[0])}
             />
             {errors?.img && (
               <p className="text-red-500">Car image must be provided</p>
