@@ -2,11 +2,21 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../shared/Button';
 
 import { FieldValues, useForm } from 'react-hook-form';
-import { useAddCarMutation } from '../../redux/features/admin/carManagement.api';
+import {
+  useGetACarQuery,
+  useUpdateCarMutation,
+} from '../../redux/features/admin/carManagement.api';
 import { toast } from 'sonner';
 import { IResponse } from '../../types';
+import { useParams } from 'react-router';
+import { useEffect } from 'react';
 
-const CreateACar = () => {
+const UpdateCar = () => {
+  const { id } = useParams();
+
+  const { data: car } = useGetACarQuery(id);
+  const [updateCar] = useUpdateCarMutation();
+
   const {
     register,
     handleSubmit,
@@ -14,7 +24,11 @@ const CreateACar = () => {
     reset,
   } = useForm();
 
-  const [addCar] = useAddCarMutation();
+  useEffect(() => {
+    if (car?.data) {
+      reset(car.data); // Correct way to update form values
+    }
+  }, [car, reset]);
 
   const categoryOptions = [
     { value: 'Sedan', label: 'Sedan' },
@@ -33,6 +47,7 @@ const CreateACar = () => {
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Adding ...');
+
     const formData = new FormData();
 
     // console.log('checking', data?.img);
@@ -43,24 +58,18 @@ const CreateACar = () => {
       quantity: parseFloat(data.quantity),
     };
 
-    const img = data.carImg[0];
+    // const img = data.carImg[0];
 
-    console.log(img);
-
-    formData.append('data', JSON.stringify(carData));
-    formData.append('file', img);
-
-    // for (const pair of formData.entries()) {
-    //   console.log(pair[0] + ': ' + pair[1]);
-    // }
+    // formData.append('data', JSON.stringify(carData));
+    // formData.append('file', img);
 
     try {
-      const res = (await addCar(formData)) as IResponse<any>;
+      const res = (await updateCar({ data: carData, id })) as IResponse<any>;
 
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
-        toast.success('Car added successfully', { id: toastId });
+        toast.success('Car updated successfully', { id: toastId });
       }
       reset();
     } catch (err) {
@@ -80,7 +89,7 @@ const CreateACar = () => {
             <select
               id="brand"
               className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
-              {...register('brand', { required: true })}
+              {...register('brand')}
             >
               {brandOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -97,7 +106,7 @@ const CreateACar = () => {
             <select
               id="category"
               className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
-              {...register('category', { required: true })}
+              {...register('category')}
             >
               {categoryOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -121,7 +130,7 @@ const CreateACar = () => {
               id="model"
               placeholder="Car Model"
               className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
-              {...register('model', { required: true })}
+              {...register('model')}
             />
 
             {errors.model && (
@@ -140,7 +149,7 @@ const CreateACar = () => {
               id="price"
               placeholder="Car price exmp. 3000"
               className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
-              {...register('price', { required: true })}
+              {...register('price')}
             />
             {errors.price && (
               <span className="text-red-500">Price is required!</span>
@@ -160,7 +169,7 @@ const CreateACar = () => {
             id="quantity"
             placeholder="Car quantity exmp. 3"
             className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
-            {...register('quantity', { required: true })}
+            {...register('quantity')}
           />
           {errors.quantity && (
             <span className="text-red-500">Quantity is required!</span>
@@ -179,7 +188,7 @@ const CreateACar = () => {
             rows={4}
             className="p-2 shadow-sm shadow-blue/15 rounded-sm w-full outline-none focus:border-blue"
             placeholder="Write car description here..."
-            {...register('description', { required: true })}
+            {...register('description')}
           ></textarea>
           {errors.description && (
             <span className="text-red-500">
@@ -188,7 +197,7 @@ const CreateACar = () => {
           )}
         </div>
 
-        <div className="w-full">
+        {/* <div className="w-full">
           <label
             htmlFor="car-image"
             className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue transition"
@@ -199,14 +208,14 @@ const CreateACar = () => {
               type="file"
               id="car-image"
               className="hidden"
-              {...register('carImg', { required: true })}
+              {...register('carImg')}
               // onChange={(e) => setImgFile(e.target.files?.[0])}
             />
             {errors?.carImg && (
               <p className="text-red-500">Car image must be provided</p>
             )}
           </label>
-        </div>
+        </div> */}
 
         <Button type="submit" text="Submit" />
       </form>
@@ -214,4 +223,4 @@ const CreateACar = () => {
   );
 };
 
-export default CreateACar;
+export default UpdateCar;

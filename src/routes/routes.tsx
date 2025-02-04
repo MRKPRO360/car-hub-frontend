@@ -18,6 +18,7 @@ import MyOrders from '../pages/user/MyOrders';
 import ManageProfile from '../pages/user/ManageProfile';
 import VerifyOrder from '../pages/user/VerifyOrder';
 import FilterCars from '../pages/Cars/FilterCars';
+import UpdateCar from '../pages/admin/UpdateCar';
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/dashboard/manage-cars',
         element: <ManageCars />,
+      },
+      {
+        path: '/admin/dashboard/manage-cars/:id',
+        element: <UpdateCar />,
       },
     ],
   },

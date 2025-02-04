@@ -5,7 +5,7 @@ import {
   BsChevronRight,
   BsThreeDotsVertical,
 } from 'react-icons/bs';
-import { MdDeleteOutline } from 'react-icons/md';
+import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
 
 import { ICar, IResponse } from '../../types';
 
@@ -15,9 +15,12 @@ import {
   useDeleteACarMutation,
   useGetAllCarsQuery,
 } from '../../redux/features/admin/carManagement.api';
+import { IoEyeOutline } from 'react-icons/io5';
+import { Link, useNavigate } from 'react-router';
 
 const ManageCars: React.FC = () => {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
+  const navigate = useNavigate();
 
   const [deleteCar] = useDeleteACarMutation();
   const [data, setData] = useState<ICar[]>(cars?.data || []);
@@ -111,6 +114,10 @@ const ManageCars: React.FC = () => {
       console.log(err);
       toast.error('Something went wrong!', { id: toastId, duration: 2000 });
     }
+  };
+
+  const handleUpdate = async (item: ICar) => {
+    navigate(`/admin/dashboard/manage-cars/${item.id}`);
   };
 
   if (isLoading) {
@@ -210,12 +217,26 @@ const ManageCars: React.FC = () => {
                         } zenui-table absolute right-[80%] p-2 rounded-md bg-white shadow-md min-w-[160px] transition-all duration-100`}
                       >
                         <button
+                          onClick={() => handleUpdate(item)}
+                          className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200"
+                        >
+                          <MdOutlineEdit />
+                          Edit
+                        </button>
+                        <button
                           onClick={() => handleDelete(item)}
                           className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200"
                         >
                           <MdDeleteOutline />
                           Delete
                         </button>
+                        <Link
+                          to={`/cars/${item._id}`}
+                          className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer hover:bg-gray-50 transition-all duration-200"
+                        >
+                          <IoEyeOutline />
+                          View Details
+                        </Link>
                       </div>
                     </td>
                   </tr>

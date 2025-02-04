@@ -9,7 +9,7 @@ function Slide({ data }: { data: { text: string; img: string } }) {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
-      className="min-w-screen text-light relative h-[80vh] sm:h-[85vh]"
+      className="min-w-screen text-light relative h-[80vh] md:h-[91vh]"
     >
       <div className="absolute top-[40%] sm:left-40 left-20">
         <h1 className="mb-2 font-semibold text-xl sm:text-2xl ">{data.text}</h1>

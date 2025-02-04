@@ -34,6 +34,7 @@ const carsApi = baseApi.injectEndpoints({
           method: 'GET',
         };
       },
+      providesTags: (result, error, id) => [{ type: 'cars', id }],
     }),
     addCar: builder.mutation({
       query: (data) => ({
@@ -50,12 +51,14 @@ const carsApi = baseApi.injectEndpoints({
       invalidatesTags: ['cars'],
     }),
     updateCar: builder.mutation({
-      query: (args) => ({
-        url: `/cars/${args.id}`,
-        method: 'PATCH',
-        body: args.data,
-      }),
-      invalidatesTags: ['cars'],
+      query: ({ id, data }) => {
+        return {
+          url: `/cars/${id}`,
+          method: 'PATCH',
+          body: data, // ✅ Send formData directly
+        };
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: 'cars', id }],
     }),
   }),
 });
