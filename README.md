@@ -1,50 +1,108 @@
-# React + TypeScript + Vite
+CarHub API
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Overview
 
-Currently, two official plugins are available:
+CarHub is a web application that allows users to browse, purchase, and manage car-related services seamlessly. This document provides an overview of the API routes for users, orders, cars, and authentication.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Tech Stack
 
-## Expanding the ESLint configuration
+Backend: Node.js, Express.js
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Authentication: JWT & OAuth
 
-- Configure the top-level `parserOptions` property like this:
+Database: MongoDB
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Deployment: Vercel (Frontend) & Vercel/Heroku (Backend)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+API Routes
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+User Routes
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+GET /users/ - Get all users (Admin only)
+
+GET /users/me - Get logged-in user details
+
+GET /users/:userId - Get a specific user (Admin only)
+
+PATCH /users/:userId - Update a user (Admin & User)
+
+DELETE /users/:userId - Delete a user (Admin only)
+
+PATCH /users/deactivate-user/:userId - Deactivate a user (Admin only)
+
+Order Routes
+
+GET /orders/ - Get all orders (User & Admin)
+
+POST /orders/ - Create an order (User & Admin)
+
+GET /orders/verify-order - Verify payment (User & Admin)
+
+GET /orders/my-orders - Get user-specific orders (User only)
+
+PATCH /orders/:orderId - Update an order (Admin only)
+
+DELETE /orders/:orderId - Delete an order (User & Admin)
+
+GET /orders/revenue - Get revenue details (User & Admin)
+
+Car Routes
+
+GET /cars/ - Get all cars
+
+POST /cars/ - Create a new car (Admin only)
+
+GET /cars/my-car - Get user's cars (Admin & User)
+
+GET /cars/:carId - Get details of a single car
+
+PATCH /cars/:carId - Update car details
+
+DELETE /cars/:carId - Delete a car
+
+Authentication Routes
+
+POST /auth/register - Register a new user
+
+POST /auth/login - Login user
+
+POST /auth/refresh-token - Refresh authentication token
+
+POST /auth/change-password - Change user password (User & Admin)
+
+Installation
+
+Clone the repository:
+
+git clone https://github.com/yourusername/car-hub.git
+cd car-hub
+
+Install dependencies:
+
+npm install
+
+Create a .env file and add:
+
+NEXT_PUBLIC_API_URL=https://car-hub-puce-three.vercel.app/api/v1
+DATABASE_URL=mongodb+srv://your-db-connection
+JWT_SECRET=your-secret-key
+
+Run the development server:
+
+npm run dev
+
+Deployment
+
+Frontend: Vercel
+
+Backend: Vercel/Heroku
+
+Troubleshooting
+
+If you encounter CORS errors, ensure your backend sends the proper headers:
+
+res.setHeader("Access-Control-Allow-Origin", "\*");
+
+License
+
+MIT License © 2025 Your Name

@@ -1,10 +1,6 @@
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import 'swiper/swiper-bundle.css';
 
 import { Pagination, Autoplay, Navigation } from 'swiper/modules';
 import Slide from './Slide';
@@ -18,7 +14,6 @@ const slideData = [
   { text: 'Luxurious and limitless', img: img2 },
   { text: 'Durability to take reace', img: img3 },
 ];
-
 function Carousel() {
   return (
     <Swiper

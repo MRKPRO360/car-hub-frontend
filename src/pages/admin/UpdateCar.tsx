@@ -1,4 +1,3 @@
-import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../shared/Button';
 
 import { FieldValues, useForm } from 'react-hook-form';
@@ -48,7 +47,7 @@ const UpdateCar = () => {
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Adding ...');
 
-    const formData = new FormData();
+    // const formData = new FormData();
 
     // console.log('checking', data?.img);
 

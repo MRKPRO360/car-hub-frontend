@@ -49,7 +49,7 @@ const Testimonials = () => {
             disableOnInteraction: false,
           }}
         >
-          {[0, 1, 2, 3, 4].map((el, i) => (
+          {[0, 1, 2, 3, 4].map((_, i) => (
             <SwiperSlide key={i}>
               <div className="w-full md:w-[80%] mt-8 p-4 bg-white shadow-xl rounded-sm relative ">
                 <FaQuoteLeft className=" absolute -top-2 left-[5%] text-[1.3rem] text-[#727272]" />
