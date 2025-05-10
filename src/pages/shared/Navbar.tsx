@@ -1,121 +1,162 @@
-import { Link, NavLink } from 'react-router';
-import { FaCarSide } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {
-  logout,
-  selectCurrentToken,
-} from '../../redux/features/auth/authSlice';
-import { verifyToken } from '../../utils/verifyToken';
-function Navbar() {
-  const token = useAppSelector(selectCurrentToken);
-  const dispatch = useAppDispatch();
+// // src/components/Navbar.tsx
+// import React from 'react';
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+// const Navbar = () => {
+//   return (
+//     <header className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+//       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+//         <div className="text-2xl font-bold text-blue-700">CARBARN</div>
+//         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+//           <a href="#" className="hover:text-primary transition">
+//             Stock List
+//           </a>
+//           <a href="#" className="hover:text-primary transition">
+//             Warranty
+//           </a>
+//           <a href="#" className="hover:text-primary transition">
+//             Car Finance
+//           </a>
+//           <a href="#" className="hover:text-primary transition">
+//             How it Works
+//           </a>
+//         </nav>
+//         <div className="hidden md:flex items-center space-x-4 text-sm">
+//           <a href="#" className="text-primary hover:underline">
+//             Contact
+//           </a>
+//           <a href="#" className="text-primary hover:underline">
+//             Login / Sign Up
+//           </a>
+//         </div>
+//         {/* Mobile Menu Button */}
+//         <div className="md:hidden">
+//           <button className="text-blue-700 focus:outline-none">
+//             <svg
+//               className="w-6 h-6"
+//               fill="none"
+//               stroke="currentColor"
+//               strokeWidth={2}
+//               viewBox="0 0 24 24"
+//             >
+//               <path
+//                 strokeLinecap="round"
+//                 strokeLinejoin="round"
+//                 d="M4 6h16M4 12h16M4 18h16"
+//               />
+//             </svg>
+//           </button>
+//         </div>
+//       </div>
+//     </header>
+//   );
+// };
 
-  let user;
+// export default Navbar;
 
-  if (token) {
-    user = verifyToken(token);
-  }
+// src/components/Navbar.tsx
+import { FiSearch, FiHeart, FiMenu } from 'react-icons/fi';
+import { MdLocalPhone } from 'react-icons/md';
+import { IoMdEye } from 'react-icons/io';
+import { TbWorld } from 'react-icons/tb';
+import { FaUser } from 'react-icons/fa';
+import { NavLink } from 'react-router';
 
-  const items = [
-    {
-      path: '/',
-      text: 'Home',
-    },
-    {
-      path: '/cars',
-      text: 'Cars',
-    },
-
-    {
-      path: '/About',
-      text: 'About',
-    },
-  ];
-
+const Navbar = () => {
   return (
-    <div className="max-w-[1536px] mx-auto flex items-center justify-between px-2 py-3 flex-col md:flex-row ">
-      <div className="w-full md:w-auto cursor-pointer">
-        <div className="flex justify-between w-full">
-          <Link to="/" className="flex items-center">
-            <FaCarSide className="text-4xl text-blue" />
-            <h3 className="sm:text-xl md:text-2xl">Car Hub</h3>
-          </Link>
+    <nav className="sticky top-0 left-0 z-50">
+      {/* Mini Top Bar */}
+      <div className="bg-primary text-white py-2 px-4 flex justify-between items-center text-[13px]">
+        <div className="flex items-center gap-1">
+          <TbWorld className="text-lg" />
+          <span className="text-[13px]">Language</span>
+        </div>
+        <div className="flex items center gap-4">
+          <div className="flex items-center gap-1">
+            <IoMdEye className="text-lg" />
+            <span>Recently Viewed</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <MdLocalPhone className="text-lg" />
+            <a href="#" className="hover:underline">
+              Contact
+            </a>
+          </div>
 
-          <ul className="block md:hidden">
-            {user?.role ? (
-              <button
-                onClick={handleLogout}
-                className="bg-blue cursor-pointer shadow-sm shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
-              >
-                Logout
-              </button>
-            ) : (
-              <ul>
-                <NavLink
-                  to="/login"
-                  className="bg-blue shadow-sm cursor-pointer shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
-                >
-                  Login
-                </NavLink>
-              </ul>
-            )}
-          </ul>
+          <div className="flex items-center gap-1">
+            <FaUser />
+            <a href="#" className="hover:underline">
+              Login / Sign Up
+            </a>
+          </div>
         </div>
       </div>
-      <ul className="flex items-center  gap-x-4 gap-y-2 mt-2 md:mt-0s md:gap-8 font-semibold flex-wrap">
-        {items.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              isActive
-                ? 'px-3 py-1 text-blue  md:text-lg'
-                : 'text-blue/70 px-3 py-1 md:text-lg'
-            }
-          >
-            {item.text}
-          </NavLink>
-        ))}
 
-        {user?.role && (
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? 'px-3 py-1 text-blue  md:text-lg'
-                : 'text-blue/70 px-3 py-1 md:text-lg'
-            }
-            to={`/${user.role}/dashboard`}
-          >
-            Dashboard
-          </NavLink>
-        )}
-      </ul>
+      {/* Main Navbar */}
+      <div className="max-w-[1536px] mx-auto   ">
+        <div className="bg-white px-4   flex items-center justify-between border-b border-b-gray-300/50">
+          {/* Logo */}
+          <div className="text-2xl font-bold text-primary py-3">CARHUB</div>
 
-      <ul className="hidden md:block">
-        {user?.role ? (
-          <button
-            onClick={handleLogout}
-            className="bg-blue cursor-pointer shadow-sm shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
-          >
-            Logout
-          </button>
-        ) : (
-          <ul>
+          {/* Main Navigation Links */}
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             <NavLink
-              to="/login"
-              className="bg-blue shadow-sm cursor-pointer shadow-blue text-light px-3 py-1 rounded-sm  sm:text-lg sm:font-semibold"
+              to="/"
+              className="relative inline-block hover:text-primary transition py-5"
             >
-              Login
+              {({ isActive }) => (
+                <>
+                  Home
+                  <span
+                    className={`inline-block border-b-[2px] border-primary w-full h-[8px] absolute bottom-0 left-0 ${
+                      isActive ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                </>
+              )}
             </NavLink>
-          </ul>
-        )}
-      </ul>
-    </div>
+            <a href="#" className="hover:text-primary transition py-5">
+              Stock List
+            </a>
+            <a href="#" className="hover:text-primary transition py-5">
+              Warranty
+            </a>
+            <a href="#" className="hover:text-primary transition py-5">
+              Car Finance
+            </a>
+
+            <NavLink
+              to="/works"
+              className="relative inline-block hover:text-primary transition py-5"
+            >
+              {({ isActive }) => (
+                <>
+                  How it Works
+                  <span
+                    className={`inline-block border-b-[2px] border-primary w-full h-[8px] absolute bottom-0 left-0 ${
+                      isActive ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                </>
+              )}
+            </NavLink>
+          </nav>
+
+          {/* Right-side Icons */}
+          <div className="flex items-center space-x-4 text-blue-700 text-lg py-5">
+            <button className="hover:text-blue-500" aria-label="Search">
+              <FiSearch />
+            </button>
+            <button className="hover:text-blue-500" aria-label="Wishlist">
+              <FiHeart />
+            </button>
+            <button className="hover:text-blue-500" aria-label="Menu">
+              <FiMenu />
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
-}
+};
 
 export default Navbar;

@@ -1,57 +1,116 @@
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
-
-function Footer() {
+import { MdLocalPhone, MdEmail } from 'react-icons/md';
+import { IoMdPin } from 'react-icons/io';
+import { FaFacebook, FaInstagram } from 'react-icons/fa6';
+const Footer = () => {
   return (
-    <div className="bg-blue px-2 text-light">
-      <div className="max-w-[1536px] mx-auto">
-        <footer className=" boxShadow w-full p-6 md:p-9">
-          <div className="flex justify-center gap-[30px] flex-wrap w-full sm:px-32">
-            <div className="flex justify-center sm:justify-between gap-[30px] w-full flex-wrap">
-              <p className="text-[0.9rem] text-light hover:text-blue cursor-pointer transition-all duration-200">
-                Service
-              </p>
-              <p className="text-[0.9rem] text-light hover:text-blue cursor-pointer transition-all duration-200">
-                Features
-              </p>
-              <p className="text-[0.9rem] text-light hover:text-blue cursor-pointer transition-all duration-200">
-                Our Team
-              </p>
-              <p className="text-[0.9rem] text-light hover:text-blue cursor-pointer transition-all duration-200">
-                Portfolio
-              </p>
-              <p className="text-[0.9rem] text-light hover:text-blue cursor-pointer transition-all duration-200">
-                Blog
-              </p>
-              <p className="text-[0.9rem] text-light hover:text-blue cursor-pointer transition-all duration-200">
-                Contact Us
-              </p>
-            </div>
-
-            <div className="flex items-center flex-wrap gap-[10px] text-light">
-              <a className="text-[1.3rem] p-1.5 cursor-pointer rounded-full hover:text-white hover:bg-blue transition-all duration-300">
-                <FaFacebook />
-              </a>
-              <a className="text-[1.2rem] p-1.5 cursor-pointer rounded-full hover:text-white hover:bg-blue transition-all duration-300">
-                <FaTwitter />
-              </a>
-              <a className="text-[1.2rem] p-1.5 cursor-pointer rounded-full hover:text-white hover:bg-blue transition-all duration-300">
-                <FaInstagram />
-              </a>
-              <a className="text-[1.2rem] p-1.5 cursor-pointer rounded-full hover:text-white hover:bg-blue transition-all duration-300">
-                <FaLinkedin />
-              </a>
-            </div>
-
-            <div className="border-t border-gray-200 pt-[20px] flex items-center w-full flex-wrap gap-[20px] justify-center">
-              <p className="text-[0.8rem] sm:text-[0.9rem] text-light/60">
-                © 2025 Car Hub. All Rights Reserved.{' '}
-              </p>
-            </div>
+    <footer className="text-gray-800 container mx-auto py-12 lg:py-18 px-4 sm:px-0">
+      <div className="flex flex-col justify-between md:flex-row space-y-4 md:space-y-0 md:space-x-6 mb-6 ">
+        <div className="flex-1 flex items-center gap-x-2 bg-[#1449e610] px-4 py-3 rounded-lg ">
+          <MdEmail size={20} className="text-primary" />
+          <div>
+            <p>Email</p>
+            <p>carhub@gmail.com</p>
           </div>
-        </footer>
+        </div>
+        <div className="flex-1 flex items-center gap-x-2 bg-[#1449e610] px-4 py-3 rounded-lg ">
+          <IoMdPin size={20} className="text-primary" />
+          <div>
+            <p>Address</p>
+            <span>Dhaka, Banani 36/1, Bangladesh</span>
+          </div>
+        </div>
+        <div className="flex-1 flex items-center gap-x-2 bg-[#1449e610] px-4 py-3 rounded-lg ">
+          <MdLocalPhone size={20} className="text-primary" />
+          <div>
+            <p>Phone</p>
+            <span>+61 425 840 130</span>
+          </div>
+        </div>
       </div>
-    </div>
+      <div className="mx-auto grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 font-medium text-gray-600">
+        <div className="self-start ">
+          <h3 className="text-lg font-semibold mb-3">CARHUB</h3>
+          <p className="text-sm">Find the right price, dealer and advice</p>
+        </div>
+
+        <div className="md:justify-self-center">
+          <h4 className="mb-3 text-xs font-bold text-gray-700 tracking-widest uppercase">
+            Finance
+          </h4>
+          <ul className="space-y-2 text-sm">
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Get Pre-Approval
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Carbarn Finance
+            </li>
+          </ul>
+        </div>
+
+        <div className="md:justify-self-center">
+          <h4 className="mb-3 text-xs font-bold text-gray-700 tracking-widest uppercase">
+            Navigation
+          </h4>
+          <ul className="space-y-2 text-sm">
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Home
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Stock List
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Warranty
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Car Finance
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              How it Works
+            </li>
+          </ul>
+        </div>
+
+        <div className="md:justify-self-center">
+          <h4 className="mb-3 text-xs font-bold text-gray-700 tracking-widest uppercase">
+            Popular Makes
+          </h4>
+          <ul className="space-y-2 text-sm">
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Toyota
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Hyundai
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Mitsubishi
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Mazda
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              Kia
+            </li>
+          </ul>
+        </div>
+
+        <div className="lg:justify-self-end">
+          <h4 className="mb-3 text-xs font-bold text-gray-700 tracking-widest uppercase">
+            Social
+          </h4>
+          <ul className="space-y-2 text-sm">
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              <span>Facebook</span>
+              <FaFacebook />
+            </li>
+            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
+              <span>Instagram</span>
+              <FaInstagram />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
   );
-}
+};
 
 export default Footer;

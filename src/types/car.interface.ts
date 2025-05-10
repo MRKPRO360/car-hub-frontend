@@ -6,13 +6,33 @@ export interface ICar {
   model: string;
   year: number;
   price: number;
-  img: string;
-  category: string;
+  category: 'Sedan' | 'SUV' | 'Truck' | 'Coupe' | 'Convertible';
   description: string;
   quantity: number;
   inStock: boolean;
-  createdAt: string;
-  updatedAt: string;
-  id: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  isDeleted?: boolean;
+  coverImage: string;
+  images: string[];
   author: IUser;
+  ratingAverage: number;
+  ratingQuantity: number;
+  mileage: number; // in kilometers or miles
+  fuelType: 'Petrol' | 'Diesel' | 'Electric' | 'Hybrid' | 'CNG' | 'LPG';
+  transmission: 'Automatic' | 'Manual';
+  color?: string;
+  engine?: string; // e.g., "2.0L V4", "Dual Motor", etc.
+  horsepower?: number;
+  torque?: number; // in Nm or lb-ft
+  seatingCapacity?: number;
+  features?: string[]; // e.g., ['Bluetooth', 'Sunroof']
+  vin?: string;
+  condition?: 'New' | 'Used' | 'Certified Pre-Owned';
+  location?: {
+    city?: string;
+    state?: string;
+    country?: string;
+  };
+  views?: number;
 }

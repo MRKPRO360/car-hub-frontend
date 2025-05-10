@@ -1,17 +1,28 @@
-import Accessories from './Accessories';
-import Cars from './Cars';
-import HomeBanner from './HomeBanner';
-import OfferedCar from './OfferedCar';
-import Testimonials from './Testimonials';
+import Benefit from './Benefit';
+
+import Features from './Feature';
+import FeaturedCars from './FeaturedCar';
+import Hero from './Hero';
+import LoveOnline from './LoveOnline';
+import MatchYourBudget from './MatchYourBudget';
+
+import WhyCarHub from './WhyCarHub';
 
 function Home() {
   return (
     <div>
-      <HomeBanner />
-      <Cars renderBtn={true} />
-      <Accessories />
+      {/* <HomeBanner /> */}
+      {/* <Cars renderBtn={true} /> */}
+      <Hero />
+      <Features />
+      <FeaturedCars />
+      <WhyCarHub />
+      <MatchYourBudget />
+      <Benefit />
+      <LoveOnline />
+      {/* <Accessories />
       <OfferedCar />
-      <Testimonials />
+      <Testimonials /> */}
     </div>
   );
 }

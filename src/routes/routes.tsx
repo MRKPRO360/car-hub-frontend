@@ -19,6 +19,7 @@ import VerifyOrder from '../pages/user/VerifyOrder';
 import FilterCars from '../pages/Cars/FilterCars';
 import UpdateCar from '../pages/admin/UpdateCar';
 import Error from '../pages/Error';
+import { HowItWorks } from '../pages/HowItWorks';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: '/cars',
         element: <FilterCars />,
+      },
+      {
+        path: '/works',
+        element: <HowItWorks />,
       },
       {
         path: '/cars/:id',

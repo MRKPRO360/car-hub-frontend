@@ -7,6 +7,9 @@
   --color-light: #fff;
   --color-ymn-blue: #415a77;
   --color-blue: #0d1b2a;
+
+  --color-primary: oklch(0.488 0.243 264.376);
+  --color-light-bg: oklch(0.97 0.014 254.604);
 }
 
 .swiper-pagination-bullet {
