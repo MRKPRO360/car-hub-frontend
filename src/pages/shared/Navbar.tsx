@@ -59,7 +59,7 @@ import { MdLocalPhone } from 'react-icons/md';
 import { IoMdEye } from 'react-icons/io';
 import { TbWorld } from 'react-icons/tb';
 import { FaUser } from 'react-icons/fa';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 const Navbar = () => {
   return (
@@ -84,9 +84,13 @@ const Navbar = () => {
 
           <div className="flex items-center gap-1">
             <FaUser />
-            <a href="#" className="hover:underline">
-              Login / Sign Up
-            </a>
+            <Link to="/login" className="hover:underline">
+              Login
+            </Link>
+            <span>/</span>
+            <Link to="/signup" className="hover:underline">
+              Signup
+            </Link>
           </div>
         </div>
       </div>

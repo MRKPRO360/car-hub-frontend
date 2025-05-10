@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
-import CarsCard from '../Home/CarsCard';
+import CarsCard from '../Home/CarouselCarsCard';
 import { ICar } from '../../types';
 import { IoIosSearch } from 'react-icons/io';
 

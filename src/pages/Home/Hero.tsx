@@ -3,7 +3,7 @@ import blueBg from '../../assets/images/home blue bg.jpg';
 import Cta from '../shared/Cta';
 const Hero = () => {
   return (
-    <section className="relative bg-blue-50  py-14 overflow-hidden">
+    <section className="relative bg-blue-50 py-14 overflow-hidden">
       {/* Background illustration */}
       <img
         //   src="/hero-bg.svg"
