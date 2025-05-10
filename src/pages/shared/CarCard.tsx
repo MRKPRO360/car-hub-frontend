@@ -6,7 +6,7 @@ import { TruncateText } from '../../components/TruncateText/TruncateText';
 
 function CarCard({ car }: { car: ICar }) {
   return (
-    <div className=" bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative">
+    <div className=" overflow-hidden bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative">
       <button
         className="text-blue-500 text-lg absolute top-2 right-2 z-50 cursor-pointer"
         aria-label="Wishlist"

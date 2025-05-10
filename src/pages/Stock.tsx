@@ -134,7 +134,7 @@ function Stock() {
         </div>
       )}
 
-      <div className="flex gap-8 my-10">
+      <div className="flex gap-8 mt-16 mb-10">
         {/* Desktop Sidebar */}
         <div className="w-full max-w-xs hidden lg:block">
           {carData?.data && (
