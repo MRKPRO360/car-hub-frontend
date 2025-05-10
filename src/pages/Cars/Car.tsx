@@ -1,12 +1,5 @@
 import { useParams } from 'react-router';
 import { useGetACarQuery } from '../../redux/features/admin/carManagement.api';
-import HomeButton from '../shared/HomeButton';
-import {
-  FaBox,
-  FaCalendarAlt,
-  FaCheckCircle,
-  FaTimesCircle,
-} from 'react-icons/fa';
 
 import {
   Fuel,
@@ -33,14 +26,6 @@ function Car() {
 
   const [creatOrder, { isLoading, isSuccess, data, isError, error }] =
     useCreateOrderMutation();
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
 
   const handleClick = async (car: ICar) => {
     const data = [];

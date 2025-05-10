@@ -4,6 +4,10 @@ const userNavItems = [
     text: 'Home',
   },
   {
+    path: '/stock',
+    text: 'Stock List',
+  },
+  {
     path: '/user/dashboard/cars',
     text: 'All Cars',
   },

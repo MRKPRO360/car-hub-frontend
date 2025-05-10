@@ -20,6 +20,7 @@ import FilterCars from '../pages/Cars/FilterCars';
 import UpdateCar from '../pages/admin/UpdateCar';
 import Error from '../pages/Error';
 import { HowItWorks } from '../pages/HowItWorks';
+import Stock from '../pages/Stock';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
+      },
+      {
+        path: '/stock',
+        element: <Stock />,
       },
       {
         path: '/cars',

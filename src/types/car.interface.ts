@@ -36,3 +36,18 @@ export interface ICar {
   };
   views?: number;
 }
+
+export interface ICarFilters {
+  brand?: string[];
+  model?: string[];
+  year?: [number, number];
+  price?: [number, number];
+  category?: string[];
+  fuelType?: string[];
+  transmission?: string[];
+  condition?: string[];
+  color?: string[];
+  seatingCapacity?: number[];
+  location?: string[];
+  searchTerm?: string;
+}

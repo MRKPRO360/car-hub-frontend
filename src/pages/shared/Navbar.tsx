@@ -61,6 +61,17 @@ import { TbWorld } from 'react-icons/tb';
 import { FaUser } from 'react-icons/fa';
 import { Link, NavLink } from 'react-router';
 
+const publicNavItems = [
+  {
+    path: '/',
+    text: 'Home',
+  },
+  {
+    path: '/stock',
+    text: 'Stock List',
+  },
+];
+
 const Navbar = () => {
   return (
     <nav className="sticky top-0 left-0 z-50">
@@ -103,24 +114,27 @@ const Navbar = () => {
 
           {/* Main Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            <NavLink
-              to="/"
-              className="relative inline-block hover:text-primary transition py-5"
-            >
-              {({ isActive }) => (
-                <>
-                  Home
-                  <span
-                    className={`inline-block border-b-[2px] border-primary w-full h-[8px] absolute bottom-0 left-0 ${
-                      isActive ? 'opacity-100' : 'opacity-0'
-                    }`}
-                  />
-                </>
-              )}
-            </NavLink>
-            <a href="#" className="hover:text-primary transition py-5">
-              Stock List
-            </a>
+            {publicNavItems.map(
+              (el: { path: string; text: string }, key: number) => (
+                <NavLink
+                  key={key}
+                  to={el.path}
+                  className="relative inline-block hover:text-primary transition py-5"
+                >
+                  {({ isActive }) => (
+                    <>
+                      {el.text}
+                      <span
+                        className={`inline-block border-b-[2px] border-primary w-full h-[8px] absolute bottom-0 left-0 ${
+                          isActive ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              )
+            )}
+
             <a href="#" className="hover:text-primary transition py-5">
               Warranty
             </a>
