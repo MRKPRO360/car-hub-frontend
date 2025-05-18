@@ -21,6 +21,7 @@ import UpdateCar from '../pages/admin/UpdateCar';
 import Error from '../pages/Error';
 import { HowItWorks } from '../pages/HowItWorks';
 import Stock from '../pages/Stock';
+import DashboardLayout from '../components/layout/DashboardLayout';
 
 const router = createBrowserRouter([
   {
@@ -94,8 +95,17 @@ const router = createBrowserRouter([
         path: '/admin/dashboard/manage-cars/:id',
         element: <UpdateCar />,
       },
+      {
+        path: '/admin/dashboard/my-profile',
+        element: <ManageProfile />,
+      },
     ],
     errorElement: <Error />,
+  },
+  // CHECKING
+  {
+    path: '/dashboard',
+    element: <DashboardLayout />,
   },
   {
     path: '/user/dashboard',

@@ -1,123 +1,193 @@
-import { FaFacebook, FaGoogle, FaLock, FaTwitter } from 'react-icons/fa';
-import loginBg from '../assets/login.jpg';
-import CarInput from '../components/form/CarInput';
-import Button from './shared/Button';
-import CarForm from '../components/form/CarForm';
-import { MdEmail } from 'react-icons/md';
-import Checkbox from '../components/form/CheckBox';
-import { Link, useNavigate } from 'react-router';
+import { FcGoogle } from 'react-icons/fc';
+import { FaFacebook } from 'react-icons/fa';
+import Cta from './shared/Cta';
 import { useAppDispatch } from '../redux/hooks';
 import { useLoginMutation } from '../redux/features/auth/authApi';
 import { toast } from 'sonner';
-import { FieldValues } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import { verifyToken } from '../utils/verifyToken';
-import { setUser } from '../redux/features/auth/authSlice';
 import { IUser } from '../types';
+import { setUser } from '../redux/features/auth/authSlice';
+import { Link, useNavigate } from 'react-router';
 
 function Login() {
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-
   const [login] = useLoginMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FieldValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+      remember: false,
+    },
+  });
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Logging in...');
-
     try {
       const userInfo = {
         email: data.email,
         password: data.password,
       };
-
       const res = await login(userInfo).unwrap();
-
       const user = verifyToken(res.data.token) as IUser;
-
       dispatch(setUser({ user: user, token: res.data.token }));
-
       toast.success('Logged in', { id: toastId, duration: 2000 });
       navigate(`/${user.role}/dashboard`);
     } catch (err) {
       console.log(err);
-
       toast.error('Something went wrong', { id: toastId, duration: 2000 });
     }
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `linear-gradient(to right, rgba(13, 27, 42, 0.65), rgba(13, 27, 42, 0.8)), url(${loginBg})`,
-      }}
-      className="w-full pt-25 min-h-screen bg-cover bg-center bg-no-repeat pb-10"
-    >
-      <div className="bg-light mx-auto max-w-96 relative sm:max-w-[450px] rounded-sm shadow-2xl shadow-blue px-5 md:px-0">
-        <div
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(13, 27, 42, .95), rgba(13, 27, 42, 1))`,
-            width: 'calc(100% - 40px)',
-            position: 'absolute',
-            top: '-2%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-          className="text-light z-30 rounded-md"
-        >
-          <div>
-            <h3 className="text-center text-3xl font-semibold mt-5">Login</h3>
-            <div
-              style={{
-                width: 'calc(100% - 200px)',
-              }}
-              className="flex itmes-center py-7 justify-between mx-auto text-3xl sm:text-2xl"
+    <div className="bg-white flex justify-center items-center h-screen">
+      <div className="w-1/2 h-screen hidden lg:block">
+        <img
+          src="https://img.freepik.com/fotos-premium/imagen-fondo_910766-187.jpg?w=826"
+          alt="Placeholder Image"
+          className="object-cover w-full h-full"
+        />
+      </div>
+
+      <div className="lg:py-36 lg:px-20 md:p-52 sm:20 p-8 w-full lg:w-1/2">
+        <h1 className="text-2xl font-semibold mb-4">Login</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Email Field */}
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-gray-600 font-semibold text-base"
             >
-              <FaGoogle />
-              <FaFacebook />
-              <FaTwitter />
-            </div>
-          </div>
-        </div>
-        <div className="pt-20">
-          <CarForm onSubmit={onSubmit}>
-            {(methods) => (
-              <>
-                <CarInput
-                  type="email"
-                  name="email"
-                  label="Email"
-                  icon={<MdEmail />}
-                  register={methods.register}
-                  error={methods.formState.errors.email}
-                  required={true}
-                />
-                <CarInput
-                  type="password"
-                  name="password"
-                  label="Password"
-                  icon={<FaLock />}
-                  register={methods.register}
-                  error={methods.formState.errors.password}
-                  required={true}
-                />
-
-                <div>
-                  <Checkbox text="Remember Me" />
-                  <div className="flex items-center gap-4 w-full md:w-[80%] mx-auto mt-8">
-                    <Button type="submit" size="lg" text="Login" />
-                    <Button variant="outlined" text="Forget Password?" />
-                  </div>
-                </div>
-
-                <p className="text-blue/80 w-full md:w-[80%] relative mx-auto pb-5 mt-7 ">
-                  Don't have an account?{' '}
-                  <Link to="/signup" className="text-blue font-semibold ">
-                    Signup
-                  </Link>
-                </p>
-              </>
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="example@hotmail.com"
+              className={`w-full border rounded-md py-2 px-3 focus:outline-none ${
+                errors.email
+                  ? 'border-red-500'
+                  : 'border-gray-300 focus:border-primary'
+              }`}
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Invalid email address',
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {typeof errors.email.message === 'string'
+                  ? errors.email.message
+                  : 'Invalid email'}
+              </p>
             )}
-          </CarForm>
+          </div>
+
+          {/* Password Field */}
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-gray-600 font-semibold text-base"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              className={`w-full border rounded-md py-2 px-3 focus:outline-none ${
+                errors.password
+                  ? 'border-red-500'
+                  : 'border-gray-300 focus:border-primary'
+              }`}
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters',
+                },
+              })}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {typeof errors.password.message === 'string'
+                  ? errors.password.message
+                  : 'Invalid password'}
+              </p>
+            )}
+          </div>
+
+          {/* Remember Me Checkbox */}
+          <div className="mb-4 flex items-center">
+            <input
+              type="checkbox"
+              id="remember"
+              className="text-primary"
+              {...register('remember')}
+            />
+            <label htmlFor="remember" className="text-gray-700 ml-2">
+              Remember Me
+            </label>
+          </div>
+
+          {/* Forgot Password Link */}
+          <div className="mb-6 text-primary">
+            <a href="#" className="hover:underline">
+              Forgot Password?
+            </a>
+          </div>
+
+          {/* Submit Button */}
+          <button type="submit" className="w-full">
+            <Cta text="Login" className="w-full" />
+          </button>
+        </form>
+
+        <div className="text-center mt-4">
+          <p className="text-gray-600">
+            Don't have an account?{' '}
+            <Link
+              to="/signup"
+              className="text-primary font-medium hover:underline"
+            >
+              Signup
+            </Link>
+          </p>
+
+          <Link className="underline" to="/">
+            Back to Home
+          </Link>
+        </div>
+
+        <div className="flex items-center justify-center space-x-2 my-5">
+          <span className="h-px w-full bg-gray-200"></span>
+          <span className="text-gray-200 font-normal">or</span>
+          <span className="h-px w-full bg-gray-200"></span>
+        </div>
+        <div className="flex justify-center gap-5 w-full">
+          <button
+            className="w-full flex items-center justify-center mb-6 md:mb-0 border border-primary text-sm text-gray-500 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
+            type="button"
+          >
+            <FcGoogle className="text-2xl" />
+            <span>Google</span>
+          </button>
+
+          <button
+            className="w-full flex items-center justify-center mb-6 md:mb-0 border border-primary text-sm text-gray-500 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
+            type="button"
+          >
+            <FaFacebook className="text-2xl text-blue-600" />
+            <span>Facebook</span>
+          </button>
         </div>
       </div>
     </div>

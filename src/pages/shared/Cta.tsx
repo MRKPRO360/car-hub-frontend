@@ -15,8 +15,8 @@ function Cta({
   className = '',
   size = 'lg',
 }: ICta) {
-  const baseClasses = `px-4 ${
-    size === 'lg' ? 'py-3' : 'py-2'
+  const baseClasses = ` ${
+    size === 'lg' ? 'py-3 px-4' : 'py-2 px-8'
   } rounded-full text-sm focus:ring-2 focus:ring-blue-700 focus:outline-none active:translate-y-0.5 appearance-none cursor-pointer transition duration-200 inline-block ${className}`;
 
   const filledClasses =
@@ -31,7 +31,7 @@ function Cta({
         variant === 'filled' ? filledClasses : outlineClasses
       }`}
     >
-      <button className="w-full flex items-center transition duration-300 gap-1.5 font-semibold hover:gap-2 relative z-50 text-center justify-center">
+      <button className="w-full flex items-center transition duration-300 gap-1.5 font-semibold hover:gap-2 relative z-50 text-center justify-center cursor-pointer">
         {text}
         {arrowRight && <FaArrowRightLong className="text-xl" />}
       </button>

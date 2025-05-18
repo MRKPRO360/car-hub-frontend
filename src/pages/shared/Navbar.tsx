@@ -158,7 +158,10 @@ const Navbar = () => {
                     className="px-4 py-2 flex items-center rounded-full text-slate-900 text-sm font-medium border border-slate-300 outline-none hover:bg-slate-100 cursor-pointer"
                   >
                     <img
-                      src="https://readymadeui.com/profile_6.webp"
+                      src={
+                        user?.profileImg ||
+                        `https://readymadeui.com/profile_6.webp`
+                      }
                       className="w-7 h-7 mr-3 rounded-full shrink-0"
                       alt="Profile"
                     />
@@ -172,13 +175,14 @@ const Navbar = () => {
 
                   {isOpen && (
                     <ul className="absolute block  bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 z-[1000] min-w-full w-max  max-h-96 overflow-auto">
-                      <li
+                      <Link
+                        to={`/${user?.role}/dashboard/my-profile`}
                         className="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-900 text-sm cursor-pointer"
                         onClick={closeDropdown}
                       >
                         <User2 className="w-4 h-4 mr-3" />
                         View profile
-                      </li>
+                      </Link>
                       <Link
                         to={`${user?.role}/dashboard`}
                         className="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-900 text-sm cursor-pointer"
@@ -208,12 +212,7 @@ const Navbar = () => {
                 </ul>
               )}
             </ul>
-            {/* <button
-              className="hover:text-blue-500 md:hidden "
-              aria-label="Menu"
-            >
-              <FiMenu />
-            </button> */}
+
             <MobileDrawer items={publicNavItems} />
           </div>
         </div>

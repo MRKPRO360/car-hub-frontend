@@ -59,7 +59,7 @@ const MobileDrawer = ({ items }: IMobileDrawer) => {
       <button
         id="mobile-menu-button"
         onClick={() => setIsOpen(true)}
-        className="hover:text-blue-500 p-2"
+        className="hover:text-blue-500 p-2 cursor-pointer"
         aria-label="Menu"
       >
         <FiMenu className="h-6 w-6" />
@@ -79,7 +79,7 @@ const MobileDrawer = ({ items }: IMobileDrawer) => {
         <div className="flex justify-end p-4">
           <button
             onClick={() => setIsOpen(false)}
-            className="hover:text-blue-500"
+            className="hover:text-blue-500 cursor-pointer"
             aria-label="Close menu"
           >
             <FaTimes className="h-6 w-6" />
@@ -92,7 +92,7 @@ const MobileDrawer = ({ items }: IMobileDrawer) => {
             {items.map((el, id) => (
               <Link
                 to={el.path}
-                className="block py-2 px-4 hover:bg-gray-100 rounded"
+                className="block py-2 px-4 hover:text-primary text-black font-semibold text-base transition duration-300"
                 onClick={() => setIsOpen(false)}
                 key={id}
               >
