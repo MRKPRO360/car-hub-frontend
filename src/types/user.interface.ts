@@ -8,6 +8,8 @@ export interface IUser {
   isBlocked: boolean;
   isDeleted: boolean;
   isPasswordChangedAt: boolean;
+  address: string;
+  country: string;
   createdAt: string;
   updatedAt: string;
   __v: number;

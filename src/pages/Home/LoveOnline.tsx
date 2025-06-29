@@ -10,7 +10,7 @@ function LoveOnline() {
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
       }}
-      className={`py-12 lg:py-18 text-center min-h-[60vh]`}
+      className="py-12 lg:py-18 text-center min-h-[60vh] dark:bg-gradient-to-b dark:via-80%   dark:from-gray-900 dark:to-[rgba(1,11,39,1)] dark:opacity-65"
     >
       <div>
         <h2 className="text-4xl font-bold  text-gray-900 mb-6">

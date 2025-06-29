@@ -6,7 +6,6 @@ layer(base);
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-display: 'Nunito, serif';
   --color-light-blue: #1b263b;
   --color-light: #fff;
   --color-ymn-blue: #415a77;
@@ -187,7 +186,8 @@ layer(base);
     cursor: pointer;
   }
   body {
-    @apply relative font-normal font-outfit z-1 bg-gray-50;
+    @apply relative font-normal font-outfit z-1 bg-gray-50 dark:bg-gray-900;
+    transition: all 0.2s ease-in-out;
   }
 }
 

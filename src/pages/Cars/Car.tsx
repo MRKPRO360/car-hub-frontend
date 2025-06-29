@@ -40,6 +40,7 @@ function Car() {
   };
 
   const toastId = 'car';
+
   useEffect(() => {
     if (isLoading) toast.loading('Processing ...', { id: toastId });
 
@@ -77,18 +78,18 @@ function Car() {
             </div>
           </div>
           <div className="md:justify-self-end md:self-end">
-            <h1 className="text-2xl font-bold">{`${car?.data.year} ${car?.data.brand} ${car?.data.model}`}</h1>
-            <p className="text-lg text-gray-600">
+            <h1 className="text-2xl font-bold dark:text-gray-300">{`${car?.data.year} ${car?.data.brand} ${car?.data.model}`}</h1>
+            <p className="text-lg text-gray-600 dark:text-gray-200">
               ${Number(car?.data.price).toFixed(2)}
             </p>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
               {car?.data?.location?.city}, {car?.data?.location?.state},{' '}
               {car?.data?.location?.country}
             </p>
-            <p className="mt-4 text-base text-gray-700">
+            <p className="mt-4 text-base text-gray-700 dark:text-gray-400">
               {car?.data?.description}
             </p>
-            <div className="grid grid-cols-2 gap-4 mt-6 text-sm">
+            <div className="grid grid-cols-2 gap-4 mt-6 text-sm dark:text-gray-400">
               <div className="flex items-center gap-2 ">
                 <div className="bg-primary/10 rounded-full p-2">
                   <Fuel strokeWidth={3} className="w-4 h-4 text-primary" />
@@ -184,8 +185,10 @@ function Car() {
           </div>
         </div>
         <div className="mt-6">
-          <h3 className="font-semibold mb-2 text-lg">Features</h3>
-          <ul className="text-sm space-y-2">
+          <h3 className="font-semibold mb-2 text-lg dark:text-gray-300">
+            Features
+          </h3>
+          <ul className="text-sm space-y-2 dark:text-gray-400">
             {car?.data?.features?.map((feature: string, idx: number) => (
               <li key={idx} className="flex items-center gap-2">
                 <div className="bg-primary/10 rounded-full p-2">

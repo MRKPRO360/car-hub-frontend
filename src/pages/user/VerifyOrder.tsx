@@ -16,7 +16,7 @@ const VerifyOrder = () => {
   const orderData = data?.data?.[0];
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 dark:text-gray-300">
       <h1 className="text-3xl font-bold mb-6 text-center">
         Order Verification
       </h1>
@@ -24,7 +24,7 @@ const VerifyOrder = () => {
         <p className="text-center">Loading...</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white dark:bg-gray-950 shadow rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Order Details</h2>
             <p>
               <span className="font-semibold">Order ID:</span>{' '}
@@ -52,7 +52,7 @@ const VerifyOrder = () => {
             </p>
           </div>
 
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white dark:bg-gray-950 shadow  rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Payment Information</h2>
             <p>
               <span className="font-semibold">Method:</span> {orderData?.method}
@@ -67,7 +67,7 @@ const VerifyOrder = () => {
             </p>
           </div>
 
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white dark:bg-gray-950 shadow rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Customer Information</h2>
             <p>
               <span className="font-semibold">Name:</span> {orderData?.name}
@@ -85,7 +85,7 @@ const VerifyOrder = () => {
             </p>
           </div>
 
-          <div className="bg-white shadow rounded-lg p-6 text-center">
+          <div className="bg-white dark:bg-gray-950 shadow rounded-lg p-6 text-center">
             <h2 className="text-xl font-semibold mb-4">Verification Status</h2>
             <div className="flex items-center justify-center gap-2">
               {orderData?.is_verify === 1 ? (
@@ -101,7 +101,7 @@ const VerifyOrder = () => {
               )}
             </div>
 
-            <Link to="/user/dashboard/orders/" className="mt-4 inline-block">
+            <Link to="/dashboard/my-orders" className="mt-4 inline-block">
               <Button type="submit" size="lg" text="View Orders" />
             </Link>
           </div>

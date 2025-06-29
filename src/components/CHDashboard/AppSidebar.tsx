@@ -1,22 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 
-// Assume these icons are imported from an icon library
 import {
-  BoxCubeIcon,
-  CalenderIcon,
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
   UserCircleIcon,
 } from '../../assets/icons';
 import { useSidebar } from '../../context/SidebarContext';
-import SidebarWidget from './SidebarWidget';
 
 type NavItem = {
   name: string;
@@ -25,74 +16,52 @@ type NavItem = {
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
-const navItems: NavItem[] = [
+const userNavItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: 'Dashboard',
-    subItems: [{ name: 'Ecommerce', path: '/', pro: false }],
+    subItems: [
+      { name: 'My Stats', path: '/dashboard/stats', pro: false },
+      { name: 'My Orders', path: '/dashboard/my-orders', pro: false },
+    ],
   },
-  {
-    icon: <CalenderIcon />,
-    name: 'Calendar',
-    path: '/calendar',
-  },
+
   {
     icon: <UserCircleIcon />,
-    name: 'User Profile',
-    path: '/profile',
-  },
-  {
-    name: 'Forms',
-    icon: <ListIcon />,
-    subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }],
-  },
-  {
-    name: 'Tables',
-    icon: <TableIcon />,
-    subItems: [{ name: 'Basic Tables', path: '/basic-tables', pro: false }],
-  },
-  {
-    name: 'Pages',
-    icon: <PageIcon />,
-    subItems: [
-      { name: 'Blank Page', path: '/blank', pro: false },
-      { name: '404 Error', path: '/error-404', pro: false },
-    ],
+    name: 'My Profile',
+    path: '/dashboard/profile',
   },
 ];
 
-const othersItems: NavItem[] = [
+const adminNavItems: NavItem[] = [
   {
-    icon: <PieChartIcon />,
-    name: 'Charts',
+    icon: <GridIcon />,
+    name: 'Dashboard',
     subItems: [
-      { name: 'Line Chart', path: '/line-chart', pro: false },
-      { name: 'Bar Chart', path: '/bar-chart', pro: false },
+      { name: 'My Stats', path: '/dashboard/stats', pro: false },
+      { name: 'All Orders', path: '/dashboard/customer-orders', pro: false },
     ],
   },
   {
-    icon: <BoxCubeIcon />,
-    name: 'UI Elements',
-    subItems: [
-      { name: 'Alerts', path: '/alerts', pro: false },
-      { name: 'Avatar', path: '/avatars', pro: false },
-      { name: 'Badge', path: '/badge', pro: false },
-      { name: 'Buttons', path: '/buttons', pro: false },
-      { name: 'Images', path: '/images', pro: false },
-      { name: 'Videos', path: '/videos', pro: false },
-    ],
+    icon: <GridIcon />,
+    name: 'Car Management',
+    subItems: [{ name: 'All Cars', path: '/dashboard/all-cars', pro: false }],
   },
+
   {
-    icon: <PlugInIcon />,
-    name: 'Authentication',
-    subItems: [
-      { name: 'Sign In', path: '/signin', pro: false },
-      { name: 'Sign Up', path: '/signup', pro: false },
-    ],
+    icon: <UserCircleIcon />,
+    name: 'My Profile',
+    path: '/dashboard/profile',
   },
 ];
 
-const AppSidebar: React.FC = () => {
+const othersItems: NavItem[] = [];
+
+interface IAppSidebar {
+  role: 'user' | 'admin';
+}
+
+const AppSidebar = ({ role }: IAppSidebar) => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
 
@@ -113,8 +82,13 @@ const AppSidebar: React.FC = () => {
 
   useEffect(() => {
     let submenuMatched = false;
-    ['main', 'others'].forEach((menuType) => {
-      const items = menuType === 'main' ? navItems : othersItems;
+    ['main'].forEach((menuType) => {
+      const items =
+        menuType === 'main' && role === 'user'
+          ? userNavItems
+          : role === 'admin'
+          ? adminNavItems
+          : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
@@ -133,7 +107,7 @@ const AppSidebar: React.FC = () => {
     if (!submenuMatched) {
       setOpenSubmenu(null);
     }
-  }, [location, isActive]);
+  }, [location, isActive, role]);
 
   useEffect(() => {
     if (openSubmenu !== null) {
@@ -305,29 +279,15 @@ const AppSidebar: React.FC = () => {
       >
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
-            <>
-              <img
-                className="dark:hidden"
-                src="/images/logo/logo.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-              <img
-                className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
-            </>
+            <div className=" text-2xl font-bold text-primary ">CARHUB</div>
           ) : (
-            <img
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+            <div className="text-lg font-bold text-primary">CARHUB</div>
+            // <img
+            //   src="/images/logo/logo-icon.svg"
+            //   alt="Logo"
+            //   width={32}
+            //   height={32}
+            // />
           )}
         </Link>
       </div>
@@ -348,27 +308,13 @@ const AppSidebar: React.FC = () => {
                   <HorizontaLDots className="size-6" />
                 )}
               </h2>
-              {renderMenuItems(navItems, 'main')}
-            </div>
-            <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? 'lg:justify-center'
-                    : 'justify-start'
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  'Others'
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, 'others')}
+              {renderMenuItems(
+                role === 'admin' ? adminNavItems : userNavItems,
+                'main'
+              )}
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
   );

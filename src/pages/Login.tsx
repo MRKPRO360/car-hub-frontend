@@ -38,7 +38,7 @@ function Login() {
       const user = verifyToken(res.data.token) as IUser;
       dispatch(setUser({ user: user, token: res.data.token }));
       toast.success('Logged in', { id: toastId, duration: 2000 });
-      navigate(`/${user.role}/dashboard`);
+      navigate(`/dashboard`);
     } catch (err) {
       console.log(err);
       toast.error('Something went wrong', { id: toastId, duration: 2000 });

@@ -1,11 +1,9 @@
-import { DollarSign, Fuel, GaugeCircle, Settings } from 'lucide-react';
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
 import { ICar } from '../../types';
 import { useEffect, useState } from 'react';
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from '../../components/CHCarousel';
@@ -15,7 +13,6 @@ import CarouselCarCard from '../shared/CarouselCard';
 const MatchYourBudget = () => {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
   const [data, setData] = useState<ICar[]>(cars?.data || []);
-  console.log(cars);
 
   useEffect(() => {
     if (cars?.data?.length && data !== cars.data) {
@@ -23,9 +20,9 @@ const MatchYourBudget = () => {
     }
   }, [cars, data]);
   return (
-    <section className="bg-gradient-to-b via-80% from-white to-[rgba(20,73,230,0.06)] py-12 lg:py-18">
+    <section className="dark:from-gray-dark  bg-gradient-to-b via-80% from-white to-[rgba(20,73,230,0.06)] py-12 lg:py-18">
       <div className="">
-        <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-4xl font-bold text-center dark:text-gray-300 text-gray-900 mb-12">
           Match Your&nbsp;
           <span className="text-blue-600">Budget</span>
         </h2>

@@ -3,7 +3,7 @@ import blueBg from '../../assets/images/home blue bg.jpg';
 import Cta from '../shared/Cta';
 const Hero = () => {
   return (
-    <section className="relative bg-blue-50 py-14 overflow-hidden">
+    <section className="relative bg-blue-50 dark:bg-gray-900 py-14 overflow-hidden">
       {/* Background illustration */}
       <img
         //   src="/hero-bg.svg"
@@ -16,7 +16,7 @@ const Hero = () => {
 
         <div className="flex flex-col lg:flex-row justify-between items-center  z-10 text-center">
           <div className="w-full md:w-auto md:flex-2 md:mr-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-300 mb-4">
               <span className="text-blue-600">Find</span> your next match.
             </h1>
             <p className="text-gray-600 mb-8">

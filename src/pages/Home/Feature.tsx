@@ -25,15 +25,17 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="container mx-auto py-12 lg:py-18 px-4 sm:px-0">
+    <section className="container mx-auto py-12 lg:py-18 px-4 sm:px-0 ">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
         {features.map((feature, index) => (
           <div key={index} className="flex flex-col items-center">
             <div className="mb-4">{feature.icon}</div>
-            <h4 className="font-semibold text-lg text-gray-800 mb-1">
+            <h4 className="font-semibold text-lg text-gray-800 mb-1 dark:text-gray-300">
               {feature.title}
             </h4>
-            <p className="text-sm text-gray-600">{feature.description}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {feature.description}
+            </p>
           </div>
         ))}
       </div>

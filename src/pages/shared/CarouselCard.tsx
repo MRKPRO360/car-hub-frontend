@@ -4,10 +4,10 @@ import { Link } from 'react-router';
 import { ICar } from '../../types';
 import { CarouselItem } from '../../components/CHCarousel';
 
-function CarouselCarCard({ car, key }: { car: ICar; key: string }) {
+function CarouselCarCard({ car }: { car: ICar }) {
   return (
-    <CarouselItem key={key} className="pl-1 sm:basis-1/2 lg:basis-1/4">
-      <div className="bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative">
+    <CarouselItem className="pl-1 sm:basis-1/2 lg:basis-1/4">
+      <div className="bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative">
         <button
           className="text-blue-500 text-lg absolute top-2 right-2 z-50 cursor-pointer"
           aria-label="Wishlist"
@@ -23,22 +23,22 @@ function CarouselCarCard({ car, key }: { car: ICar; key: string }) {
         </Link>
         <div className="p-5">
           <div className="flex justify-between items-center mb-2">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-300">
               {car.brand} {car.model}
             </h3>
-            <span className="text-xs font-semibold bg-blue-100 text-primary px-2 py-1 rounded">
+            <span className="text-xs font-semibold bg-blue-100 dark:bg-blue-light-950 text-primary dark:text-gray-300 px-2 py-1 rounded ">
               {car.condition}
             </span>
           </div>
-          <div className="flex items-center border-b-2 border-b-gray-100 pb-2">
+          <div className="flex items-center border-b-2 border-b-gray-100 dark:border-b-blue-light-950 pb-2">
             <DollarSign
               strokeWidth={3}
-              className="w-4 h-4 self-start text-gray-600 font-semibold"
+              className="w-4 h-4 self-start text-gray-600 font-semibold "
             />
 
-            <p className="text-lg font-bold">{car.price}</p>
+            <p className="text-lg font-bold dark:text-gray-300">{car.price}</p>
           </div>
-          <div className="flex flex-wrap text-sm text-gray-600 gap-x-4 gap-y-2 my-2 font-semibold">
+          <div className="flex flex-wrap text-sm text-gray-600 dark:text-gray-300 gap-x-4 gap-y-2 my-2 font-semibold ">
             <div className="flex items-center gap-1">
               <GaugeCircle className="w-4 h-4 text-primary" strokeWidth={2.5} />
               <span>{car.horsepower}</span>

@@ -4,16 +4,14 @@ import { IoMdEye } from 'react-icons/io';
 import { TbWorld } from 'react-icons/tb';
 import { FaUser } from 'react-icons/fa';
 import { Link, NavLink } from 'react-router';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {
-  logout,
-  selectCurrentToken,
-} from '../../redux/features/auth/authSlice';
+import { useAppSelector } from '../../redux/hooks';
+import { selectCurrentToken } from '../../redux/features/auth/authSlice';
 import { verifyToken } from '../../utils/verifyToken';
-import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, LayoutDashboard, LogOut, User2 } from 'lucide-react';
+
 import Cta from './Cta';
 import MobileDrawer from './MobileDrawer';
+import { ThemeToggleButton } from './ThemeToggleButton';
+import UserDropdown from '../../components/CHDashboard/header/UserDropdown';
 
 const publicNavItems = [
   {
@@ -32,38 +30,6 @@ const publicNavItems = [
 
 const Navbar = () => {
   const token = useAppSelector(selectCurrentToken);
-  const dispatch = useAppDispatch();
-
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const closeDropdown = () => {
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        closeDropdown();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
 
   let user;
 
@@ -72,9 +38,9 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="sticky top-0 left-0 z-50">
+    <nav className="sticky top-0 left-0 z-50 transition duration-300 ">
       {/* Mini Top Bar */}
-      <div className="bg-primary text-white py-2 px-4 flex justify-between items-center text-[13px]">
+      <div className="bg-primary  text-white py-2 px-4 flex justify-between items-center text-[13px]">
         <div className="flex items-center gap-1">
           <TbWorld className="text-lg" />
           <span className="text-[13px]">Language</span>
@@ -107,10 +73,12 @@ const Navbar = () => {
       </div>
 
       {/* Main Navbar */}
-      <div className="max-w-[1536px] mx-auto   ">
-        <div className="bg-white px-4   flex items-center justify-between border-b border-b-gray-300/50">
+      <div className="max-w-[1536px] mx-auto">
+        <div className="bg-white dark:bg-gray-900 px-4 dark:text-white flex items-center justify-between border-b border-b-gray-300/50">
           {/* Logo */}
-          <div className="text-2xl font-bold text-primary py-3">CARHUB</div>
+          <div className="text-2xl font-bold text-primary dark:text-gray-300 py-3">
+            CARHUB
+          </div>
 
           {/* Main Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
@@ -137,73 +105,25 @@ const Navbar = () => {
           </nav>
 
           {/* Right-side Icons */}
-          <div className="flex items-center space-x-4 text-blue-700 text-lg ">
-            <button className="hover:text-blue-500" aria-label="Search">
+          <div className="flex items-center space-x-4 text-blue-700 text-lg">
+            <ThemeToggleButton isBorder={false} />
+            <button
+              className="hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
+              aria-label="Search"
+            >
               <Link to="/stock">
                 <FiSearch />
               </Link>
             </button>
-            <button className="hover:text-blue-500" aria-label="Wishlist">
+            <button
+              className="hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
+              aria-label="Wishlist"
+            >
               <FiHeart />
             </button>
             <ul>
               {user?.role ? (
-                <div className="relative w-max mx-auto" ref={dropdownRef}>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleDropdown();
-                    }}
-                    className="px-4 py-2 flex items-center rounded-full text-slate-900 text-sm font-medium border border-slate-300 outline-none hover:bg-slate-100 cursor-pointer"
-                  >
-                    <img
-                      src={
-                        user?.profileImg ||
-                        `https://readymadeui.com/profile_6.webp`
-                      }
-                      className="w-7 h-7 mr-3 rounded-full shrink-0"
-                      alt="Profile"
-                    />
-                    John Doe
-                    <ChevronDown
-                      className={`w-3 h-3 text-slate-400 inline ml-3 transition-transform ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-
-                  {isOpen && (
-                    <ul className="absolute block  bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 z-[1000] min-w-full w-max  max-h-96 overflow-auto">
-                      <Link
-                        to={`/${user?.role}/dashboard/my-profile`}
-                        className="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-900 text-sm cursor-pointer"
-                        onClick={closeDropdown}
-                      >
-                        <User2 className="w-4 h-4 mr-3" />
-                        View profile
-                      </Link>
-                      <Link
-                        to={`${user?.role}/dashboard`}
-                        className="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-900 text-sm cursor-pointer"
-                        onClick={closeDropdown}
-                      >
-                        <LayoutDashboard className="w-4 h-4 mr-3" />
-                        Dashboard
-                      </Link>
-                      <li
-                        className="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-900 text-sm cursor-pointer"
-                        onClick={() => {
-                          handleLogout();
-                          closeDropdown();
-                        }}
-                      >
-                        <LogOut className="w-4 h-4 mr-3" />
-                        Logout
-                      </li>
-                    </ul>
-                  )}
-                </div>
+                <UserDropdown isDashboardLink={true} />
               ) : (
                 <ul>
                   <NavLink to="/login">

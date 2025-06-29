@@ -303,7 +303,7 @@ function Signup() {
       password: data.password,
       phone: data.phone,
       address: data.address,
-      city: data.city,
+      country: data.country,
     };
 
     formData.append('data', JSON.stringify(userData));
@@ -315,7 +315,7 @@ function Signup() {
       dispatch(setUser({ user: user, token: res.data.token }));
       toast.success('Signed up successfully', { id: toastId });
       reset();
-      navigate(`/${user.role}/dashboard`);
+      navigate(`/dashboard`);
     } catch (err: any) {
       toast.error(err?.message || 'Something went wrong', { id: toastId });
     }
@@ -460,17 +460,17 @@ function Signup() {
           {/* Address Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
-              <label htmlFor="city" className="block text-gray-600 mb-1">
-                City
+              <label htmlFor="country" className="block text-gray-600 mb-1">
+                Country
               </label>
               <div className="relative">
                 <MdLocationOn className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
-                  id="city"
+                  id="country"
                   type="text"
-                  placeholder="Your City"
+                  placeholder="Your country"
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
-                  {...register('city')}
+                  {...register('country')}
                 />
               </div>
             </div>

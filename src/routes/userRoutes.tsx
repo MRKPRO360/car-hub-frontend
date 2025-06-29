@@ -8,10 +8,6 @@ const userNavItems = [
     text: 'Stock List',
   },
   {
-    path: '/user/dashboard/cars',
-    text: 'All Cars',
-  },
-  {
     path: '/user/dashboard/orders',
     text: 'My Orders',
   },

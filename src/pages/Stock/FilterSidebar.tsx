@@ -48,8 +48,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const handleMultiSelect = (filterName: keyof ICarFilters, value: string) => {
     setFilters((prev) => {
       const currentValues = prev[filterName] || [];
-      const newValues = currentValues.includes(value)
-        ? currentValues.filter((v) => v !== value)
+      const newValues = currentValues.includes(value as unknown as never)
+        ? (currentValues as number[] | string[]).filter((v) => v !== value)
         : [...currentValues, value];
 
       const newFilters = {
@@ -127,9 +127,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   return (
-    <div className=" bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 w-full px-2 py-4 sticky top-4">
+    <div className=" bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 w-full px-2 py-4 sticky top-4 dark:text-gray-300">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">Filters</h2>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-300">
+          Filters
+        </h2>
         <button
           onClick={clearAllFilters}
           className="text-sm text-blue-600 hover:text-blue-800"
@@ -150,7 +152,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('brand')}
           >
             <div>
-              <p className="text-xs text-gray-500">Brand</p>
+              <p className="text-xs text-gray-500 dark:text-gray-300">Brand</p>
               {filters.brand?.length ? (
                 <p className="font-medium text-gray-800">
                   {filters.brand.join(', ')}
@@ -175,12 +177,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'brand' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 dark:text-gray-300 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allBrands.map((brand) => (
                   <div
                     key={brand}
-                    className="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer"
+                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer "
                     onClick={() => handleMultiSelect('brand', brand)}
                   >
                     <input
@@ -208,8 +210,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('price')}
           >
             <div>
-              <p className="text-xs text-gray-500">Price Range</p>
-              <p className="font-medium text-gray-800">
+              <p className="text-xs text-gray-500 dark:text-gray-300">
+                Price Range
+              </p>
+              <p className="font-medium text-gray-500 dark:text-gray-300">
                 {formatPrice(rangeValues.price[0])} -{' '}
                 {formatPrice(rangeValues.price[1])}
               </p>
@@ -218,13 +222,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'price' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
                     Min: {formatPrice(rangeValues.price[0])}
                   </span>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
                     Max: {formatPrice(rangeValues.price[1])}
                   </span>
                 </div>
@@ -266,8 +270,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('year')}
           >
             <div>
-              <p className="text-xs text-gray-500">Year Range</p>
-              <p className="font-medium text-gray-800">
+              <p className="text-xs text-gray-500 dark:text-gray-300">
+                Year Range
+              </p>
+              <p className="font-medium text-gray-500 dark:text-gray-300">
                 {rangeValues.year[0]} - {rangeValues.year[1]}
               </p>
             </div>
@@ -275,7 +281,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'year' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm text-gray-600">
@@ -323,13 +329,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('category')}
           >
             <div>
-              <p className="text-xs text-gray-500">Category</p>
+              <p className="text-xs text-gray-500 dark:text-gray-300">
+                Category
+              </p>
               {filters.category?.length ? (
-                <p className="font-medium text-gray-800">
+                <p className="font-medium text-gray-800 dark:text-gray-300">
                   {filters.category.join(', ')}
                 </p>
               ) : (
-                <p className="text-gray-400">Select categories</p>
+                <p className="text-gray-400 dark:text-gray-300">
+                  Select categories
+                </p>
               )}
             </div>
             {filters.category?.length ? (
@@ -348,12 +358,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'category' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allCategories.map((category) => (
                   <div
                     key={category}
-                    className="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer"
+                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
                     onClick={() => handleMultiSelect('category', category)}
                   >
                     <input
@@ -381,18 +391,22 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('fuelType')}
           >
             <div>
-              <p className="text-xs text-gray-500">Fuel Type</p>
+              <p className="text-xs text-gray-500 dark:text-gray-300">
+                Fuel Type
+              </p>
               {filters.fuelType?.length ? (
                 <p className="font-medium text-gray-800">
                   {filters.fuelType.join(', ')}
                 </p>
               ) : (
-                <p className="text-gray-400">Select fuel types</p>
+                <p className="text-gray-400 dark:text-gray-300">
+                  Select fuel types
+                </p>
               )}
             </div>
             {filters.fuelType?.length ? (
               <FiX
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400  hover:text-gray-600"
                 onClick={(e) => {
                   e.stopPropagation();
                   clearFilter('fuelType');
@@ -406,21 +420,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'fuelType' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allFuelTypes.map((fuelType) => (
                   <div
                     key={fuelType}
-                    className="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer"
+                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
                     onClick={() => handleMultiSelect('fuelType', fuelType)}
                   >
                     <input
                       type="checkbox"
                       checked={filters.fuelType?.includes(fuelType) || false}
                       readOnly
-                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="mr-2 rounded border-gray-300  text-blue-600 focus:ring-blue-500"
                     />
-                    <span>{fuelType}</span>
+                    <span className="dark:text-gray-300">{fuelType}</span>
                   </div>
                 ))}
               </div>
@@ -439,13 +453,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('transmission')}
           >
             <div>
-              <p className="text-xs text-gray-500">Transmission</p>
+              <p className="text-xs text-gray-500 dark:text-gray-300">
+                Transmission
+              </p>
               {filters.transmission?.length ? (
                 <p className="font-medium text-gray-800">
                   {filters.transmission.join(', ')}
                 </p>
               ) : (
-                <p className="text-gray-400">Select transmission</p>
+                <p className="text-gray-400 dark:text-gray-300">
+                  Select transmission
+                </p>
               )}
             </div>
             {filters.transmission?.length ? (
@@ -464,12 +482,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'transmission' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allTransmissions.map((transmission) => (
                   <div
                     key={transmission}
-                    className="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer"
+                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
                     onClick={() =>
                       handleMultiSelect('transmission', transmission)
                     }
@@ -501,13 +519,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('condition')}
           >
             <div>
-              <p className="text-xs text-gray-500">Condition</p>
+              <p className="text-xs text-gray-500 dark:text-gray-300">
+                Condition
+              </p>
               {filters.condition?.length ? (
-                <p className="font-medium text-gray-800">
+                <p className="font-medium text-gray-800 dark:text-gray-300">
                   {filters.condition.join(', ')}
                 </p>
               ) : (
-                <p className="text-gray-400">Select condition</p>
+                <p className="text-gray-400 dark:text-gray-300">
+                  Select condition
+                </p>
               )}
             </div>
             {filters.condition?.length ? (
@@ -526,17 +548,22 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'condition' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allConditions.map((condition) => (
                   <div
                     key={condition}
-                    className="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer"
-                    onClick={() => handleMultiSelect('condition', condition)}
+                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    onClick={() =>
+                      handleMultiSelect('condition', condition as string)
+                    }
                   >
                     <input
                       type="checkbox"
-                      checked={filters.condition?.includes(condition) || false}
+                      checked={
+                        filters.condition?.includes(condition as string) ||
+                        false
+                      }
                       readOnly
                       className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
@@ -584,12 +611,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'location' && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allLocations.map((location) => (
                   <div
                     key={location}
-                    className="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer"
+                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
                     onClick={() => handleMultiSelect('location', location)}
                   >
                     <input

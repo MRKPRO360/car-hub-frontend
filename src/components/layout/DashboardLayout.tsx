@@ -3,14 +3,16 @@ import { SidebarProvider, useSidebar } from '../../context/SidebarContext';
 import AppSidebar from '../CHDashboard/AppSidebar';
 import Backdrop from '../CHDashboard/Backdrop';
 import AppHeader from '../CHDashboard/AppHeader';
+import { useGetMeQuery } from '../../redux/features/admin/userManagement.api';
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+  const { data: myInfo } = useGetMeQuery(undefined);
 
   return (
     <div className="min-h-screen xl:flex">
       <div>
-        <AppSidebar />
+        <AppSidebar role={myInfo?.data?.role} />
         <Backdrop />
       </div>
       <div
@@ -19,7 +21,7 @@ const LayoutContent: React.FC = () => {
         } ${isMobileOpen ? 'ml-0' : ''}`}
       >
         <AppHeader />
-        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6 dark:bg-gray-900">
           <Outlet />
         </div>
       </div>

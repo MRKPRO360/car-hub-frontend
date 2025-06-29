@@ -6,13 +6,12 @@ function CarsCard({ car }: { car: ICar }) {
   return (
     <div
       style={{ backfaceVisibility: 'hidden' }}
-      key={car.id}
       className="border border-blue/10 border-t-0 p-4 rounded-sm shadow-md shadow-blue/10 bg-white hover:shadow-xl transition duration-300 translate-z-0 hover:scale-[1.01] will-change-transform"
     >
       <div className="w-full aspect-video mb-4">
         <img
           className="w-full h-full object-cover object-center rounded-md"
-          src={car.img}
+          src={car.coverImage}
           alt={car.brand}
         />
       </div>

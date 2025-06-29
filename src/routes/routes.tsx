@@ -6,22 +6,27 @@ import Home from '../pages/Home/Home';
 import About from '../pages/About';
 import Signup from '../pages/Signup';
 import AdminLayout from '../components/layout/AdminLayout';
-import Orders from '../pages/admin/Orders';
+import Orders from '../pages/admin/CustomerOrders';
 import Users from '../pages/admin/Users';
 import CreateACar from '../pages/admin/CreateACar';
 import Car from '../pages/Cars/Car';
 import ProtectedRoute from '../components/layout/ProtectedRoute';
 import ManageCars from '../pages/admin/ManageCars';
-import UserLayout from '../components/layout/UserLayout';
-import MyOrders from '../pages/user/MyOrders';
+// import UserLayout from '../components/layout/UserLayout';
+// import MyOrders from '../pages/user/MyOrders';
 import ManageProfile from '../pages/user/ManageProfile';
 import VerifyOrder from '../pages/user/VerifyOrder';
 import FilterCars from '../pages/Cars/FilterCars';
 import UpdateCar from '../pages/admin/UpdateCar';
-import Error from '../pages/Error';
 import { HowItWorks } from '../pages/HowItWorks';
 import Stock from '../pages/Stock';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import NotFound from '../pages/NotFound';
+import UserProfiles from '../pages/profile/UserProfiles';
+import BasicTables from '../pages/Tables/BasicTables';
+import AdminStats from '../pages/Stats/AdminStats';
+import CustomerOrders from '../pages/admin/CustomerOrders';
+import AllCars from '../pages/admin/AllCars';
 
 const router = createBrowserRouter([
   {
@@ -57,7 +62,7 @@ const router = createBrowserRouter([
         element: <About />,
       },
     ],
-    errorElement: <Error />,
+    errorElement: <NotFound />,
   },
   {
     path: '/admin/dashboard',
@@ -100,49 +105,81 @@ const router = createBrowserRouter([
         element: <ManageProfile />,
       },
     ],
-    errorElement: <Error />,
+    errorElement: <NotFound />,
   },
   // CHECKING
   {
     path: '/dashboard',
     element: <DashboardLayout />,
-  },
-  {
-    path: '/user/dashboard',
-    element: (
-      <ProtectedRoute role="user">
-        <UserLayout />
-      </ProtectedRoute>
-    ),
     children: [
       {
-        path: '/user/dashboard/',
-        element: <FilterCars />,
+        path: '/dashboard',
+        element: <UserProfiles />,
       },
       {
-        path: '/user/dashboard/cars/',
-        element: <FilterCars />,
+        path: '/dashboard/stats',
+        element: <AdminStats />,
       },
       {
-        path: '/user/dashboard/orders',
-        element: <MyOrders />,
+        path: '/dashboard/profile',
+        element: <UserProfiles />,
       },
       {
-        path: '/user/dashboard/verify',
+        path: '/dashboard/my-orders',
+        element: <BasicTables />,
+      },
+      {
+        path: '/dashboard/verify',
         element: <VerifyOrder />,
       },
-
       {
-        path: '/user/dashboard/my-profile',
-        element: <ManageProfile />,
+        path: '/dashboard/customer-orders',
+        element: <CustomerOrders />,
       },
       {
-        path: '/user/dashboard/change-password',
-        element: <ChangePassword />,
+        path: '/dashboard/all-cars',
+        element: <AllCars />,
       },
     ],
-    errorElement: <Error />,
   },
+
+  // END CHECKING
+  // {
+  //   path: '/user/dashboard',
+  //   element: (
+  //     <ProtectedRoute role="user">
+  //       <UserLayout />
+  //     </ProtectedRoute>
+  //   ),
+  //   children: [
+  //     {
+  //       path: '/user/dashboard/',
+  //       element: <FilterCars />,
+  //     },
+  //     {
+  //       path: '/user/dashboard/cars/',
+  //       element: <FilterCars />,
+  //     },
+  //     {
+  //       path: '/user/dashboard/orders',
+  //       element: <MyOrders />,
+  //     },
+  //     {
+  //       path: '/user/dashboard/verify',
+  //       element: <VerifyOrder />,
+  //     },
+
+  //     {
+  //       path: '/user/dashboard/my-profile',
+  //       element: <ManageProfile />,
+  //     },
+  //     {
+  //       path: '/user/dashboard/change-password',
+  //       element: <ChangePassword />,
+  //     },
+  //   ],
+  //   errorElement: <NotFound />,
+  // },
   {
     path: '/login',
     element: <Login />,

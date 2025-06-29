@@ -17,7 +17,7 @@ export interface IOrder {
     sp_message: string;
   };
   _id: string;
-  cars: ICar[];
+  cars: [{ car: ICar }];
   user: IUser;
   totalPrice: number;
   status: string;

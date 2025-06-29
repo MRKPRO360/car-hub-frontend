@@ -88,7 +88,7 @@ function Stock() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by brand, model, or location"
-          className="bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300
+          className="bg-white dark:bg-gray-950 dark:text-gray-50 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300
       w-full px-6 py-3 
        border-gray-200
       focus:outline-none focus:border-transparent

@@ -6,7 +6,7 @@ import { TruncateText } from '../../components/TruncateText/TruncateText';
 
 function CarCard({ car }: { car: ICar }) {
   return (
-    <div className=" overflow-hidden bg-white rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative">
+    <div className="overflow-hidden bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative ">
       <button
         className="text-blue-500 text-lg absolute top-2 right-2 z-50 cursor-pointer"
         aria-label="Wishlist"
@@ -22,7 +22,7 @@ function CarCard({ car }: { car: ICar }) {
       </Link>
       <div className="p-5">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-semibold text-gray-800">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-300">
             <TruncateText maxLength={20} text={`${car.brand} ${car.model}`} />
           </h3>
           <span className="text-xs font-semibold bg-blue-100 text-primary px-2 py-1 rounded">
@@ -35,9 +35,9 @@ function CarCard({ car }: { car: ICar }) {
             className="w-4 h-4 self-start text-gray-600 font-semibold"
           />
 
-          <p className="text-lg font-bold">{car.price}</p>
+          <p className="text-lg font-bold dark:text-gray-300">{car.price}</p>
         </div>
-        <div className="flex flex-wrap text-sm text-gray-600 gap-x-4 gap-y-2 my-2 font-semibold">
+        <div className="flex flex-wrap text-sm text-gray-600 dark:text-gray-300 gap-x-4 gap-y-2 my-2 font-semibold">
           <div className="flex items-center gap-1">
             <GaugeCircle className="w-4 h-4 text-primary" strokeWidth={2.5} />
             <span>{car.horsepower}</span>

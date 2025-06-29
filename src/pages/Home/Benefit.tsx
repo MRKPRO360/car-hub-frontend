@@ -1,5 +1,7 @@
 import { Zap, BatteryCharging, SwitchCamera, Recycle } from 'lucide-react';
 import hybridCar from '../../assets/images/hybrid.png';
+import hybridDarkCar from '../../assets/images/hybrid-dark.png';
+
 import Cta from '../shared/Cta';
 const hybridBenefits = [
   {
@@ -36,17 +38,22 @@ const Benefit = () => {
           <img
             src={hybridCar}
             alt="Hybrid Vehicles"
-            className="w-full h-auto"
+            className="w-full h-auto dark:hidden"
+          />
+          <img
+            src={hybridDarkCar}
+            alt="Hybrid Vehicles"
+            className="w-full h-auto hidden dark:block"
           />
         </div>
         <div>
-          <h2 className="text-4xl font-bold  text-gray-900 mb-6">
+          <h2 className="text-4xl font-bold dark:text-gray-300  text-gray-900 mb-6">
             What are the <span className="text-blue-600">Benefits</span>
             &nbsp;of <br />
             <span className="text-blue-600">Hybrid</span>
             &nbsp;Vehicles
           </h2>
-          <p className="text-gray-600 leading-tighter mb-4">
+          <p className="text-gray-600 dark:text-gray-300 leading-tighter mb-4">
             With a hybrid, you get all the power and torque advantages of an
             electric vehicle while also gaining the flexibility of a petrol
             engine. Enjoy efficient travel, reduced CO₂ emissions, and a driving
@@ -67,10 +74,12 @@ const Benefit = () => {
             className="bg-primary-50 p-10 first:pl-0 last:pr-0 flex justify-center flex-col items-center text-center"
           >
             <div className="mb-6 ">{item.icon}</div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-300  mb-3">
               {item.title}
             </h3>
-            <p className="text-gray-600 leading-tighter">{item.description}</p>
+            <p className="text-gray-600 dark:text-gray-500 leading-tighter">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>

@@ -4,6 +4,7 @@ import useEmblaCarousel, {
 } from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { cn } from '../../utils/cn';
+import Button from '../ui/button/Button';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -51,6 +52,9 @@ function Carousel({
   ...props
 }: React.ComponentProps<'div'> & CarouselProps) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [slidesCount, setSlidesCount] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
@@ -66,6 +70,8 @@ function Carousel({
     setCanScrollPrev(api.canScrollPrev());
     setCanScrollNext(api.canScrollNext());
     setSelectedIndex(api.selectedScrollSnap());
+    setCurrentIndex(api.selectedScrollSnap());
+    setSlidesCount(api.scrollSnapList().length);
   }, []);
 
   const scrollPrev = React.useCallback(() => {
@@ -124,6 +130,8 @@ function Carousel({
         scrollNext,
         canScrollPrev,
         canScrollNext,
+        currentIndex,
+        slidesCount,
       }}
     >
       <div
@@ -153,11 +161,11 @@ function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
     >
       {/* Fade Left */}
       {isHorizontal && canScrollPrev && (
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-18 z-10 bg-gradient-to-r from-gray-50 to-transparent" />
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-18 z-10 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent" />
       )}
       {/* Fade Right */}
       {isHorizontal && canScrollNext && (
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-18 z-10 bg-gradient-to-l from-gray-50 to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-18 z-10 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
       )}
       <div
         className={cn(
@@ -203,7 +211,7 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        'absolute size-8 rounded-full shadow-md cursor-pointer z-10',
+        'absolute size-8 rounded-full shadow-md dark:shadow-gray-800 cursor-pointer z-10 dark:text-gray-400',
         orientation === 'horizontal'
           ? 'top-1/2 left-2 2xl:-left-6 -translate-y-1/2'
           : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
@@ -238,7 +246,7 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        'absolute size-8 rounded-full shadow-md cursor-pointer z-10',
+        'absolute size-8 rounded-full shadow-md cursor-pointer z-10 dark:text-gray-400 dark:shadow-gray-800',
         orientation === 'horizontal'
           ? 'top-1/2 right-2 2xl:-right-6 -translate-y-1/2'
           : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',

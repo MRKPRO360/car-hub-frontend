@@ -1,16 +1,13 @@
-import { DollarSign, Fuel, GaugeCircle, Settings } from 'lucide-react';
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
 import { ICar } from '../../types';
 import { useEffect, useState } from 'react';
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from '../../components/CHCarousel';
-import { FiHeart } from 'react-icons/fi';
-import { Link } from 'react-router';
+
 import CarouselCarCard from '../shared/CarouselCard';
 
 // const cars = [
@@ -49,7 +46,6 @@ import CarouselCarCard from '../shared/CarouselCard';
 const FeaturedCars = () => {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
   const [data, setData] = useState<ICar[]>(cars?.data || []);
-  console.log(cars);
 
   useEffect(() => {
     if (cars?.data?.length && data !== cars.data) {
@@ -57,10 +53,11 @@ const FeaturedCars = () => {
     }
   }, [cars, data]);
   return (
-    <section className="bg-gray-50 py-12 lg:py-18">
+    <section className="bg-gray-50 dark:bg-gray-900 py-12 lg:py-18">
       <div className="">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-          Featured Cars
+        <h2 className="text-4xl font-bold text-center dark:text-gray-300 text-gray-900 mb-12">
+          Featured&nbsp;
+          <span className="text-blue-600">Cars</span>
         </h2>
 
         <Carousel className="md:w-full ">
