@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ICar, IResponse } from '../../types';
+import { IResponse, IUser } from '../../types';
 import {
   Table,
   TableBody,
@@ -13,22 +13,32 @@ import {
   BsChevronRight,
   BsThreeDotsVertical,
 } from 'react-icons/bs';
-import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md';
-import { IoEyeOutline } from 'react-icons/io5';
-import {
-  useDeleteACarMutation,
-  useGetAllCarsQuery,
-} from '../../redux/features/admin/carManagement.api';
-import { Link, useNavigate } from 'react-router';
+import { MdDeleteOutline } from 'react-icons/md';
+import { ImEyeBlocked } from 'react-icons/im';
 
-export default function AllCars() {
+import {
+  useActivateUserMutation,
+  useDeactivateUserMutation,
+  useDeleteAUserMutation,
+  useGetAllUsersQuery,
+} from '../../redux/features/admin/userManagement.api';
+
+export default function AllUsers() {
   const [openActionMenuId, setOpenActionMenuId] = useState<string | null>(null);
 
-  const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
-  const navigate = useNavigate();
+  const { data: users, isLoading } = useGetAllUsersQuery(undefined);
 
-  const [deleteCar] = useDeleteACarMutation();
-  const [data, setData] = useState<ICar[] | []>(cars?.data || []);
+  const [deleteUser] = useDeleteAUserMutation();
+  const [blockUser] = useDeactivateUserMutation();
+  const [unBlockUser] = useActivateUserMutation();
+
+  const [data, setData] = useState<IUser[] | []>(users?.data || []);
+
+  useEffect(() => {
+    if (users?.data?.length && data !== users.data) {
+      setData(users?.data);
+    }
+  }, [users, data]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,12 +51,6 @@ export default function AllCars() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  useEffect(() => {
-    if (cars?.data?.length && data !== cars.data) {
-      setData(cars?.data);
-    }
-  }, [cars, data]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,16 +66,16 @@ export default function AllCars() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  const handleDelete = async (item: ICar) => {
+  const handleDelete = async (user: IUser) => {
     const toastId = toast.loading('Deleting...');
 
     try {
-      const res = (await deleteCar(item._id)) as IResponse<any>;
+      const res = (await deleteUser(user._id)) as IResponse<any>;
 
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
-        toast.success('Car deleted successfully!', {
+        toast.success('User deleted successfully!', {
           id: toastId,
           duration: 2000,
         });
@@ -82,8 +86,44 @@ export default function AllCars() {
     }
   };
 
-  const handleUpdate = async (item: ICar) => {
-    navigate(`/admin/dashboard/manage-cars/${item._id}`);
+  const handleBlock = async (user: IUser) => {
+    const toastId = toast.loading('Blocking user...');
+
+    try {
+      const res = (await blockUser(user._id)) as IResponse<any>;
+
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        toast.success('User blocked successfully!', {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong!', { id: toastId, duration: 2000 });
+    }
+  };
+
+  const handleUnBlock = async (user: IUser) => {
+    const toastId = toast.loading('UnBlocking user...');
+
+    try {
+      const res = (await unBlockUser(user._id)) as IResponse<any>;
+
+      if (res.error) {
+        toast.error(res?.error?.data?.message, { id: toastId });
+      } else {
+        toast.success('User unblocked successfully!', {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error('Something went wrong!', { id: toastId, duration: 2000 });
+    }
   };
 
   if (isLoading) {
@@ -105,37 +145,31 @@ export default function AllCars() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Car
+                User
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Brand
+                Name
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Category
+                Email
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                In Stock
+                Status
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Quantity
-              </TableCell>
-              <TableCell
-                isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
-                Price
+                Deleted
               </TableCell>
               <TableCell
                 isHeader
@@ -148,86 +182,88 @@ export default function AllCars() {
 
           {/* Table Body */}
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {paginatedData?.map((car, index) => (
-              <TableRow className="relative" key={car?._id}>
+            {paginatedData?.map((user, index) => (
+              <TableRow className="relative" key={user?._id}>
                 <TableCell className="px-4 py-3 ">
                   <img
                     className="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover"
-                    src={car?.coverImage}
-                    alt={`${car?.category} ${car?.brand}`}
+                    src={user?.profileImg}
+                    alt={`${user?.name}`}
                   />
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  <span
-                    className={`font-semibold ${
-                      car.inStock ? 'text-green-500' : 'text-red-500'
-                    }`}
-                  >
-                    {car.inStock ? 'Available' : 'Not available'}
-                  </span>
+                  {user?.name}
                 </TableCell>
 
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {car?.brand}
+                  {user?.email}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {car?.category}
+                <TableCell
+                  className={`px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 ${
+                    !user.isBlocked ? 'text-green-500' : 'text-red-500'
+                  }`}
+                >
+                  {user.isBlocked ? 'Blocked' : 'Active'}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {car?.quantity}
-                </TableCell>
-
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  {car?.price}
+                <TableCell
+                  className={`px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 ${
+                    !user.isDeleted ? 'text-green-500' : 'text-red-500'
+                  }`}
+                >
+                  {user?.isDeleted ? 'Deleted' : 'N/A'}
                 </TableCell>
 
                 <TableCell className="absolute translate-y-8 translate-x-4">
                   <BsThreeDotsVertical
                     onClick={() =>
                       setOpenActionMenuId(
-                        openActionMenuId === car?._id
+                        openActionMenuId === user?._id
                           ? null
-                          : (car._id as string)
+                          : (user._id as string)
                       )
                     }
                     className="action-btn text-gray-600 cursor-pointer"
                   />
                   <div
                     className={`${
-                      openActionMenuId === car._id
+                      openActionMenuId === user._id
                         ? 'opacity-100 scale-100 z-30 block'
                         : 'opacity-0 scale-90 z-[-1] hidden'
                     } ${
                       index > 0 ? 'bottom-[90%]' : '-top-10 '
-                    } zenui-table absolute right-[80%] p-2 rounded-md bg-white dark:bg-gray-900  shadow-md min-w-[160px] transition-all duration-100`}
+                    } zenui-table absolute right-[80%] p-2 rounded-md bg-white dark:bg-gray-900 dark:text-white shadow-md min-w-[160px] transition-all duration-100`}
                   >
                     <button
-                      onClick={() => handleUpdate(car)}
-                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer 
-                      hover:bg-gray-100
-                      dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
-                    >
-                      <MdOutlineEdit />
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(car)}
+                      onClick={() => handleDelete(user)}
                       className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
                       dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
                     >
                       <MdDeleteOutline />
                       Delete
                     </button>
-                    <Link
-                      to={`/cars/${car._id}`}
-                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
+                    {!user.isBlocked && (
+                      <button
+                        onClick={() => handleBlock(user)}
+                        className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
                       dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
-                    >
-                      <IoEyeOutline />
-                      View Details
-                    </Link>
+                      >
+                        <ImEyeBlocked />
+                        Block
+                      </button>
+                    )}
+
+                    {user.isBlocked && (
+                      <button
+                        onClick={() => handleUnBlock(user)}
+                        className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
+                      dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
+                      >
+                        <ImEyeBlocked />
+                        UnBlock
+                      </button>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>

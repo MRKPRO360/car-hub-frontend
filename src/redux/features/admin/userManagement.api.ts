@@ -60,6 +60,13 @@ const usersApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['users'],
     }),
+    activateUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/activate-user/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ['users'],
+    }),
   }),
 });
 
@@ -69,5 +76,6 @@ export const {
   useDeleteAUserMutation,
   useUpdateUserMutation,
   useDeactivateUserMutation,
+  useActivateUserMutation,
   useGetMeQuery,
 } = usersApi;

@@ -47,6 +47,11 @@ const adminNavItems: NavItem[] = [
     name: 'Car Management',
     subItems: [{ name: 'All Cars', path: '/dashboard/all-cars', pro: false }],
   },
+  {
+    icon: <GridIcon />,
+    name: 'User Management',
+    subItems: [{ name: 'All Users', path: '/dashboard/all-users', pro: false }],
+  },
 
   {
     icon: <UserCircleIcon />,
