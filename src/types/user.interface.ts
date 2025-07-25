@@ -1,5 +1,6 @@
 export interface IUser {
   _id: string;
+  userID: string;
   name: string;
   email: string;
   role: string;

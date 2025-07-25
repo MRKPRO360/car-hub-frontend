@@ -19,6 +19,6 @@ createRoot(document.getElementById('root')!).render(
         </AppWrapper>
       </ThemeProvider>
     </Provider>
-    <Toaster />
+    <Toaster richColors position="top-center" />
   </StrictMode>
 );

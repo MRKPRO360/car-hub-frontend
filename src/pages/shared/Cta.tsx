@@ -1,3 +1,4 @@
+import { Loader } from 'lucide-react';
 import { FaArrowRightLong } from 'react-icons/fa6';
 
 interface ICta {
@@ -6,6 +7,8 @@ interface ICta {
   arrowRight?: boolean;
   className?: string;
   size?: 'sm' | 'lg';
+  isSubmitting?: boolean;
+  submittingText?: string;
 }
 
 function Cta({
@@ -14,6 +17,8 @@ function Cta({
   arrowRight = false,
   className = '',
   size = 'lg',
+  isSubmitting = false,
+  submittingText,
 }: ICta) {
   const baseClasses = ` ${
     size === 'lg' ? 'py-3 px-4' : 'py-2 px-8'
@@ -31,10 +36,16 @@ function Cta({
         variant === 'filled' ? filledClasses : outlineClasses
       }`}
     >
-      <button className="w-full flex items-center transition duration-300 gap-1.5 font-semibold hover:gap-2 relative z-50 text-center justify-center cursor-pointer">
-        {text}
+      <div
+        className={`w-full flex items-center transition duration-300 gap-1.5 font-semibold hover:gap-2 relative z-50 text-center justify-center  ${
+          isSubmitting && 'cursor-not-allowed'
+        }`}
+      >
+        {isSubmitting ? submittingText : text}
+        {/* {text} */}
+        {isSubmitting && <Loader className="animate-spin w-5 h-5" />}
         {arrowRight && <FaArrowRightLong className="text-xl" />}
-      </button>
+      </div>
     </div>
   );
 }
