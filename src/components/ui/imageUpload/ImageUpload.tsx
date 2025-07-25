@@ -44,7 +44,7 @@ function ImageUpload({
 
   return (
     <div>
-      <label className="block text-base font-semibold text-gray-600 mb-4">
+      <label className="block text-base font-semibold text-gray-600 dark:text-gray-400 mb-4">
         {label}
       </label>
 
@@ -52,12 +52,17 @@ function ImageUpload({
       <div
         onClick={() => inputRef.current?.click()}
         className={clsx(
-          'border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer text-center transition hover:bg-gray-100',
+          'border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer text-center transition hover:bg-gray-100 dark:hover:bg-gray-800',
           previews.length >= minFiles && 'border-green-400'
         )}
       >
-        <ImagePlus className="mx-auto text-gray-500" size={32} />
-        <p>{multiple ? 'Select Images' : 'Select an Image'}</p>
+        <ImagePlus
+          className="mx-auto text-gray-500 dark:text-gray-400"
+          size={32}
+        />
+        <p className="dark:text-gray-400">
+          {multiple ? 'Select Images' : 'Select an Image'}
+        </p>
       </div>
 
       {/* HIDDEN INPUT */}

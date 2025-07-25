@@ -164,14 +164,14 @@ const AddACar = () => {
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label
-              className="block text-gray-600 font-semibold text-base"
+              className="block text-gray-600 font-semibold text-base dark:text-gray-400"
               htmlFor="brand"
             >
               Brand
             </label>
             <select
               id="brand"
-              className={`py-2 px-3 rounded-md border w-full outline-none focus:outline-none ${
+              className={`dark:text-gray-400 py-2 px-3 rounded-md border w-full outline-none focus:outline-none ${
                 errors.brand
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -180,30 +180,37 @@ const AddACar = () => {
               {...register('brand', { required: 'Brand is required' })}
             >
               {brandOptions.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option
+                  className="dark:text-gray-800"
+                  key={option.value}
+                  value={option.value}
+                >
                   {option.label}
                 </option>
               ))}
             </select>
             {errors.brand && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.brand.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
 
           <div>
             <label
-              className="block font-semibold text-gray-600 font-base"
+              className="block font-semibold text-gray-600 dark:text-gray-400 font-base"
               htmlFor="category"
             >
               Category
             </label>
             <select
               id="category"
-              className={`py-2 px-3 rounded-md border w-full outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md border w-full outline-none focus:outline-none ${
                 errors.category
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -214,16 +221,23 @@ const AddACar = () => {
               })}
             >
               {categoryOptions.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option
+                  className="dark:text-gray-800"
+                  key={option.value}
+                  value={option.value}
+                >
                   {option.label}
                 </option>
               ))}
             </select>
             {errors.category && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.category.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -232,7 +246,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="Model"
-              className="block text-gray-600 font-semibold text-base"
+              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
             >
               Model <span className="text-red-700">*</span>
             </label>
@@ -240,7 +254,7 @@ const AddACar = () => {
               type="text"
               id="model"
               placeholder="Car Model"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.model
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -250,17 +264,20 @@ const AddACar = () => {
               })}
             />
             {errors.model && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.model.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
           <div>
             <label
               htmlFor="Price"
-              className="block text-gray-600 font-semibold text-base"
+              className="block dark:text-gray-400 text-gray-600 font-semibold text-base"
             >
               Price <span className="text-red-700">*</span>
             </label>
@@ -268,7 +285,7 @@ const AddACar = () => {
               type="number"
               id="price"
               placeholder="Car price exmp. 3000"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.price
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -278,10 +295,13 @@ const AddACar = () => {
               })}
             />
             {errors.price && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.price.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -289,7 +309,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="Quantity"
-            className="block font-semibold text-base text-gray-600"
+            className="block font-semibold text-base text-gray-600 dark:text-gray-400"
           >
             Quantity <span className="text-red-700">*</span>
           </label>
@@ -297,7 +317,7 @@ const AddACar = () => {
             type="number"
             id="quantity"
             placeholder="Car quantity exmp. 3"
-            className={`py-2 px-3 rounded-md w-full outline-none focus:outline-none border ${
+            className={`py-2 px-3 dark:text-gray-400 rounded-md w-full outline-none focus:outline-none border ${
               errors.quantity
                 ? 'border-red-800'
                 : 'focus:border-primary border-gray-300'
@@ -305,24 +325,27 @@ const AddACar = () => {
             {...register('quantity', { required: 'Quantity is required!' })}
           />
           {errors.quantity && (
-            <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+            <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
               {errors.quantity.message}
 
-              <CircleAlert size={20} />
+              <CircleAlert
+                className="text-red-800 dark:text-red-500"
+                size={20}
+              />
             </p>
           )}
         </div>
         <div className="w-full">
           <label
             htmlFor="description"
-            className="block font-semibold text-base text-gray-600"
+            className="block font-semibold text-base text-gray-600 dark:text-gray-400"
           >
             Car Description <span className="text-red-700">*</span>
           </label>
           <textarea
             id="description"
             rows={4}
-            className={`py-2 px-3 rounded-md w-full outline-none focus:outline-none border ${
+            className={`py-2 px-3 dark:text-gray-400 rounded-md w-full outline-none focus:outline-none border ${
               errors.description
                 ? 'border-red-800'
                 : 'focus:border-primary border-gray-300'
@@ -333,10 +356,13 @@ const AddACar = () => {
             placeholder="Write car description here..."
           ></textarea>
           {errors.description && (
-            <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+            <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
               {errors.description.message}
 
-              <CircleAlert size={20} />
+              <CircleAlert
+                className="text-red-800 dark:text-red-500"
+                size={20}
+              />
             </p>
           )}
         </div>
@@ -344,7 +370,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="mileage"
-              className="block text-gray-600 font-semibold text-base"
+              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
             >
               Mileage <span className="text-red-700">*</span>
             </label>
@@ -352,7 +378,7 @@ const AddACar = () => {
               type="number"
               id="mileage"
               placeholder="Mileage exmp. 14.5"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.mileage
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -362,17 +388,20 @@ const AddACar = () => {
               })}
             />
             {errors.mileage && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.mileage.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
           <div>
             <label
               htmlFor="enginge"
-              className="block text-gray-600 font-semibold text-base"
+              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
             >
               Engine <span className="text-red-700">*</span>
             </label>
@@ -380,7 +409,7 @@ const AddACar = () => {
               type="text"
               id="engine"
               placeholder="exmp. 2.2L mHawk Diesel"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.engine
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -390,10 +419,13 @@ const AddACar = () => {
               })}
             />
             {errors.engine && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.engine.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -402,7 +434,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="fuelType"
-            className="block text-gray-600 font-semibold text-base"
+            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
           >
             Fuel Type<span className="text-red-700">*</span>
           </label>
@@ -422,15 +454,20 @@ const AddACar = () => {
            checked:border-[4px] checked:border-primary
            hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-100">{type}</span>
+                <span className="text-gray-800 dark:text-gray-400 ">
+                  {type}
+                </span>
               </label>
             ))}
           </div>
           {errors.fuelType && (
-            <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+            <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
               {errors.fuelType.message}
 
-              <CircleAlert size={20} />
+              <CircleAlert
+                className="text-red-800 dark:text-red-500"
+                size={20}
+              />
             </p>
           )}
         </div>
@@ -438,7 +475,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="transmission"
-            className="block text-gray-600 font-semibold text-base"
+            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
           >
             Transmission<span className="text-red-700">*</span>
           </label>
@@ -458,17 +495,20 @@ const AddACar = () => {
            checked:border-[4px] checked:border-primary
            hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-100">
+                <span className="text-gray-800 dark:text-gray-400">
                   {transmission}
                 </span>
               </label>
             ))}
           </div>
           {errors.transmission && (
-            <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+            <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
               {errors.transmission.message}
 
-              <CircleAlert size={20} />
+              <CircleAlert
+                className="text-red-800 dark:text-red-500"
+                size={20}
+              />
             </p>
           )}
         </div>
@@ -477,7 +517,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="color"
-              className="font-semibold text-base block text-gray-600"
+              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
             >
               Color
               <span className="text-red-700">*</span>
@@ -486,7 +526,7 @@ const AddACar = () => {
             <input
               type="text"
               placeholder="color exmp. Daytona Grey"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.color
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -497,10 +537,13 @@ const AddACar = () => {
             />
 
             {errors.color && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.color.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -508,7 +551,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="horsepower"
-              className="font-semibold text-base block text-gray-600"
+              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
             >
               Horsepower
               <span className="text-red-700">*</span>
@@ -517,7 +560,7 @@ const AddACar = () => {
             <input
               type="number"
               placeholder="exmp. 786"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.horsepower
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -528,10 +571,13 @@ const AddACar = () => {
             />
 
             {errors.horsepower && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.horsepower.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -543,7 +589,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="torque"
-              className="font-semibold text-base block text-gray-600"
+              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
             >
               Torque
               <span className="text-red-700">*</span>
@@ -552,7 +598,7 @@ const AddACar = () => {
             <input
               type="number"
               placeholder="exmp. 400"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.torque
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -563,10 +609,13 @@ const AddACar = () => {
             />
 
             {errors.torque && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.torque.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -583,7 +632,7 @@ const AddACar = () => {
             <input
               type="number"
               placeholder="exmp. 6"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.seatingCapacity
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -594,10 +643,13 @@ const AddACar = () => {
             />
 
             {errors.seatingCapacity && (
-              <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {errors.seatingCapacity.message}
 
-                <CircleAlert size={20} />
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -616,7 +668,7 @@ const AddACar = () => {
                     required: 'At least one feature is required',
                     onChange: (e) => handleChange(index, e.target.value),
                   })}
-                  className={`flex-1 py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+                  className={`flex-1 py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                     errors.features
                       ? 'border-red-500'
                       : 'border-gray-300 focus:border-primary'
@@ -644,10 +696,13 @@ const AddACar = () => {
               </div>
 
               {errors.features && (
-                <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                   {errors.features?.[index]?.message}
 
-                  <CircleAlert size={20} />
+                  <CircleAlert
+                    className="text-red-800 dark:text-red-500"
+                    size={20}
+                  />
                 </p>
               )}
             </div>
@@ -658,7 +713,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="condition"
-            className="block text-gray-600 font-semibold text-base"
+            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
           >
             Condition<span className="text-red-700">*</span>
           </label>
@@ -678,17 +733,20 @@ const AddACar = () => {
            checked:border-[4px] checked:border-primary
            hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-100">
+                <span className="text-gray-800 dark:text-gray-400">
                   {condition}
                 </span>
               </label>
             ))}
           </div>
           {errors.condition && (
-            <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+            <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
               {errors.condition.message}
 
-              <CircleAlert size={20} />
+              <CircleAlert
+                className="text-red-800 dark:text-red-500"
+                size={20}
+              />
             </p>
           )}
         </div>
@@ -699,7 +757,7 @@ const AddACar = () => {
           <div className="flex-1">
             <label
               htmlFor="city"
-              className="block text-gray-600 font-semibold text-base"
+              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
             >
               City
             </label>
@@ -707,7 +765,7 @@ const AddACar = () => {
               type="text"
               id="city"
               placeholder="exmp. 2.2L mHawk Diesel"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.location?.city
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -718,7 +776,7 @@ const AddACar = () => {
           <div className="flex-1">
             <label
               htmlFor="street"
-              className="block text-gray-600 font-semibold text-base"
+              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
             >
               State
             </label>
@@ -726,7 +784,7 @@ const AddACar = () => {
               type="text"
               id="state"
               placeholder="exmp. 2.2L mHawk Diesel"
-              className={`py-2 px-3 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.location?.state
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -737,14 +795,14 @@ const AddACar = () => {
           <div className="flex-1">
             <div>
               <label
-                className="block text-gray-600 font-semibold text-base"
+                className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
                 htmlFor="country"
               >
                 Country
               </label>
               <select
                 id="country"
-                className={`py-2 px-3 rounded-md border w-full outline-none focus:outline-none ${
+                className={`py-2 px-3 dark:text-gray-400 rounded-md border w-full outline-none focus:outline-none ${
                   errors.location?.country
                     ? 'border-red-500'
                     : 'border-gray-300 focus:border-primary'
@@ -753,7 +811,11 @@ const AddACar = () => {
                 {...register('location.country')}
               >
                 {countriesOptions.map((country, idx) => (
-                  <option key={idx} value={country}>
+                  <option
+                    className="dark:text-gray-800"
+                    key={idx}
+                    value={country}
+                  >
                     {country}
                   </option>
                 ))}
@@ -782,10 +844,13 @@ const AddACar = () => {
             })}
           />
           {errors.coverImage && (
-            <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+            <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
               {errors.coverImage.message}
 
-              <CircleAlert size={20} />
+              <CircleAlert
+                className="text-red-800 dark:text-red-500"
+                size={20}
+              />
             </p>
           )}
 
@@ -809,10 +874,13 @@ const AddACar = () => {
           />
 
           {errors.images && (
-            <p className="bg-red-100/90 rounded-2xl text-red-800 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+            <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
               {errors.images.message}
 
-              <CircleAlert size={20} />
+              <CircleAlert
+                className="text-red-800 dark:text-red-500"
+                size={20}
+              />
             </p>
           )}
         </div>
