@@ -1,8 +1,12 @@
 import { FieldValues, useForm } from 'react-hook-form';
-import { useAddCarMutation } from '../../redux/features/admin/carManagement.api';
+import {
+  useAddCarMutation,
+  useGetACarQuery,
+  useUpdateCarMutation,
+} from '../../redux/features/admin/carManagement.api';
 import { toast } from 'sonner';
-import { ICarForm, IResponse, IUser } from '../../types';
-import { useState } from 'react';
+import { ICar, IResponse, IUser } from '../../types';
+import { useEffect, useState } from 'react';
 import ImageUpload from '../../components/ui/imageUpload/ImageUpload';
 import Cta from '../shared/Cta';
 import { CircleAlert, Plus, Trash2 } from 'lucide-react';
@@ -10,7 +14,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { selectCurrentToken } from '../../redux/features/auth/authSlice';
 import { verifyToken } from '../../utils/verifyToken';
 import { countriesOptions } from '../../constant/city';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import {
   brandOptions,
   categoryOptions,
@@ -19,9 +23,12 @@ import {
   transmissionOptions,
 } from '../../constant/car';
 
-const AddACar = () => {
+const UpdateACar = () => {
   const navigate = useNavigate();
 
+  const { id } = useParams();
+  const { data: car } = useGetACarQuery(id!);
+  const [updateCar] = useUpdateCarMutation();
   const {
     register,
     handleSubmit,
@@ -29,9 +36,18 @@ const AddACar = () => {
     trigger,
     setValue,
     reset,
-  } = useForm<ICarForm>();
+  } = useForm<ICar>();
 
   const [addCar] = useAddCarMutation();
+
+  useEffect(() => {
+    console.log(car);
+
+    if (car?.data) {
+      reset(car.data);
+    }
+  }, [car, reset]);
+
   const token = useAppSelector(selectCurrentToken);
 
   let user: undefined | IUser = undefined;
@@ -61,28 +77,6 @@ const AddACar = () => {
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Adding ...');
     const formData = new FormData();
-
-    /*
-
-  "coverImage": "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653408/dxn6givlg9ibtsxvxhfm.png",
-  "images": [
-    "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653411/ucuufi4kdrg2ihhxobel.jpg",
-    "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653414/rvhky4fwwnrjecf4k04o.jpg",
-    "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653413/kcfrkrc0oidpyxrwknbx.jpg"
-  ],
-
-  "ratingAverage": 4.3,
-  "ratingQuantity": 280,
-
-  "vin": "MAHSCN23456789012",
-  "location": {
-    "city": "Bangalore",
-    "state": "Karnataka",
-    "country": "India"
-  },
-  
-}
-    */
 
     const carData = {
       ...data,
@@ -149,7 +143,7 @@ const AddACar = () => {
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
               }
-              `}
+                `}
               {...register('brand', { required: 'Brand is required' })}
             >
               <option value="" hidden disabled>
@@ -192,7 +186,7 @@ const AddACar = () => {
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
               }
-              `}
+                `}
               {...register('category', {
                 required: 'Category is required',
               })}
@@ -431,8 +425,8 @@ const AddACar = () => {
                     required: 'Fuel type is required',
                   })}
                   className="appearance-none w-4 h-4 rounded-full border border-gray-400
-           checked:border-[4px] checked:border-primary
-           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
+             checked:border-[4px] checked:border-primary
+             hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
                 <span className="text-gray-800 dark:text-gray-400 ">
                   {type}
@@ -472,8 +466,8 @@ const AddACar = () => {
                     required: 'Transmission is required',
                   })}
                   className="appearance-none w-4 h-4 rounded-full border border-gray-400
-           checked:border-[4px] checked:border-primary
-           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
+             checked:border-[4px] checked:border-primary
+             hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
                 <span className="text-gray-800 dark:text-gray-400">
                   {transmission}
@@ -710,8 +704,8 @@ const AddACar = () => {
                     required: 'Condition is required',
                   })}
                   className="appearance-none w-4 h-4 rounded-full border border-gray-400
-           checked:border-[4px] checked:border-primary
-           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
+             checked:border-[4px] checked:border-primary
+             hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
                 <span className="text-gray-800 dark:text-gray-400">
                   {condition}
@@ -788,7 +782,7 @@ const AddACar = () => {
                     ? 'border-red-500'
                     : 'border-gray-300 focus:border-primary'
                 }
-              `}
+                `}
                 {...register('location.country')}
               >
                 {/* Default unselected placeholder */}
@@ -812,16 +806,19 @@ const AddACar = () => {
             label="Cover Photo (One Image)"
             multiple={false}
             onChange={(files) => {
-              setValue('coverImage', files, { shouldValidate: true });
+              setValue('coverImage', files as File[], { shouldValidate: true });
               trigger('coverImage');
             }}
+            initilaImages={
+              car?.data?.coverImage ? [car?.data?.coverImage as string] : []
+            }
           />
 
           <input
             type="hidden"
             {...register('coverImage', {
               required: 'A car should have a cover image!',
-              validate: (files: File[]) =>
+              validate: (files: File[] | string) =>
                 files?.length > 0 || 'Please select a cover image',
             })}
           />
@@ -844,13 +841,16 @@ const AddACar = () => {
               setValue('images', files);
               trigger('images');
             }}
+            initilaImages={
+              car?.data?.images ? (car?.data?.images as string[]) : []
+            }
           />
 
           <input
             type="hidden"
             {...register('images', {
               required: 'Provide at least 3 images',
-              validate: (files: File[]) =>
+              validate: (files: File[] | string[]) =>
                 files.length >= 3 || 'Select at least 3 images',
             })}
           />
@@ -879,4 +879,4 @@ const AddACar = () => {
   );
 };
 
-export default AddACar;
+export default UpdateACar;

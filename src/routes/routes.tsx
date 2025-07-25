@@ -29,6 +29,7 @@ import CustomerOrders from '../pages/admin/CustomerOrders';
 import AllCars from '../pages/admin/AllCars';
 import AllUsers from '../pages/admin/AllUsers';
 import AddACar from '../pages/admin/AddACar';
+import UpdateACar from '../pages/admin/UpdateACar';
 
 const router = createBrowserRouter([
   {
@@ -145,6 +146,10 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/add-car',
         element: <AddACar />,
+      },
+      {
+        path: '/dashboard/update-car/:id',
+        element: <UpdateACar />,
       },
       {
         path: '/dashboard/all-users',

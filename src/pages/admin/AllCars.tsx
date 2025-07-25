@@ -83,7 +83,7 @@ export default function AllCars() {
   };
 
   const handleUpdate = async (item: ICar) => {
-    navigate(`/admin/dashboard/manage-cars/${item._id}`);
+    navigate(`/dashboard/update-car/${item._id}`);
   };
 
   if (isLoading) {
@@ -157,6 +157,15 @@ export default function AllCars() {
                     alt={`${car?.category} ${car?.brand}`}
                   />
                 </TableCell>
+
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {car?.brand}
+                </TableCell>
+
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {car?.category}
+                </TableCell>
+
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   <span
                     className={`font-semibold ${
@@ -165,14 +174,6 @@ export default function AllCars() {
                   >
                     {car.inStock ? 'Available' : 'Not available'}
                   </span>
-                </TableCell>
-
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {car?.brand}
-                </TableCell>
-
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {car?.category}
                 </TableCell>
 
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">

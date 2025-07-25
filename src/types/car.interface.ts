@@ -27,8 +27,8 @@ export interface ICar {
   createdAt?: Date;
   updatedAt?: Date;
   isDeleted?: boolean;
-  coverImage: File[];
-  images: File[];
+  coverImage: string | File[];
+  images: string[] | File[];
   author: IUser;
   ratingAverage: number;
   ratingQuantity: number;
@@ -51,6 +51,11 @@ export interface ICar {
   views?: number;
 }
 
+export interface ICarForm extends Omit<ICar, 'coverImage' | 'images'> {
+  coverImage: File[];
+  images: File[];
+}
+
 export interface ICarFilters {
   brand?: string[];
   model?: string[];
@@ -65,3 +70,18 @@ export interface ICarFilters {
   location?: string[];
   searchTerm?: string;
 }
+
+interface IMeta {
+  limit: number;
+  page: number;
+  total: number;
+  totalPage: number;
+}
+
+export type TResponse<T> = {
+  statusCode: number;
+  success: boolean;
+  message?: string;
+  meta?: IMeta;
+  data: T;
+};

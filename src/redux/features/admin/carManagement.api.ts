@@ -1,4 +1,4 @@
-import { ICar, IQueryParam, IResponseRedux } from '../../../types';
+import { ICar, IQueryParam, IResponseRedux, TResponse } from '../../../types';
 import { baseApi } from '../../api/baseApi';
 
 const carsApi = baseApi.injectEndpoints({
@@ -27,7 +27,7 @@ const carsApi = baseApi.injectEndpoints({
         };
       },
     }),
-    getACar: builder.query({
+    getACar: builder.query<TResponse<ICar>, string>({
       query: (id) => {
         return {
           url: `/cars/${id}`,

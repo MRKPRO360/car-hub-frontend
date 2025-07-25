@@ -1,18 +1,20 @@
 import clsx from 'clsx';
 import { ImagePlus, Trash2 } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ImageUploadProps {
   label: string;
   multiple?: boolean;
   minFiles?: number;
   onChange: (files: File[]) => void;
+  initilaImages?: string[];
 }
 function ImageUpload({
   label,
   multiple = false,
   minFiles = 1,
   onChange,
+  initilaImages,
 }: ImageUploadProps) {
   const [previews, setPreviews] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
@@ -42,6 +44,12 @@ function ImageUpload({
     }
   };
 
+  useEffect(() => {
+    if (initilaImages?.length) {
+      setPreviews(initilaImages);
+    }
+  }, [initilaImages]);
+
   return (
     <div>
       <label className="block text-base font-semibold text-gray-600 dark:text-gray-400 mb-4">
@@ -60,7 +68,7 @@ function ImageUpload({
           className="mx-auto text-gray-500 dark:text-gray-400"
           size={32}
         />
-        <p className="dark:text-gray-400">
+        <p className="text-gray-600 dark:text-gray-400">
           {multiple ? 'Select Images' : 'Select an Image'}
         </p>
       </div>
