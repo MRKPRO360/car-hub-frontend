@@ -31,7 +31,7 @@ export default function UserAddressCard({ user }: { user: IUser }) {
                   Country
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user.country}
+                  {user?.country}
                 </p>
               </div>
 
@@ -40,7 +40,7 @@ export default function UserAddressCard({ user }: { user: IUser }) {
                   City/State
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user.address}
+                  {user?.address}
                 </p>
               </div>
             </div>

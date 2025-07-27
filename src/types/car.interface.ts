@@ -40,7 +40,7 @@ export interface ICar {
   horsepower?: number;
   torque?: number; // in Nm or lb-ft
   seatingCapacity?: number;
-  features?: string[]; // e.g., ['Bluetooth', 'Sunroof']
+  features: string[]; // e.g., ['Bluetooth', 'Sunroof']
   vin?: string;
   condition?: TCondition;
   location?: {
@@ -51,9 +51,15 @@ export interface ICar {
   views?: number;
 }
 
+// ADD CAR FORM
 export interface ICarForm extends Omit<ICar, 'coverImage' | 'images'> {
   coverImage: File[];
   images: File[];
+}
+
+// UPDATE CAR FORM
+export interface UpdateICarForm extends Omit<ICar, 'features'> {
+  features: { value: string }[];
 }
 
 export interface ICarFilters {

@@ -1,18 +1,14 @@
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
 import {
-  useAddCarMutation,
   useGetACarQuery,
   useUpdateCarMutation,
 } from '../../redux/features/admin/carManagement.api';
 import { toast } from 'sonner';
-import { ICar, IResponse, IUser } from '../../types';
-import { useEffect, useState } from 'react';
+import { IResponse, IUser, UpdateICarForm } from '../../types';
+import { useEffect } from 'react';
 import ImageUpload from '../../components/ui/imageUpload/ImageUpload';
 import Cta from '../shared/Cta';
 import { CircleAlert, Plus, Trash2 } from 'lucide-react';
-import { useAppSelector } from '../../redux/hooks';
-import { selectCurrentToken } from '../../redux/features/auth/authSlice';
-import { verifyToken } from '../../utils/verifyToken';
 import { countriesOptions } from '../../constant/city';
 import { useNavigate, useParams } from 'react-router';
 import {
@@ -27,7 +23,9 @@ const UpdateACar = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const { data: car } = useGetACarQuery(id!);
+  const { data: car } = useGetACarQuery(id!, {
+    refetchOnMountOrArgChange: true,
+  });
   const [updateCar] = useUpdateCarMutation();
   const {
     register,
@@ -36,46 +34,36 @@ const UpdateACar = () => {
     trigger,
     setValue,
     reset,
-  } = useForm<ICar>();
-
-  const [addCar] = useAddCarMutation();
+    control,
+  } = useForm<UpdateICarForm>({
+    // ENSURES OLD FEATURES ARE REPLACED PROPERLY
+    shouldUnregister: true,
+  });
 
   useEffect(() => {
-    console.log(car);
+    console.log(car?.data);
 
     if (car?.data) {
-      reset(car.data);
+      reset({
+        ...car.data,
+        features: car.data.features.map((feature: string) => ({
+          value: feature,
+        })),
+      });
     }
-  }, [car, reset]);
+  }, [car?.data, reset]);
 
-  const token = useAppSelector(selectCurrentToken);
-
-  let user: undefined | IUser = undefined;
-
-  if (token) {
-    user = verifyToken(token);
-  }
-
-  const [features, setFeatures] = useState<string[]>(['']);
-
-  const handleChange = (index: number, value: string) => {
-    const newFeatures = [...features];
-    newFeatures[index] = value;
-    setFeatures(newFeatures);
-  };
-
-  const addFeatures = () => {
-    setFeatures([...features, '']);
-  };
-
-  const removeFeatures = (index: number) => {
-    const newFeatures = features.filter((_, i) => i !== index);
-
-    setFeatures(newFeatures);
-  };
+  const {
+    fields: featuresFilelds,
+    append: addFeatures,
+    remove: removeFeatures,
+  } = useFieldArray<any>({
+    control,
+    name: 'features',
+  });
 
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading('Adding ...');
+    const toastId = toast.loading('Updating ...');
     const formData = new FormData();
 
     const carData = {
@@ -87,8 +75,9 @@ const UpdateACar = () => {
       horsepower: parseFloat(data.horsepower),
       torque: parseFloat(data.torque),
       year: new Date().getFullYear(),
-      features,
-      author: user?.userID,
+      features: data.features.map(
+        (feature: { value: string }) => feature.value
+      ),
     };
 
     formData.append('data', JSON.stringify(carData));
@@ -101,17 +90,13 @@ const UpdateACar = () => {
       formData.append('images', file);
     });
 
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
-
     try {
-      const res = (await addCar(formData)) as IResponse<any>;
+      const res = (await updateCar({ data: formData, id })) as IResponse<any>;
 
       if (res.error) {
         toast.error(res?.error?.data?.message, { id: toastId });
       } else {
-        toast.success('Car added successfully', { id: toastId });
+        toast.success('Car updated successfully', { id: toastId });
         navigate('/dashboard/all-cars');
       }
 
@@ -631,25 +616,30 @@ const UpdateACar = () => {
 
         {/* FEATURES */}
         <div className="space-y-3">
-          {features.map((feature, index) => (
-            <div key={index}>
+          <label
+            htmlFor="features"
+            className="font-semibold text-base block text-gray-600"
+          >
+            Features
+            <span className="text-red-700">*</span>
+          </label>
+          {featuresFilelds.map((field, index) => (
+            <div key={field.id}>
               <div className="flex items-center gap-3">
                 <input
                   type="text"
                   placeholder={`Feature ${index + 1}`}
-                  value={feature}
-                  {...register(`features.${index}`, {
+                  {...register(`features.${index}.value`, {
                     required: 'At least one feature is required',
-                    onChange: (e) => handleChange(index, e.target.value),
                   })}
                   className={`flex-1 py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
-                    errors.features
+                    errors.features?.[index]?.value?.message
                       ? 'border-red-500'
                       : 'border-gray-300 focus:border-primary'
                   }`}
                 />
 
-                {features.length > 1 && (
+                {featuresFilelds.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeFeatures(index)}
@@ -661,7 +651,7 @@ const UpdateACar = () => {
                 )}
                 <button
                   type="button"
-                  onClick={addFeatures}
+                  onClick={() => addFeatures({ value: '' })}
                   className="flex items-center gap-2 text-primary hover:text-blue-700 font-medium"
                 >
                   <Plus className="w-4 h-4" />
@@ -669,9 +659,9 @@ const UpdateACar = () => {
                 </button>
               </div>
 
-              {errors.features && (
+              {errors.features?.[index]?.value?.message && (
                 <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
-                  {errors.features?.[index]?.message}
+                  {errors.features?.[index]?.value?.message}
 
                   <CircleAlert
                     className="text-red-800 dark:text-red-500"
@@ -809,9 +799,12 @@ const UpdateACar = () => {
               setValue('coverImage', files as File[], { shouldValidate: true });
               trigger('coverImage');
             }}
-            initilaImages={
+            initialImages={
               car?.data?.coverImage ? [car?.data?.coverImage as string] : []
             }
+            // initilaImages={
+            //   car?.data?.images ? (car?.data?.images as string[]) : []
+            // }
           />
 
           <input
@@ -841,7 +834,7 @@ const UpdateACar = () => {
               setValue('images', files);
               trigger('images');
             }}
-            initilaImages={
+            initialImages={
               car?.data?.images ? (car?.data?.images as string[]) : []
             }
           />

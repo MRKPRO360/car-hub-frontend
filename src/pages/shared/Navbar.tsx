@@ -74,7 +74,7 @@ const Navbar = () => {
 
       {/* Main Navbar */}
       <div className="max-w-[1536px] mx-auto">
-        <div className="bg-white dark:bg-gray-900 px-4 dark:text-white flex items-center justify-between border-b border-b-gray-300/50">
+        <div className="bg-white dark:bg-gray-900 px-4 dark:text-white flex items-center justify-between border-b border-b-gray-300/50 dark:border-b-gray-700 ">
           {/* Logo */}
           <div className="text-2xl font-bold text-primary dark:text-gray-300 py-3">
             CARHUB
@@ -87,7 +87,7 @@ const Navbar = () => {
                 <NavLink
                   key={key}
                   to={el.path}
-                  className="relative inline-block hover:text-primary transition py-5"
+                  className="relative inline-block hover:text-primary transition duration-300 py-5"
                 >
                   {({ isActive }) => (
                     <>

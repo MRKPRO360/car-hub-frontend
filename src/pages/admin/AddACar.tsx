@@ -637,19 +637,26 @@ const AddACar = () => {
 
         {/* FEATURES */}
         <div className="space-y-3">
+          <label
+            htmlFor="features"
+            className="font-semibold text-base block text-gray-600"
+          >
+            Features
+            <span className="text-red-700">*</span>
+          </label>
           {features.map((feature, index) => (
             <div key={index}>
               <div className="flex items-center gap-3">
                 <input
                   type="text"
                   placeholder={`Feature ${index + 1}`}
-                  value={feature}
+                  defaultValue={feature}
                   {...register(`features.${index}`, {
                     required: 'At least one feature is required',
                     onChange: (e) => handleChange(index, e.target.value),
                   })}
                   className={`flex-1 py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
-                    errors.features
+                    errors.features?.[index]
                       ? 'border-red-500'
                       : 'border-gray-300 focus:border-primary'
                   }`}
@@ -675,7 +682,7 @@ const AddACar = () => {
                 </button>
               </div>
 
-              {errors.features && (
+              {errors.features?.[index] && (
                 <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                   {errors.features?.[index]?.message}
 

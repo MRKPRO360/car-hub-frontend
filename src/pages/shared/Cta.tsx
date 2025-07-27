@@ -1,4 +1,4 @@
-import { Loader } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { FaArrowRightLong } from 'react-icons/fa6';
 
 interface ICta {
@@ -43,7 +43,7 @@ function Cta({
       >
         {isSubmitting ? submittingText : text}
         {/* {text} */}
-        {isSubmitting && <Loader className="animate-spin w-5 h-5" />}
+        {isSubmitting && <LoaderCircle className="animate-spin w-5 h-5" />}
         {arrowRight && <FaArrowRightLong className="text-xl" />}
       </div>
     </div>

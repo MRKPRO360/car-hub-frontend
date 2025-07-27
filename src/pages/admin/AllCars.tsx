@@ -153,7 +153,7 @@ export default function AllCars() {
                 <TableCell className="px-4 py-3 ">
                   <img
                     className="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover"
-                    src={car?.coverImage}
+                    src={car?.coverImage as string}
                     alt={`${car?.category} ${car?.brand}`}
                   />
                 </TableCell>

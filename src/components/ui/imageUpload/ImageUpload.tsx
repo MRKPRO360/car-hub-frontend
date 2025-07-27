@@ -7,18 +7,19 @@ interface ImageUploadProps {
   multiple?: boolean;
   minFiles?: number;
   onChange: (files: File[]) => void;
-  initilaImages?: string[];
+  initialImages?: string[];
 }
 function ImageUpload({
   label,
   multiple = false,
   minFiles = 1,
   onChange,
-  initilaImages,
+  initialImages,
 }: ImageUploadProps) {
   const [previews, setPreviews] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const hasInitialized = useRef(false);
 
   const handleFiles = (files: FileList | null) => {
     if (!files) return;
@@ -38,17 +39,18 @@ function ImageUpload({
     setPreviews(newPreviews);
     setFiles(newFiles);
     onChange(newFiles);
-
     if (!multiple && inputRef.current) {
       inputRef.current.value = '';
     }
   };
 
   useEffect(() => {
-    if (initilaImages?.length) {
-      setPreviews(initilaImages);
+    if (!hasInitialized.current && initialImages?.length) {
+      setPreviews(initialImages);
     }
-  }, [initilaImages]);
+
+    hasInitialized.current = true;
+  }, [initialImages]);
 
   return (
     <div>

@@ -27,6 +27,7 @@ const carsApi = baseApi.injectEndpoints({
         };
       },
     }),
+
     getACar: builder.query<TResponse<ICar>, string>({
       query: (id) => {
         return {
@@ -36,6 +37,7 @@ const carsApi = baseApi.injectEndpoints({
       },
       providesTags: (_result, _error, id) => [{ type: 'cars', id }],
     }),
+
     addCar: builder.mutation({
       query: (data) => ({
         url: '/cars',
@@ -58,6 +60,7 @@ const carsApi = baseApi.injectEndpoints({
           body: data, // ✅ Send formData directly
         };
       },
+      // invalidatesTags: ['cars'],
       invalidatesTags: (_result, _error, { id }) => [{ type: 'cars', id }],
     }),
   }),
