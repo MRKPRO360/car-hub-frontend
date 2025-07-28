@@ -4,7 +4,7 @@ import {
   useUpdateCarMutation,
 } from '../../redux/features/admin/carManagement.api';
 import { toast } from 'sonner';
-import { IResponse, IUser, UpdateICarForm } from '../../types';
+import { IResponse, UpdateICarForm } from '../../types';
 import { useEffect } from 'react';
 import ImageUpload from '../../components/ui/imageUpload/ImageUpload';
 import Cta from '../shared/Cta';
@@ -38,11 +38,14 @@ const UpdateACar = () => {
   } = useForm<UpdateICarForm>({
     // ENSURES OLD FEATURES ARE REPLACED PROPERLY
     shouldUnregister: true,
+    defaultValues: {
+      features: car?.data.features.map((feature) => ({ value: feature })) || [
+        { value: '' },
+      ],
+    },
   });
 
   useEffect(() => {
-    console.log(car?.data);
-
     if (car?.data) {
       reset({
         ...car.data,

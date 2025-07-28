@@ -1,8 +1,8 @@
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
 import { useAddCarMutation } from '../../redux/features/admin/carManagement.api';
 import { toast } from 'sonner';
 import { ICarForm, IResponse, IUser } from '../../types';
-import { useState } from 'react';
+
 import ImageUpload from '../../components/ui/imageUpload/ImageUpload';
 import Cta from '../shared/Cta';
 import { CircleAlert, Plus, Trash2 } from 'lucide-react';
@@ -29,7 +29,12 @@ const AddACar = () => {
     trigger,
     setValue,
     reset,
-  } = useForm<ICarForm>();
+    control,
+  } = useForm<ICarForm>({
+    defaultValues: {
+      features: [{ value: '' }],
+    },
+  });
 
   const [addCar] = useAddCarMutation();
   const token = useAppSelector(selectCurrentToken);
@@ -40,49 +45,18 @@ const AddACar = () => {
     user = verifyToken(token);
   }
 
-  const [features, setFeatures] = useState<string[]>(['']);
-
-  const handleChange = (index: number, value: string) => {
-    const newFeatures = [...features];
-    newFeatures[index] = value;
-    setFeatures(newFeatures);
-  };
-
-  const addFeatures = () => {
-    setFeatures([...features, '']);
-  };
-
-  const removeFeatures = (index: number) => {
-    const newFeatures = features.filter((_, i) => i !== index);
-
-    setFeatures(newFeatures);
-  };
+  const {
+    fields: featuresFilelds,
+    append: addFeatures,
+    remove: removeFeatures,
+  } = useFieldArray<any>({
+    control,
+    name: 'features',
+  });
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Adding ...');
     const formData = new FormData();
-
-    /*
-
-  "coverImage": "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653408/dxn6givlg9ibtsxvxhfm.png",
-  "images": [
-    "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653411/ucuufi4kdrg2ihhxobel.jpg",
-    "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653414/rvhky4fwwnrjecf4k04o.jpg",
-    "https://res.cloudinary.com/djrbf3kbm/image/upload/v1746653413/kcfrkrc0oidpyxrwknbx.jpg"
-  ],
-
-  "ratingAverage": 4.3,
-  "ratingQuantity": 280,
-
-  "vin": "MAHSCN23456789012",
-  "location": {
-    "city": "Bangalore",
-    "state": "Karnataka",
-    "country": "India"
-  },
-  
-}
-    */
 
     const carData = {
       ...data,
@@ -93,7 +67,9 @@ const AddACar = () => {
       horsepower: parseFloat(data.horsepower),
       torque: parseFloat(data.torque),
       year: new Date().getFullYear(),
-      features,
+      features: data.features.map(
+        (feature: { value: string }) => feature.value
+      ),
       author: user?.userID,
     };
 
@@ -644,25 +620,25 @@ const AddACar = () => {
             Features
             <span className="text-red-700">*</span>
           </label>
-          {features.map((feature, index) => (
-            <div key={index}>
+          {featuresFilelds.map((field, index) => (
+            <div key={field.id}>
               <div className="flex items-center gap-3">
                 <input
                   type="text"
                   placeholder={`Feature ${index + 1}`}
-                  defaultValue={feature}
-                  {...register(`features.${index}`, {
-                    required: 'At least one feature is required',
-                    onChange: (e) => handleChange(index, e.target.value),
+                  {...register(`features.${index}.value`, {
+                    required:
+                      featuresFilelds.length <= 1 &&
+                      'At least one feature is required',
                   })}
                   className={`flex-1 py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
-                    errors.features?.[index]
+                    errors.features?.[index]?.value?.message
                       ? 'border-red-500'
                       : 'border-gray-300 focus:border-primary'
                   }`}
                 />
 
-                {features.length > 1 && (
+                {featuresFilelds.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeFeatures(index)}
@@ -674,7 +650,7 @@ const AddACar = () => {
                 )}
                 <button
                   type="button"
-                  onClick={addFeatures}
+                  onClick={() => addFeatures({ value: '' })}
                   className="flex items-center gap-2 text-primary hover:text-blue-700 font-medium"
                 >
                   <Plus className="w-4 h-4" />
@@ -682,9 +658,9 @@ const AddACar = () => {
                 </button>
               </div>
 
-              {errors.features?.[index] && (
+              {errors.features?.[index]?.value?.message && (
                 <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
-                  {errors.features?.[index]?.message}
+                  {errors.features?.[index]?.value?.message}
 
                   <CircleAlert
                     className="text-red-800 dark:text-red-500"

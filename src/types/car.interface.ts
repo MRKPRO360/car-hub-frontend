@@ -52,9 +52,11 @@ export interface ICar {
 }
 
 // ADD CAR FORM
-export interface ICarForm extends Omit<ICar, 'coverImage' | 'images'> {
+export interface ICarForm
+  extends Omit<ICar, 'features' | 'coverImage' | 'images'> {
   coverImage: File[];
   images: File[];
+  features: { value: string }[];
 }
 
 // UPDATE CAR FORM

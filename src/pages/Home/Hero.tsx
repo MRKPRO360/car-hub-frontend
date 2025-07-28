@@ -1,4 +1,4 @@
-import hero from '../../assets/images/hero car.png';
+import hero from '../../assets/images/hero2.png';
 import blueBg from '../../assets/images/home blue bg.jpg';
 import Cta from '../shared/Cta';
 const Hero = () => {
@@ -79,7 +79,7 @@ const Hero = () => {
             </div>
           </div>
           {/* Car Image */}
-          <div className="bais-[300px] md:basis-[500px]">
+          <div className="bais-[300px] md:basis-[650px]">
             <img src={hero} alt="Hero cars" className="" />
           </div>
         </div>
