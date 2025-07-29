@@ -1,16 +1,15 @@
-import type React from "react";
-import type { FC } from "react";
+import type React from 'react';
+import type { FC } from 'react';
 
 interface InputProps {
-  type?: "text" | "number" | "email" | "password" | "date" | "time" | string;
+  type?: 'text' | 'number' | 'email' | 'password' | 'date' | 'time' | string;
   id?: string;
   name?: string;
   placeholder?: string;
   value?: string | number;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-  min?: string;
-  max?: string;
+  min?: string | number;
+  max?: string | number;
   step?: number;
   disabled?: boolean;
   success?: boolean;
@@ -19,13 +18,11 @@ interface InputProps {
 }
 
 const Input: FC<InputProps> = ({
-  type = "text",
+  type = 'text',
   id,
   name,
   placeholder,
-  value,
-  onChange,
-  className = "",
+  className = '',
   min,
   max,
   step,
@@ -53,8 +50,6 @@ const Input: FC<InputProps> = ({
         id={id}
         name={name}
         placeholder={placeholder}
-        value={value}
-        onChange={onChange}
         min={min}
         max={max}
         step={step}
@@ -66,10 +61,10 @@ const Input: FC<InputProps> = ({
         <p
           className={`mt-1.5 text-xs ${
             error
-              ? "text-error-500"
+              ? 'text-error-500'
               : success
-              ? "text-success-500"
-              : "text-gray-500"
+              ? 'text-success-500'
+              : 'text-gray-500'
           }`}
         >
           {hint}

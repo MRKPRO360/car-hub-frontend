@@ -112,7 +112,7 @@ const AddACar = () => {
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label
-              className="block text-gray-600 font-semibold text-base dark:text-gray-400"
+              className="block text-gray-600 font-semibold text-base dark:text-white/80"
               htmlFor="brand"
             >
               Brand
@@ -120,7 +120,7 @@ const AddACar = () => {
             <select
               defaultValue=""
               id="brand"
-              className={`text-gray-600 dark:text-gray-400 py-2 px-3 rounded-md border w-full outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800${
                 errors.brand
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -155,7 +155,7 @@ const AddACar = () => {
 
           <div>
             <label
-              className="block font-semibold text-gray-600 dark:text-gray-400 font-base"
+              className="block font-semibold text-gray-600 dark:text-white/80 font-base"
               htmlFor="category"
             >
               Category
@@ -163,7 +163,7 @@ const AddACar = () => {
             <select
               defaultValue=""
               id="category"
-              className={`py-2 px-3 text-gray-600 dark:text-gray-400 rounded-md border w-full outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.category
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -202,7 +202,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="Model"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
             >
               Model <span className="text-red-700">*</span>
             </label>
@@ -210,7 +210,7 @@ const AddACar = () => {
               type="text"
               id="model"
               placeholder="Car Model"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.model
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -233,7 +233,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="Price"
-              className="block dark:text-gray-400 text-gray-600 font-semibold text-base"
+              className="block dark:text-white/80 text-gray-600 font-semibold text-base"
             >
               Price <span className="text-red-700">*</span>
             </label>
@@ -241,7 +241,7 @@ const AddACar = () => {
               type="number"
               id="price"
               placeholder="Car price exmp. 3000"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.price
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -265,7 +265,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="Quantity"
-            className="block font-semibold text-base text-gray-600 dark:text-gray-400"
+            className="block font-semibold text-base text-gray-600 dark:text-white/80"
           >
             Quantity <span className="text-red-700">*</span>
           </label>
@@ -273,7 +273,7 @@ const AddACar = () => {
             type="number"
             id="quantity"
             placeholder="Car quantity exmp. 3"
-            className={`py-2 px-3 dark:text-gray-400 rounded-md w-full outline-none focus:outline-none border ${
+            className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
               errors.quantity
                 ? 'border-red-800'
                 : 'focus:border-primary border-gray-300'
@@ -294,14 +294,14 @@ const AddACar = () => {
         <div className="w-full">
           <label
             htmlFor="description"
-            className="block font-semibold text-base text-gray-600 dark:text-gray-400"
+            className="block font-semibold text-base text-gray-600 dark:text-white/80"
           >
             Car Description <span className="text-red-700">*</span>
           </label>
           <textarea
             id="description"
             rows={4}
-            className={`py-2 px-3 dark:text-gray-400 rounded-md w-full outline-none focus:outline-none border ${
+            className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
               errors.description
                 ? 'border-red-800'
                 : 'focus:border-primary border-gray-300'
@@ -326,7 +326,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="mileage"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
             >
               Mileage <span className="text-red-700">*</span>
             </label>
@@ -334,7 +334,7 @@ const AddACar = () => {
               type="number"
               id="mileage"
               placeholder="Mileage exmp. 14.5"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.mileage
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -357,7 +357,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="enginge"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
             >
               Engine <span className="text-red-700">*</span>
             </label>
@@ -365,7 +365,7 @@ const AddACar = () => {
               type="text"
               id="engine"
               placeholder="exmp. 2.2L mHawk Diesel"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.engine
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -390,7 +390,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="fuelType"
-            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+            className="block text-gray-600 dark:text-white/80 font-semibold text-base"
           >
             Fuel Type<span className="text-red-700">*</span>
           </label>
@@ -408,9 +408,9 @@ const AddACar = () => {
                   })}
                   className="appearance-none w-4 h-4 rounded-full border border-gray-400
            checked:border-[4px] checked:border-primary
-           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
+           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-brand focus:outline-hidden  focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-400 ">
+                <span className="text-gray-800 dark:text-white/80 ">
                   {type}
                 </span>
               </label>
@@ -431,7 +431,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="transmission"
-            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+            className="block text-gray-600 dark:text-white/80 font-semibold text-base"
           >
             Transmission<span className="text-red-700">*</span>
           </label>
@@ -449,9 +449,9 @@ const AddACar = () => {
                   })}
                   className="appearance-none w-4 h-4 rounded-full border border-gray-400
            checked:border-[4px] checked:border-primary
-           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
+           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-brand focus:outline-hidden  focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-400">
+                <span className="text-gray-800 dark:text-white/80">
                   {transmission}
                 </span>
               </label>
@@ -473,7 +473,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="color"
-              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
+              className="font-semibold text-base block text-gray-600 dark:text-white/80"
             >
               Color
               <span className="text-red-700">*</span>
@@ -482,7 +482,7 @@ const AddACar = () => {
             <input
               type="text"
               placeholder="color exmp. Daytona Grey"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.color
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -507,7 +507,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="horsepower"
-              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
+              className="font-semibold text-base block text-gray-600 dark:text-white/80"
             >
               Horsepower
               <span className="text-red-700">*</span>
@@ -516,7 +516,7 @@ const AddACar = () => {
             <input
               type="number"
               placeholder="exmp. 786"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.horsepower
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -545,7 +545,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="torque"
-              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
+              className="font-semibold text-base block text-gray-600 dark:text-white/80"
             >
               Torque
               <span className="text-red-700">*</span>
@@ -554,7 +554,7 @@ const AddACar = () => {
             <input
               type="number"
               placeholder="exmp. 400"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.torque
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -588,7 +588,7 @@ const AddACar = () => {
             <input
               type="number"
               placeholder="exmp. 6"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.seatingCapacity
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -631,7 +631,7 @@ const AddACar = () => {
                       featuresFilelds.length <= 1 &&
                       'At least one feature is required',
                   })}
-                  className={`flex-1 py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+                  className={`flex-1 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                     errors.features?.[index]?.value?.message
                       ? 'border-red-500'
                       : 'border-gray-300 focus:border-primary'
@@ -676,7 +676,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="condition"
-            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+            className="block text-gray-600 dark:text-white/80 font-semibold text-base"
           >
             Condition<span className="text-red-700">*</span>
           </label>
@@ -694,9 +694,9 @@ const AddACar = () => {
                   })}
                   className="appearance-none w-4 h-4 rounded-full border border-gray-400
            checked:border-[4px] checked:border-primary
-           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
+           hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-brand focus:outline-hidden  focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-400">
+                <span className="text-gray-800 dark:text-white/80">
                   {condition}
                 </span>
               </label>
@@ -720,7 +720,7 @@ const AddACar = () => {
           <div className="flex-1">
             <label
               htmlFor="city"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
             >
               City
             </label>
@@ -728,7 +728,7 @@ const AddACar = () => {
               type="text"
               id="city"
               placeholder="exmp. 2.2L mHawk Diesel"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.location?.city
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -739,7 +739,7 @@ const AddACar = () => {
           <div className="flex-1">
             <label
               htmlFor="street"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
             >
               State
             </label>
@@ -747,7 +747,7 @@ const AddACar = () => {
               type="text"
               id="state"
               placeholder="exmp. 2.2L mHawk Diesel"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.location?.state
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -758,7 +758,7 @@ const AddACar = () => {
           <div className="flex-1">
             <div>
               <label
-                className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+                className="block text-gray-600 dark:text-white/80 font-semibold text-base"
                 htmlFor="country"
               >
                 Country
@@ -766,7 +766,7 @@ const AddACar = () => {
               <select
                 defaultValue=""
                 id="country"
-                className={`py-2 px-3 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
+                className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                   errors.location?.country
                     ? 'border-red-500'
                     : 'border-gray-300 focus:border-primary'
@@ -775,7 +775,7 @@ const AddACar = () => {
                 {...register('location.country')}
               >
                 {/* Default unselected placeholder */}
-                <option className="dark:text-gray-400" value="" disabled hidden>
+                <option className="dark:text-white/80" value="" disabled hidden>
                   -- Select a country (optional)--
                 </option>
 
@@ -818,7 +818,8 @@ const AddACar = () => {
               />
             </p>
           )}
-
+        </div>
+        <div className="w-full">
           <ImageUpload
             label="Car Images (Ensure 3 Images)"
             multiple={true}
