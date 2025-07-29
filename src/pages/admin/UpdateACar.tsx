@@ -828,7 +828,8 @@ const UpdateACar = () => {
               />
             </p>
           )}
-
+        </div>
+        <div className="w-full">
           <ImageUpload
             label="Car Images (Ensure 3 Images)"
             multiple={true}

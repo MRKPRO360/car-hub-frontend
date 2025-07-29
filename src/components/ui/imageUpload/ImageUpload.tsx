@@ -63,7 +63,8 @@ function ImageUpload({
         onClick={() => inputRef.current?.click()}
         className={clsx(
           'border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer text-center transition hover:bg-gray-100 dark:hover:bg-gray-800',
-          previews.length >= minFiles && 'border-green-400'
+          previews.length >= minFiles && 'border-green-400',
+          previews.length > 0 && 'hidden'
         )}
       >
         <ImagePlus

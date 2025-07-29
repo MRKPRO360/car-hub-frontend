@@ -8,6 +8,7 @@ import { Button } from '../ui/button/Button';
 import { useForm } from 'react-hook-form';
 import Cta from '../../pages/shared/Cta';
 import { useEffect } from 'react';
+import ImageUpload from '../ui/imageUpload/ImageUpload';
 
 export default function UserMetaCard({ user }: { user: IUser }) {
   console.log(user);
@@ -152,6 +153,36 @@ export default function UserMetaCard({ user }: { user: IUser }) {
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Country</Label>
                     <Input type="text" value="Team Manager" />
+                  </div>
+                  <div className="col-span-2">
+                    <ImageUpload
+                      label="Profile Picture"
+                      multiple={false}
+                      onChange={(files) => {
+                        setValue('profileImg', files, { shouldValidate: true });
+                        trigger('profileImg');
+                      }}
+                      initialImages={user?.profileImg ? [user?.profileImg] : []}
+                    />
+
+                    <input
+                      type="hidden"
+                      {...register('coverImage', {
+                        required: 'A car should have a cover image!',
+                        validate: (files: File[]) =>
+                          files?.length > 0 || 'Please select a cover image',
+                      })}
+                    />
+                    {errors.coverImage && (
+                      <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                        {errors.coverImage.message}
+
+                        <CircleAlert
+                          className="text-red-800 dark:text-red-500"
+                          size={20}
+                        />
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
