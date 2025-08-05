@@ -5,7 +5,7 @@ import Input from '../ui/form/input/InputField';
 import { IUser } from '../../types';
 import { Button } from '../ui/button/Button';
 
-export default function UserAddressCard({ user }: { user: IUser }) {
+export default function UserAddressCard({ user }: { user: IUser | null }) {
   const {
     isOpen,
     // openModal,

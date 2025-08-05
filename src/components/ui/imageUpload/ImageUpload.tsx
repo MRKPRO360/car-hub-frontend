@@ -19,7 +19,7 @@ function ImageUpload({
   const [previews, setPreviews] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const hasInitialized = useRef(false);
+  // const hasInitialized = useRef(false);
 
   const handleFiles = (files: FileList | null) => {
     if (!files) return;
@@ -45,11 +45,12 @@ function ImageUpload({
   };
 
   useEffect(() => {
-    if (!hasInitialized.current && initialImages?.length) {
+    // !hasInitialized.current &&
+    if (initialImages?.length) {
       setPreviews(initialImages);
     }
 
-    hasInitialized.current = true;
+    // hasInitialized.current = true;
   }, [initialImages]);
 
   return (
@@ -63,8 +64,7 @@ function ImageUpload({
         onClick={() => inputRef.current?.click()}
         className={clsx(
           'border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer text-center transition hover:bg-gray-100 dark:hover:bg-gray-800',
-          previews.length >= minFiles && 'border-green-400',
-          previews.length > 0 && 'hidden'
+          previews.length >= minFiles && 'border-green-400'
         )}
       >
         <ImagePlus

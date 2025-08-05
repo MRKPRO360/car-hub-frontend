@@ -117,15 +117,27 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/dashboard',
-        element: <UserProfiles />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin', 'user']}>
+            <UserProfiles />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/stats',
-        element: <AdminStats />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminStats />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/profile',
-        element: <UserProfiles />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin', 'user']}>
+            <UserProfiles />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/my-orders',
@@ -133,27 +145,51 @@ const router = createBrowserRouter([
       },
       {
         path: '/dashboard/verify',
-        element: <VerifyOrder />,
+        element: (
+          <ProtectedRoute allowedRoles={['user']}>
+            <VerifyOrder />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/customer-orders',
-        element: <CustomerOrders />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin']}>
+            <CustomerOrders />,
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/all-cars',
-        element: <AllCars />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AllCars />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/add-car',
-        element: <AddACar />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AddACar />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/update-car/:id',
-        element: <UpdateACar />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin']}>
+            <UpdateACar />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/dashboard/all-users',
-        element: <AllUsers />,
+        element: (
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AllUsers />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

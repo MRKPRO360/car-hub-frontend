@@ -4,7 +4,7 @@ export interface IUser {
   name: string;
   email: string;
   role: string;
-  profileImg: string;
+  profileImg: string | File[];
   phone: string;
   isBlocked: boolean;
   isDeleted: boolean;

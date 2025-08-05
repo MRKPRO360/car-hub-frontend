@@ -9,10 +9,10 @@ import { Navigate } from 'react-router';
 
 type TProtectedRoute = {
   children: ReactNode;
-  role: string | undefined;
+  allowedRoles: string[];
 };
 
-const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
+const ProtectedRoute = ({ children, allowedRoles }: TProtectedRoute) => {
   const token = useAppSelector(selectCurrentToken);
 
   let user;
@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
 
   const dispatch = useAppDispatch();
 
-  if (role !== undefined && role !== user?.role) {
+  if (user && !allowedRoles.includes(user?.role)) {
     dispatch(logout());
     return <Navigate to="/login" replace={true} />;
   }

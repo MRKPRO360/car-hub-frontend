@@ -5,14 +5,23 @@ import Label from '../ui/form/Label';
 import Input from '../ui/form/input/InputField';
 import { IUser } from '../../types';
 import { Button } from '../ui/button/Button';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import Cta from '../../pages/shared/Cta';
 import { useEffect } from 'react';
 import ImageUpload from '../ui/imageUpload/ImageUpload';
+import { CircleAlert } from 'lucide-react';
+import { countriesOptions } from '../../constant/city';
+import { toast } from 'sonner';
+import { useAppDispatch } from '../../redux/hooks';
+import { verifyToken } from '../../utils/verifyToken';
+import { setUser } from '../../redux/features/auth/authSlice';
+import { useUpdateMeMutation } from '../../redux/features/user/selfManagement';
 
-export default function UserMetaCard({ user }: { user: IUser }) {
-  console.log(user);
+export default function UserMetaCard({ user }: { user: IUser | null }) {
   const { isOpen, openModal, closeModal } = useModal();
+  const [update] = useUpdateMeMutation();
+
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -23,8 +32,34 @@ export default function UserMetaCard({ user }: { user: IUser }) {
     setValue,
   } = useForm<IUser>();
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading('Updating...');
+    const formData = new FormData();
+
+    formData.append('data', JSON.stringify(data));
+    const file = data.profileImg[0];
+    if (file) formData.append('file', file);
+
+    try {
+      const res = await update({ data: formData, id: user?._id }).unwrap();
+
+      console.log(res);
+
+      if (res?.data?.token) {
+        const updatedUser = verifyToken(res.data.token);
+        console.log({ updatedUser });
+
+        dispatch(setUser({ user: res.data.user, token: res.data.token }));
+      }
+
+      toast.success('Profile updated successfully', {
+        id: toastId,
+      });
+
+      closeModal();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -39,19 +74,19 @@ export default function UserMetaCard({ user }: { user: IUser }) {
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
             <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-              <img src={user.profileImg} alt="user" />
+              <img src={user?.profileImg as string} alt="user" />
             </div>
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                {user.name}
+                {user?.name}
               </h4>
               <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {user.role.toUpperCase()}
+                  {user?.role?.toUpperCase()}
                 </p>
                 <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {user.address}
+                  {user?.address}
                 </p>
               </div>
             </div>
@@ -131,28 +166,58 @@ export default function UserMetaCard({ user }: { user: IUser }) {
 
                   <div className="col-span-2">
                     <Label>Full Name</Label>
-                    <Input {...register('name')} type="text" value="Musharof" />
+                    <Input {...register('name')} type="text" />
                   </div>
 
                   {/* IN LARGE VIEW IT"LL TAKE 2 COLUMNS BUT IN THE MOBILE VIEW IT"LL TAKE ONE COLUMN*/}
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Email Address</Label>
-                    <Input type="text" value="randomuser@pimjo.com" />
+                    <Input {...register('email')} type="text" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Phone</Label>
-                    <Input type="text" value="+09 363 398 46" />
+                    <Input {...register('phone')} type="text" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Address</Label>
-                    <Input type="text" value="Team Manager" />
+                    <Input {...register('address')} type="text" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Country</Label>
-                    <Input type="text" value="Team Manager" />
+                    <select
+                      id="country"
+                      className={`py-2 px-3 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
+                        errors.country
+                          ? 'border-red-500'
+                          : 'border-gray-300 focus:border-primary'
+                      }
+                                    `}
+                      {...register('country')}
+                    >
+                      {/* Default unselected placeholder */}
+                      <option
+                        className="dark:text-gray-400"
+                        value=""
+                        disabled
+                        hidden
+                      >
+                        -- Select a country (optional)--
+                      </option>
+
+                      {countriesOptions.map((country, idx) => (
+                        <option
+                          className="dark:text-gray-800"
+                          key={idx}
+                          value={country}
+                        >
+                          {country}
+                        </option>
+                      ))}
+                    </select>
+                    {/* <Input {...register('country')} type="text" /> */}
                   </div>
                   <div className="col-span-2">
                     <ImageUpload
@@ -162,20 +227,22 @@ export default function UserMetaCard({ user }: { user: IUser }) {
                         setValue('profileImg', files, { shouldValidate: true });
                         trigger('profileImg');
                       }}
-                      initialImages={user?.profileImg ? [user?.profileImg] : []}
+                      initialImages={
+                        user?.profileImg ? [user?.profileImg as string] : []
+                      }
                     />
 
                     <input
                       type="hidden"
-                      {...register('coverImage', {
+                      {...register('profileImg', {
                         required: 'A car should have a cover image!',
-                        validate: (files: File[]) =>
+                        validate: (files: File[] | string) =>
                           files?.length > 0 || 'Please select a cover image',
                       })}
                     />
-                    {errors.coverImage && (
+                    {errors.profileImg && (
                       <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
-                        {errors.coverImage.message}
+                        {errors.profileImg.message}
 
                         <CircleAlert
                           className="text-red-800 dark:text-red-500"
@@ -191,7 +258,9 @@ export default function UserMetaCard({ user }: { user: IUser }) {
               <Button size="sm" variant="outline" onClick={closeModal}>
                 Close
               </Button>
-              <Cta text="Save Changes" size="sm" />
+              <button type="submit">
+                <Cta text="Save Changes" size="sm" />
+              </button>
             </div>
           </form>
         </div>

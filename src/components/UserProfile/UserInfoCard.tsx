@@ -5,7 +5,7 @@ import Input from '../ui/form/input/InputField';
 import { IUser } from '../../types';
 import { Button } from '../ui/button/Button';
 
-export default function UserInfoCard({ user }: { user: IUser }) {
+export default function UserInfoCard({ user }: { user: IUser | null }) {
   const {
     isOpen,
     //  openModal,
@@ -39,7 +39,7 @@ export default function UserInfoCard({ user }: { user: IUser }) {
                 Bio
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user.role}
+                {user?.role}
               </p>
             </div>
 
@@ -48,7 +48,7 @@ export default function UserInfoCard({ user }: { user: IUser }) {
                 Email address
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user.email}
+                {user?.email}
               </p>
             </div>
 

@@ -3,7 +3,7 @@ import { SidebarProvider, useSidebar } from '../../context/SidebarContext';
 import AppSidebar from '../CHDashboard/AppSidebar';
 import Backdrop from '../CHDashboard/Backdrop';
 import AppHeader from '../CHDashboard/AppHeader';
-import { useGetMeQuery } from '../../redux/features/admin/userManagement.api';
+import { useGetMeQuery } from '../../redux/features/user/selfManagement';
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();

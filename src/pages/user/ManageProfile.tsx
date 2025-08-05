@@ -1,6 +1,6 @@
 import { FaCalendar, FaLock, FaUnlock, FaUser } from 'react-icons/fa';
 import { IoMdMail } from 'react-icons/io';
-import { useGetMeQuery } from '../../redux/features/admin/userManagement.api';
+import { useGetMeQuery } from '../../redux/features/user/selfManagement';
 
 const ManageProfile = () => {
   const { data: myInfo, isLoading } = useGetMeQuery(undefined);

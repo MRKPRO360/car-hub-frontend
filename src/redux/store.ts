@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/authSlice';
+import wishlistReducer from './features/wishlist/wishlistSlice';
 
 import storage from 'redux-persist/lib/storage';
 import {
@@ -19,12 +20,23 @@ const persistConfig = {
   storage,
 };
 
+const persistWishlist = {
+  key: 'wishlist',
+  storage,
+};
+
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+
+const persistedWishlistReducer = persistReducer(
+  persistWishlist,
+  wishlistReducer
+);
 
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
+    wishlist: persistedWishlistReducer,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({

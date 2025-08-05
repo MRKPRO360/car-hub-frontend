@@ -37,6 +37,7 @@ function Login() {
       const res = await login(userInfo).unwrap();
       const user = verifyToken(res.data.token) as IUser;
       dispatch(setUser({ user: user, token: res.data.token }));
+
       toast.success('Logged in', { id: toastId, duration: 2000 });
       navigate(`/dashboard`);
     } catch (err) {

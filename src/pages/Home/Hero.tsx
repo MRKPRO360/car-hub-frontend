@@ -1,4 +1,4 @@
-import hero from '../../assets/images/hero2.png';
+import hero from '../../assets/images/hero.png';
 import blueBg from '../../assets/images/home blue bg.jpg';
 import Cta from '../shared/Cta';
 const Hero = () => {

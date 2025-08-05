@@ -29,14 +29,6 @@ const usersApi = baseApi.injectEndpoints({
         };
       },
     }),
-    getMe: builder.query({
-      query: () => {
-        return {
-          url: '/users/me',
-          method: 'GET',
-        };
-      },
-    }),
 
     deleteAUser: builder.mutation({
       query: (id) => ({
@@ -45,14 +37,14 @@ const usersApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['users'],
     }),
-    updateUser: builder.mutation({
-      query: (args) => ({
-        url: `/users/${args.id}`,
-        method: 'PATCH',
-        body: args.data,
-      }),
-      invalidatesTags: ['users'],
-    }),
+    // updateUser: builder.mutation({
+    //   query: (args) => ({
+    //     url: `/users/${args.id}`,
+    //     method: 'PATCH',
+    //     body: args.data,
+    //   }),
+    //   invalidatesTags: ['users'],
+    // }),
     deactivateUser: builder.mutation({
       query: (id) => ({
         url: `/users/deactivate-user/${id}`,
@@ -74,8 +66,7 @@ export const {
   useGetAllUsersQuery,
   useGetAUserQuery,
   useDeleteAUserMutation,
-  useUpdateUserMutation,
+  // useUpdateUserMutation,
   useDeactivateUserMutation,
   useActivateUserMutation,
-  useGetMeQuery,
 } = usersApi;

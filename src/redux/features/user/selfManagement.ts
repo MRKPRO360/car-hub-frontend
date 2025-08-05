@@ -39,6 +39,24 @@ const selfApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['userOrders'],
     }),
+
+    getMe: builder.query({
+      query: () => {
+        return {
+          url: '/users/me',
+          method: 'GET',
+        };
+      },
+      providesTags: ['profile'],
+    }),
+    updateMe: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/users/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: ['profile'],
+    }),
   }),
 });
 
@@ -46,4 +64,6 @@ export const {
   useGetMyOrdersQuery,
   useChangeMyPasswordMutation,
   useDeleteMyOrdersMutation,
+  useGetMeQuery,
+  useUpdateMeMutation,
 } = selfApi;
