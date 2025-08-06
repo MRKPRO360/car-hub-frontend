@@ -1,4 +1,3 @@
-import { FiSearch, FiHeart } from 'react-icons/fi';
 import { MdLocalPhone } from 'react-icons/md';
 import { IoMdEye } from 'react-icons/io';
 import { TbWorld } from 'react-icons/tb';
@@ -12,6 +11,7 @@ import Cta from './Cta';
 import MobileDrawer from './MobileDrawer';
 import { ThemeToggleButton } from './ThemeToggleButton';
 import UserDropdown from '../../components/CHDashboard/header/UserDropdown';
+import { Heart, Search } from 'lucide-react';
 
 const publicNavItems = [
   {
@@ -112,14 +112,16 @@ const Navbar = () => {
               aria-label="Search"
             >
               <Link to="/stock">
-                <FiSearch />
+                <Search className="w-5 h-5" />
               </Link>
             </button>
             <button
               className="hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
               aria-label="Wishlist"
             >
-              <FiHeart />
+              <Link to="/wishlist">
+                <Heart className="w-5 h-5" />
+              </Link>
             </button>
             <ul>
               {user?.role ? (

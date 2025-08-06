@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
-import CarsCard from '../Home/CarouselCarsCard';
+
 import { ICar } from '../../types';
 import { IoIosSearch } from 'react-icons/io';
+import CarouselCarCard from '../shared/CarouselCard';
 
 function FilterCars() {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
@@ -78,7 +79,7 @@ function FilterCars() {
             onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}
           >
             {getUniqueValues(key as keyof ICar).map((option) => (
-              <option key={option.toString()} value={String(option)}>
+              <option key={option?.toString()} value={String(option)}>
                 {String(option)}
               </option>
             ))}
@@ -127,7 +128,7 @@ function FilterCars() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8 overflow-hidden">
         {filteredData && filteredData?.length > 0 ? (
-          filteredData?.map((el) => <CarsCard key={el._id} car={el} />)
+          filteredData?.map((el) => <CarouselCarCard key={el._id} car={el} />)
         ) : (
           <p className="text-gray-500">No results found.</p>
         )}

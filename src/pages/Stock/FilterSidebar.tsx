@@ -1,4 +1,3 @@
-// components/FilterSidebar.tsx
 import { useState } from 'react';
 import { FiX, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { ICar, ICarFilters } from '../../types';

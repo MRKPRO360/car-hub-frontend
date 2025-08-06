@@ -8,6 +8,7 @@ import {
   addCar,
   selectWishlistedCar,
 } from '../../redux/features/wishlist/wishlistSlice';
+import formatPrice from '../../utils/formatPrice';
 
 function CarouselCarCard({ car }: { car: ICar }) {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ function CarouselCarCard({ car }: { car: ICar }) {
   const handleWishlist = (car: ICar) => {
     dispatch(addCar(car));
   };
+
   return (
     <CarouselItem className="pl-1 sm:basis-1/2 lg:basis-1/4">
       <div className="bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative">
@@ -54,7 +56,9 @@ function CarouselCarCard({ car }: { car: ICar }) {
               className="w-4 h-4 self-start text-gray-600 font-semibold "
             />
 
-            <p className="text-lg font-bold dark:text-gray-300">{car.price}</p>
+            <p className="text-lg font-bold dark:text-gray-300">
+              {formatPrice(car.price)}
+            </p>
           </div>
           <div className="flex flex-wrap text-sm text-gray-600 dark:text-gray-300 gap-x-4 gap-y-2 my-2 font-semibold ">
             <div className="flex items-center gap-1">

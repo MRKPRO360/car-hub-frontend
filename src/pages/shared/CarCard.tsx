@@ -1,21 +1,40 @@
-import { DollarSign, Fuel, GaugeCircle, Settings } from 'lucide-react';
-import { FiHeart } from 'react-icons/fi';
+import { DollarSign, Fuel, GaugeCircle, Heart, Settings } from 'lucide-react';
 import { Link } from 'react-router';
 import { ICar } from '../../types';
 import { TruncateText } from '../../components/TruncateText/TruncateText';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import {
+  addCar,
+  selectWishlistedCar,
+} from '../../redux/features/wishlist/wishlistSlice';
+import formatPrice from '../../utils/formatPrice';
 
 function CarCard({ car }: { car: ICar }) {
+  const dispatch = useAppDispatch();
+  const wishlistedCars = useAppSelector(selectWishlistedCar);
+
+  const isWishlisted = wishlistedCars.some((el) => el._id === car._id);
+
+  const handleWishlist = (car: ICar) => {
+    dispatch(addCar(car));
+  };
+
   return (
     <div className="overflow-hidden bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative ">
       <button
+        onClick={() => handleWishlist(car)}
         className="text-blue-500 text-lg absolute top-2 right-2 z-50 cursor-pointer"
         aria-label="Wishlist"
       >
-        <FiHeart />
+        <Heart
+          className="w-5 h-5"
+          strokeWidth={isWishlisted ? 0 : 2} // No stroke when filled
+          fill={isWishlisted ? 'currentColor' : 'none'} // Filled or outline
+        />
       </button>
       <Link to={`/cars/${car._id}`}>
         <img
-          src={car.coverImage}
+          src={car.coverImage as string}
           alt={car.model}
           className="w-full h-36 object-cover"
         />
@@ -35,7 +54,9 @@ function CarCard({ car }: { car: ICar }) {
             className="w-4 h-4 self-start text-gray-600 font-semibold"
           />
 
-          <p className="text-lg font-bold dark:text-gray-300">{car.price}</p>
+          <p className="text-lg font-bold dark:text-gray-300">
+            {formatPrice(car.price)}
+          </p>
         </div>
         <div className="flex flex-wrap text-sm text-gray-600 dark:text-gray-300 gap-x-4 gap-y-2 my-2 font-semibold">
           <div className="flex items-center gap-1">

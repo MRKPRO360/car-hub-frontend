@@ -54,7 +54,7 @@ const FeaturedCars = () => {
   }, [cars, data]);
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-12 lg:py-18">
-      <div className="">
+      <div>
         <h2 className="text-4xl font-bold text-center dark:text-gray-300 text-gray-900 mb-12">
           Featured&nbsp;
           <span className="text-blue-600">Cars</span>

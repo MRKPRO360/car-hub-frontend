@@ -5,19 +5,19 @@ import ChangePassword from '../pages/user/ChangePassword';
 import Home from '../pages/Home/Home';
 import About from '../pages/About';
 import Signup from '../pages/Signup';
-import AdminLayout from '../components/layout/AdminLayout';
-import Orders from '../pages/admin/CustomerOrders';
-import Users from '../pages/admin/Users';
-import CreateACar from '../pages/admin/CreateACar';
+// import AdminLayout from '../components/layout/AdminLayout';
+// import Orders from '../pages/admin/CustomerOrders';
+// import Users from '../pages/admin/Users';
+// import CreateACar from '../pages/admin/CreateACar';
+// import ManageProfile from '../pages/user/ManageProfile';
+// import ManageCars from '../pages/admin/ManageCars';
+// import UpdateCar from '../pages/admin/UpdateCar';
 import Car from '../pages/Cars/Car';
 import ProtectedRoute from '../components/layout/ProtectedRoute';
-import ManageCars from '../pages/admin/ManageCars';
 // import UserLayout from '../components/layout/UserLayout';
 // import MyOrders from '../pages/user/MyOrders';
-import ManageProfile from '../pages/user/ManageProfile';
 import VerifyOrder from '../pages/user/VerifyOrder';
 import FilterCars from '../pages/Cars/FilterCars';
-import UpdateCar from '../pages/admin/UpdateCar';
 import { HowItWorks } from '../pages/HowItWorks';
 import Stock from '../pages/Stock';
 import DashboardLayout from '../components/layout/DashboardLayout';
@@ -30,6 +30,7 @@ import AllCars from '../pages/admin/AllCars';
 import AllUsers from '../pages/admin/AllUsers';
 import AddACar from '../pages/admin/AddACar';
 import UpdateACar from '../pages/admin/UpdateACar';
+import Wishlist from '../pages/Wishlist';
 
 const router = createBrowserRouter([
   {
@@ -64,52 +65,57 @@ const router = createBrowserRouter([
         path: '/about',
         element: <About />,
       },
-    ],
-    errorElement: <NotFound />,
-  },
-  {
-    path: '/admin/dashboard',
-    element: (
-      <ProtectedRoute role="admin">
-        <AdminLayout />
-      </ProtectedRoute>
-    ),
-    children: [
       {
-        path: '/admin/dashboard/',
-        element: <FilterCars />,
-      },
-      {
-        path: '/admin/dashboard/orders',
-        element: <Orders />,
-      },
-      {
-        path: '/admin/dashboard/cars',
-        element: <FilterCars />,
-      },
-      {
-        path: '/admin/dashboard/add-car',
-        element: <CreateACar />,
-      },
-      {
-        path: '/admin/dashboard/users',
-        element: <Users />,
-      },
-      {
-        path: '/admin/dashboard/manage-cars',
-        element: <ManageCars />,
-      },
-      {
-        path: '/admin/dashboard/manage-cars/:id',
-        element: <UpdateCar />,
-      },
-      {
-        path: '/admin/dashboard/my-profile',
-        element: <ManageProfile />,
+        path: '/wishlist',
+        element: <Wishlist />,
       },
     ],
     errorElement: <NotFound />,
   },
+  // OLD
+  // {
+  //   path: '/admin/dashboard',
+  //   element: (
+  //     <ProtectedRoute role="admin">
+  //       <AdminLayout />
+  //     </ProtectedRoute>
+  //   ),
+  //   children: [
+  //     {
+  //       path: '/admin/dashboard/',
+  //       element: <FilterCars />,
+  //     },
+  //     {
+  //       path: '/admin/dashboard/orders',
+  //       element: <Orders />,
+  //     },
+  //     {
+  //       path: '/admin/dashboard/cars',
+  //       element: <FilterCars />,
+  //     },
+  //     {
+  //       path: '/admin/dashboard/add-car',
+  //       element: <CreateACar />,
+  //     },
+  //     {
+  //       path: '/admin/dashboard/users',
+  //       element: <Users />,
+  //     },
+  //     {
+  //       path: '/admin/dashboard/manage-cars',
+  //       element: <ManageCars />,
+  //     },
+  //     {
+  //       path: '/admin/dashboard/manage-cars/:id',
+  //       element: <UpdateCar />,
+  //     },
+  //     {
+  //       path: '/admin/dashboard/my-profile',
+  //       element: <ManageProfile />,
+  //     },
+  //   ],
+  //   errorElement: <NotFound />,
+  // },
   // CHECKING
   {
     path: '/dashboard',
