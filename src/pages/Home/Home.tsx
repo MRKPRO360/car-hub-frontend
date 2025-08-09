@@ -14,12 +14,14 @@ function Home() {
       {/* <HomeBanner /> */}
       {/* <Cars renderBtn={true} /> */}
       <Hero />
-      <Features />
-      <FeaturedCars />
-      <WhyCarHub />
-      <MatchYourBudget />
-      <Benefit />
-      <LoveOnline />
+      <div className="px-2">
+        <Features />
+        <FeaturedCars />
+        <WhyCarHub />
+        <MatchYourBudget />
+        <Benefit />
+        <LoveOnline />
+      </div>
       {/* <Accessories />
       <OfferedCar />
       <Testimonials /> */}

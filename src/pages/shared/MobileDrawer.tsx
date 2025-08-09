@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiMenu } from 'react-icons/fi';
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
+import UserDropdown from '../../components/CHDashboard/header/UserDropdown';
+import Cta from './Cta';
+import { IUser } from '../../types';
 
 interface IMobileDrawer {
   items: { path: string; text: string }[];
+  user: IUser;
 }
 
-const MobileDrawer = ({ items }: IMobileDrawer) => {
+const MobileDrawer = ({ items, user }: IMobileDrawer) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Close drawer when clicking outside
@@ -54,7 +58,7 @@ const MobileDrawer = ({ items }: IMobileDrawer) => {
   }, [isOpen]);
 
   return (
-    <div className="md:hidden">
+    <div className="sm:hidden">
       {/* Menu Button */}
       <button
         id="mobile-menu-button"
@@ -66,12 +70,12 @@ const MobileDrawer = ({ items }: IMobileDrawer) => {
       </button>
 
       {/* Overlay */}
-      {isOpen && <div className="fixed inset-0 bg-primary/10 z-40" />}
+      {isOpen && <div className="fixed inset-0 bg-transparent z-40" />}
 
       {/* Drawer */}
       <div
         id="mobile-drawer"
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-64 bg-light-bg dark:bg-gray-900 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -89,10 +93,19 @@ const MobileDrawer = ({ items }: IMobileDrawer) => {
         {/* Drawer Content */}
         <nav className="p-4">
           <ul className="space-y-4">
+            {user?.role ? (
+              <UserDropdown isDashboardLink={true} />
+            ) : (
+              <ul>
+                <NavLink to="/login">
+                  <Cta size="sm" text="Login" />
+                </NavLink>
+              </ul>
+            )}
             {items.map((el, id) => (
               <Link
                 to={el.path}
-                className="block py-2 px-4 hover:text-primary text-black font-semibold text-base transition duration-300"
+                className="block py-2 px-4 hover:text-primary text-gray-900 dark:text-gray-300 font-semibold text-base transition duration-300"
                 onClick={() => setIsOpen(false)}
                 key={id}
               >

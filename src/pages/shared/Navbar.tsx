@@ -81,7 +81,7 @@ const Navbar = () => {
           </div>
 
           {/* Main Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <nav className="hidden sm:flex items-center space-x-6 text-sm font-medium">
             {publicNavItems.map(
               (el: { path: string; text: string }, key: number) => (
                 <NavLink
@@ -123,7 +123,7 @@ const Navbar = () => {
                 <Heart className="w-5 h-5" />
               </Link>
             </button>
-            <ul>
+            <ul className="hidden sm:block">
               {user?.role ? (
                 <UserDropdown isDashboardLink={true} />
               ) : (
@@ -134,9 +134,9 @@ const Navbar = () => {
                 </ul>
               )}
             </ul>
-
-            <MobileDrawer items={publicNavItems} />
           </div>
+
+          <MobileDrawer items={publicNavItems} user={user!} />
         </div>
       </div>
     </nav>

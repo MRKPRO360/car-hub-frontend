@@ -6,7 +6,7 @@ function MainLayout() {
   return (
     <div>
       <Navbar />
-      <div className="max-w-[1536px] mx-auto px-2 sm:px-0">
+      <div className="max-w-[1536px] mx-auto">
         <Outlet />
       </div>
       <Footer />
