@@ -104,10 +104,10 @@ const Hero = () => {
         className="min-h-[60vh] md:min-h-[90vh] lg:py-14  bg-blend-overlay dark:bg-blend-darken bg-[length:100%_100%] md:bg-cover grid place-content-center"
       >
         <div className="md:-translate-y-20">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-300 mb-4 ">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-4 ">
             <span className="text-blue-600">Find</span> your next match.
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-300 text-xl tracking-tight mb-8">
             Find the right price, dealer and advice.
           </p>
 

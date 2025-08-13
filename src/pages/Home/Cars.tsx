@@ -1,14 +1,16 @@
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
 import { Link } from 'react-router';
 import HomeButton from '../shared/HomeButton';
-import CarsCard from './CarouselCarsCard';
+import CarouselCarCard from '../shared/CarouselCard';
 
 function Cars({ renderBtn }: { renderBtn: boolean }) {
   const { data: cars } = useGetAllCarsQuery(undefined);
 
   const carsContent = renderBtn
-    ? cars?.data?.slice(0, 4).map((el) => <CarsCard key={el._id} car={el} />)
-    : cars?.data?.map((el) => <CarsCard key={el._id} car={el} />);
+    ? cars?.data
+        ?.slice(0, 4)
+        .map((el) => <CarouselCarCard key={el._id} car={el} />)
+    : cars?.data?.map((el) => <CarouselCarCard key={el._id} car={el} />);
 
   return (
     <div className="py-18">

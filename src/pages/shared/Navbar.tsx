@@ -11,7 +11,8 @@ import Cta from './Cta';
 import MobileDrawer from './MobileDrawer';
 import { ThemeToggleButton } from './ThemeToggleButton';
 import UserDropdown from '../../components/CHDashboard/header/UserDropdown';
-import { Heart, Search } from 'lucide-react';
+import { Heart } from 'lucide-react';
+import SearchBox from './SearchBox';
 
 const publicNavItems = [
   {
@@ -106,15 +107,9 @@ const Navbar = () => {
 
           {/* Right-side Icons */}
           <div className="flex items-center space-x-4 text-blue-700 text-lg">
+            {/* INPUT WITH ICON */}
+            <SearchBox />
             <ThemeToggleButton isBorder={false} />
-            <button
-              className="hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
-              aria-label="Search"
-            >
-              <Link to="/stock">
-                <Search className="w-5 h-5" />
-              </Link>
-            </button>
             <button
               className="hover:text-blue-500 dark:text-white dark:hover:text-blue-500"
               aria-label="Wishlist"
