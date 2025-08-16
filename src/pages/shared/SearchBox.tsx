@@ -44,20 +44,26 @@ function SearchBox() {
   };
 
   return (
-    <div className="relative" ref={searchRef}>
-      <input
-        value={query}
-        onChange={(e) => {
-          setIsOpen(true);
-          setQuery(e.target.value);
-        }}
-        placeholder="Search cars..."
-        type="text"
-        className="placeholder:text-[16px] text-gray-900 dark:text-white transition duration-300 w-[200px] hover:scale-x-105 bg-primary/8 hover:bg-primary/10 px-2 py-1 rounded-full peer focus:outline-none focus:ring-1 ring-primary/20"
-        aria-label="Search"
-      />
+    <div ref={searchRef} className="relative group w-full">
+      <div
+        className="rounded-full transition duration-300 hover:scale-x-105
+                  bg-primary/8 hover:bg-primary/10
+                  group-focus-within:ring-1 group-focus-within:ring-primary/20"
+      >
+        <input
+          value={query}
+          onChange={(e) => {
+            setIsOpen(true);
+            setQuery(e.target.value);
+          }}
+          placeholder="Search cars..."
+          type="text"
+          className="placeholder:text-[16px] text-gray-900 dark:text-white max-w-full md:max-w-[400px] px-2 py-1 focus:outline-none"
+          aria-label="Search"
+        />
+      </div>
 
-      <Search className="absolute w-5 h-5 right-[6px] top-1/2 transform duration-300 -translate-y-[50%] peer-focus:right-0 peer-hover:text-blue-500 peer-dark:text-white peer-dark:hover:text-blue-500" />
+      <Search className="absolute w-5 h-5 right-[6px] top-1/2 transform duration-300 -translate-y-[50%] group-focus:right-0 group-hover:text-blue-500 group-dark:text-white group-dark:hover:text-blue-500" />
 
       {isOpen && suggestions.length > 0 && (
         <ul className="absolute top-12 w-full bg-light-bg dark:bg-gray-900 shadow-lg  overflow-hidden z-99 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300">

@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 left-0 z-50 transition duration-300 ">
       {/* Mini Top Bar */}
-      <div className="bg-primary  text-white py-2 px-4 flex justify-between items-center text-[13px]">
+      <div className="bg-primary text-white py-2  flex justify-between items-center text-[13px] px-4">
         <div className="flex items-center gap-1">
           <TbWorld className="text-lg" />
           <span className="text-[13px]">Language</span>
@@ -74,15 +74,18 @@ const Navbar = () => {
       </div>
 
       {/* Main Navbar */}
-      <div className="max-w-[1536px] mx-auto">
-        <div className="bg-white dark:bg-gray-900 px-4 dark:text-white flex items-center justify-between border-b border-b-gray-300/50 dark:border-b-gray-700 ">
+      <div className="max-w-[1536px] mx-auto bg-white dark:bg-gray-900  dark:text-white  ">
+        <div className="px-2 flex flex-wrap items-center justify-between border-b border-b-gray-300/50 dark:border-b-gray-700">
           {/* Logo */}
-          <div className="text-2xl font-bold text-primary dark:text-gray-300 py-3">
+          <Link
+            to={'/'}
+            className="text-2xl font-bold text-primary dark:text-gray-300 py-3"
+          >
             CARHUB
-          </div>
+          </Link>
 
           {/* Main Navigation Links */}
-          <nav className="hidden sm:flex items-center space-x-6 text-sm font-medium">
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             {publicNavItems.map(
               (el: { path: string; text: string }, key: number) => (
                 <NavLink
@@ -106,8 +109,7 @@ const Navbar = () => {
           </nav>
 
           {/* Right-side Icons */}
-          <div className="flex items-center space-x-4 text-blue-700 text-lg">
-            {/* INPUT WITH ICON */}
+          <div className="flex w-full xsm:w-auto items-center space-x-4 text-blue-700 text-lg order-3 xsm:order-2">
             <SearchBox />
             <ThemeToggleButton isBorder={false} />
             <button
@@ -118,7 +120,7 @@ const Navbar = () => {
                 <Heart className="w-5 h-5" />
               </Link>
             </button>
-            <ul className="hidden sm:block">
+            <ul className="hidden md:block">
               {user?.role ? (
                 <UserDropdown isDashboardLink={true} />
               ) : (

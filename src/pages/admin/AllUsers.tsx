@@ -22,6 +22,7 @@ import {
   useDeleteAUserMutation,
   useGetAllUsersQuery,
 } from '../../redux/features/admin/userManagement.api';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function AllUsers() {
   const [openActionMenuId, setOpenActionMenuId] = useState<string | null>(null);
@@ -187,7 +188,7 @@ export default function AllUsers() {
                 <TableCell className="px-4 py-3 ">
                   <img
                     className="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover"
-                    src={user?.profileImg}
+                    src={user?.profileImg as string}
                     alt={`${user?.name}`}
                   />
                 </TableCell>
@@ -279,36 +280,51 @@ export default function AllUsers() {
 
         {/* Pagination Controls */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-4">
+          <div className="flex justify-center mt-8 space-x-2 text-xs xl:text-sm">
             <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              className="border border-gray-200 dark:border-blue-950 text-gray-300  hover:bg-gray-50 cursor-pointer px-2 text-[0.9rem] py-[8px] rounded-md"
+              className={`
+    flex items-center gap-1 px-4 py-2 rounded-md 
+    bg-white border border-gray-300 text-gray-700 
+    font-medium transition-all duration-200
+    hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white
+    ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}
+  `}
             >
-              <BsChevronLeft />
+              <ChevronLeft className="h-5 w-5" />
+              Prev
             </button>
-            {Array.from({ length: totalPages }, (_, index) => (
+
+            {Array.from({ length: totalPages }, (_, i) => (
               <button
-                key={index + 1}
-                onClick={() => setCurrentPage(index + 1)}
-                className={`px-3 py-1 border rounded-md ${
-                  currentPage === index + 1
-                    ? 'bg-blue-950 text-white dark:text-gray-300 dark:border-gray-900 text-[0.9rem]  rounded-md cursor-pointer'
-                    : 'border border-gray-200 text-gray-500 dark:text-gray-300 dark:border-gray-900 text-[0.9rem]  rounded-md cursor-pointer'
+                key={i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`px-4 py-2 rounded-md font-medium transition-all cursor-pointer duration-200 ${
+                  currentPage === i + 1
+                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-blue-300'
                 }`}
               >
-                {index + 1}
+                {i + 1}
               </button>
             ))}
 
             <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              className="border border-gray-200  hover:bg-gray-50 dark:border-blue-950 text-gray-300 cursor-pointer px-2 text-[0.9rem] py-[8px] rounded-md"
+              className={`
+    flex items-center gap-1 px-4 py-2 rounded-md 
+    bg-white border border-gray-300 text-gray-700 
+    font-medium transition-all duration-200
+    hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white
+    ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}
+  `}
             >
-              <BsChevronRight />
+              Next
+              <ChevronRight className="h-5 w-5" />
             </button>
           </div>
         )}

@@ -81,7 +81,7 @@ function Stock() {
   );
 
   return (
-    <div className="container mx-auto px-3 min-h-screen pt-14 pb-4">
+    <div className="px-2 min-h-screen pt-14 pb-4">
       <div className="relative w-full">
         <input
           type="text"
@@ -165,7 +165,7 @@ function Stock() {
           )}
 
           {totalPages > 1 && (
-            <div className="flex justify-center mt-8 space-x-2">
+            <div className="flex justify-center mt-8 space-x-2 text-xs xl:text-sm">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}

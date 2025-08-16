@@ -805,9 +805,6 @@ const UpdateACar = () => {
             initialImages={
               car?.data?.coverImage ? [car?.data?.coverImage as string] : []
             }
-            // initilaImages={
-            //   car?.data?.images ? (car?.data?.images as string[]) : []
-            // }
           />
 
           <input

@@ -38,10 +38,10 @@ function ImageUpload({
 
     setPreviews(newPreviews);
     setFiles(newFiles);
-    onChange(newFiles);
     if (!multiple && inputRef.current) {
       inputRef.current.value = '';
     }
+    onChange(newFiles);
   };
 
   useEffect(() => {
@@ -64,6 +64,7 @@ function ImageUpload({
         onClick={() => inputRef.current?.click()}
         className={clsx(
           'border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer text-center transition hover:bg-gray-100 dark:hover:bg-gray-800',
+          previews.length > 0 && 'hidden',
           previews.length >= minFiles && 'border-green-400'
         )}
       >
@@ -82,6 +83,9 @@ function ImageUpload({
         ref={inputRef}
         accept="image/*"
         multiple={multiple}
+        onClick={(e) => {
+          (e.target as HTMLInputElement).value = '';
+        }}
         onChange={(e) => handleFiles(e.target.files)}
         className="hidden"
       />

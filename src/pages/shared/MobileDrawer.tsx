@@ -58,7 +58,7 @@ const MobileDrawer = ({ items, user }: IMobileDrawer) => {
   }, [isOpen]);
 
   return (
-    <div className="sm:hidden">
+    <div className="md:hidden order-2 xsm:order-1">
       {/* Menu Button */}
       <button
         id="mobile-menu-button"
