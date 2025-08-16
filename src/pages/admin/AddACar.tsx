@@ -83,9 +83,9 @@ const AddACar = () => {
       formData.append('images', file);
     });
 
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
+    // for (const pair of formData.entries()) {
+    //   console.log(pair[0] + ': ' + pair[1]);
+    // }
 
     try {
       const res = (await addCar(formData)) as IResponse<any>;
@@ -727,7 +727,7 @@ const AddACar = () => {
             <input
               type="text"
               id="city"
-              placeholder="exmp. 2.2L mHawk Diesel"
+              placeholder="exmp. New York City"
               className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.location?.city
                   ? 'border-red-800'
@@ -746,7 +746,7 @@ const AddACar = () => {
             <input
               type="text"
               id="state"
-              placeholder="exmp. 2.2L mHawk Diesel"
+              placeholder="exmp. New York"
               className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.location?.state
                   ? 'border-red-800'

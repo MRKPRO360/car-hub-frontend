@@ -19,10 +19,10 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import Cta from '../shared/Cta';
 
-function Car() {
+function CarDetails() {
   const { id } = useParams();
 
-  const { data: car } = useGetACarQuery(id);
+  const { data: car } = useGetACarQuery(id as string);
 
   const [creatOrder, { isLoading, isSuccess, data, isError, error }] =
     useCreateOrderMutation();
@@ -62,19 +62,21 @@ function Car() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <img
-              src={car?.data?.coverImage}
-              alt={car.model}
-              className="rounded-2xl w-full object-cover"
+              src={car?.data?.coverImage as string}
+              alt={car.data.model}
+              className="rounded-md w-full h-40 sm:h-60 lg:h-80 object-cover"
             />
             <div className="flex flex-wrap mt-4 gap-2">
-              {car?.data?.images?.map((img: string, i: number) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt={`Car ${i}`}
-                  className="flex-1 h-26 rounded-xs object-cover"
-                />
-              ))}
+              {(car?.data?.images as string[])?.map(
+                (img: string, i: number) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`Car ${i}`}
+                    className="h-24 w-40 rounded-md object-cover shadow"
+                  />
+                )
+              )}
             </div>
           </div>
           <div className="md:justify-self-end md:self-end">
@@ -273,4 +275,4 @@ function Car() {
   // );
 }
 
-export default Car;
+export default CarDetails;

@@ -12,7 +12,7 @@ import Signup from '../pages/Signup';
 // import ManageProfile from '../pages/user/ManageProfile';
 // import ManageCars from '../pages/admin/ManageCars';
 // import UpdateCar from '../pages/admin/UpdateCar';
-import Car from '../pages/Cars/Car';
+
 import ProtectedRoute from '../components/layout/ProtectedRoute';
 // import UserLayout from '../components/layout/UserLayout';
 // import MyOrders from '../pages/user/MyOrders';
@@ -31,6 +31,7 @@ import AllUsers from '../pages/admin/AllUsers';
 import AddACar from '../pages/admin/AddACar';
 import UpdateACar from '../pages/admin/UpdateACar';
 import Wishlist from '../pages/Wishlist';
+import CarDetails from '../pages/Cars/CarDetails';
 
 const router = createBrowserRouter([
   {
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/cars/:id',
-        element: <Car />,
+        element: <CarDetails />,
       },
       {
         path: '/change-password',

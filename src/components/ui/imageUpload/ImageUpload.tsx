@@ -6,7 +6,7 @@ interface ImageUploadProps {
   label: string;
   multiple?: boolean;
   minFiles?: number;
-  onChange: (files: File[]) => void;
+  onChange: (files: File[] | string[] | string) => void;
   initialImages?: string[];
 }
 function ImageUpload({
@@ -17,9 +17,9 @@ function ImageUpload({
   initialImages,
 }: ImageUploadProps) {
   const [previews, setPreviews] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
+
   const inputRef = useRef<HTMLInputElement | null>(null);
-  // const hasInitialized = useRef(false);
+  const hasInitialized = useRef(false);
 
   const handleFiles = (files: FileList | null) => {
     if (!files) return;
@@ -28,29 +28,31 @@ function ImageUpload({
     const urls = fileArray.map((file) => URL.createObjectURL(file));
 
     setPreviews(urls);
-    setFiles(fileArray);
     onChange(fileArray);
   };
 
-  const handleRemove = (idx: number) => {
-    const newPreviews = previews.filter((_, i) => i !== idx);
-    const newFiles = files.filter((_, i) => i !== idx);
-
+  const handleRemove = (index: number) => {
+    const newPreviews = previews.filter((_, i) => i !== index);
     setPreviews(newPreviews);
-    setFiles(newFiles);
-    if (!multiple && inputRef.current) {
+
+    // Send the correct format to parent
+    if (multiple) {
+      onChange(newPreviews);
+    } else {
+      onChange(newPreviews[0] || '');
+    }
+
+    // Reset file input
+    if (inputRef.current) {
       inputRef.current.value = '';
     }
-    onChange(newFiles);
   };
 
   useEffect(() => {
-    // !hasInitialized.current &&
-    if (initialImages?.length) {
+    if (!hasInitialized.current && initialImages?.length) {
       setPreviews(initialImages);
+      hasInitialized.current = true;
     }
-
-    // hasInitialized.current = true;
   }, [initialImages]);
 
   return (

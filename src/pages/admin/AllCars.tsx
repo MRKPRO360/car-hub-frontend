@@ -152,11 +152,13 @@ export default function AllCars() {
             {paginatedData?.map((car, index) => (
               <TableRow className="relative" key={car?._id}>
                 <TableCell className="px-4 py-3 ">
-                  <img
-                    className="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover"
-                    src={car?.coverImage as string}
-                    alt={`${car?.category} ${car?.brand}`}
-                  />
+                  <Link to={`/cars/${car._id}`}>
+                    <img
+                      className="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover"
+                      src={car?.coverImage as string}
+                      alt={`${car?.category} ${car?.brand}`}
+                    />
+                  </Link>
                 </TableCell>
 
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
