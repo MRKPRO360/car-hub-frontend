@@ -47,7 +47,7 @@ function SearchBox() {
     <div ref={searchRef} className="relative group w-full">
       <div
         className="rounded-full transition duration-300 hover:scale-x-105
-                  bg-primary/8 hover:bg-primary/10
+                  bg-primary/5 hover:bg-primary/8
                   group-focus-within:ring-1 group-focus-within:ring-primary/20"
       >
         <input

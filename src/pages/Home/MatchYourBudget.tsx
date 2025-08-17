@@ -28,7 +28,7 @@ const MatchYourBudget = () => {
         </h2>
 
         <Carousel className="md:w-full ">
-          <CarouselContent className="-ml-1">
+          <CarouselContent className="-ml-1 pb-3 sm:pb-6">
             {data?.map((car: ICar) => (
               <CarouselCarCard car={car} key={car._id} />
             ))}
@@ -36,7 +36,6 @@ const MatchYourBudget = () => {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        {/* <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"></div> */}
       </div>
       <div className="text-center my-10">
         <Cta text="Browse All Cars Under $20K" />

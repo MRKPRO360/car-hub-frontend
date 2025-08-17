@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 left-0 z-50 transition duration-300 ">
       {/* Mini Top Bar */}
-      <div className="bg-primary text-white py-2  flex justify-between items-center text-[13px] px-4">
+      <div className="bg-primary text-white py-2  flex justify-between items-center text-xs xsm:text-[13px] px-4">
         <div className="flex items-center gap-1">
           <TbWorld className="text-lg" />
           <span className="text-[13px]">Language</span>
@@ -74,18 +74,18 @@ const Navbar = () => {
       </div>
 
       {/* Main Navbar */}
-      <div className="max-w-[1536px] mx-auto bg-white dark:bg-gray-900  dark:text-white  ">
+      <div className="max-w-[1536px] mx-auto bg-white dark:bg-gray-900 dark:text-white">
         <div className="px-2 flex flex-wrap items-center justify-between border-b border-b-gray-300/50 dark:border-b-gray-700">
           {/* Logo */}
           <Link
             to={'/'}
-            className="text-2xl font-bold text-primary dark:text-gray-300 py-3"
+            className="text-2xl font-bold text-primary dark:text-gray-300 py-3 order-1"
           >
             CARHUB
           </Link>
 
           {/* Main Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium order-2">
             {publicNavItems.map(
               (el: { path: string; text: string }, key: number) => (
                 <NavLink
@@ -109,7 +109,7 @@ const Navbar = () => {
           </nav>
 
           {/* Right-side Icons */}
-          <div className="flex w-full xsm:w-auto items-center space-x-4 text-blue-700 text-lg order-3 xsm:order-2">
+          <div className="flex w-full xsm:w-auto items-center space-x-4 text-blue-700 text-lg order-3">
             <SearchBox />
             <ThemeToggleButton isBorder={false} />
             <button
@@ -132,7 +132,6 @@ const Navbar = () => {
               )}
             </ul>
           </div>
-
           <MobileDrawer items={publicNavItems} user={user!} />
         </div>
       </div>

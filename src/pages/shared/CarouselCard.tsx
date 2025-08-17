@@ -21,8 +21,8 @@ function CarouselCarCard({ car }: { car: ICar }) {
   };
 
   return (
-    <CarouselItem className="pl-1 sm:basis-1/2 lg:basis-1/4">
-      <div className="bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 relative">
+    <CarouselItem className="pl-1 sm:basis-1/2 lg:basis-1/3  xl:basis-1/4">
+      <div className="bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)]  dark:hover:drop-shadow-[0_8px_16px_rgba(37,99,235,0.15)] transition duration-300 relative  z-100">
         <button
           onClick={() => handleWishlist(car)}
           className="text-blue-500 text-lg absolute top-2 right-2 z-50 cursor-pointer"
@@ -46,7 +46,7 @@ function CarouselCarCard({ car }: { car: ICar }) {
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-300">
               {car.brand} {car.model}
             </h3>
-            <span className="text-xs font-semibold bg-blue-100 dark:bg-blue-light-950 text-primary dark:text-gray-300 px-2 py-1 rounded ">
+            <span className="text-[10px] font-semibold bg-blue-100 dark:bg-blue-light-950 text-primary dark:text-gray-300 px-2 py-1 rounded ">
               {car.condition}
             </span>
           </div>

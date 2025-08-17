@@ -58,12 +58,12 @@ const MobileDrawer = ({ items, user }: IMobileDrawer) => {
   }, [isOpen]);
 
   return (
-    <div className="md:hidden order-2 xsm:order-1">
+    <div className="md:hidden order-2 xsm:order-3">
       {/* Menu Button */}
       <button
         id="mobile-menu-button"
         onClick={() => setIsOpen(true)}
-        className="hover:text-blue-500 p-2 cursor-pointer"
+        className="p-2 cursor-pointer transition duration-300 hover:text-blue-500 "
         aria-label="Menu"
       >
         <FiMenu className="h-6 w-6" />
@@ -83,10 +83,10 @@ const MobileDrawer = ({ items, user }: IMobileDrawer) => {
         <div className="flex justify-end p-4">
           <button
             onClick={() => setIsOpen(false)}
-            className="hover:text-blue-500 cursor-pointer"
+            className="transition duration-300 hover:text-blue-500 cursor-pointer"
             aria-label="Close menu"
           >
-            <FaTimes className="h-6 w-6" />
+            <FaTimes className="text-xl" />
           </button>
         </div>
 
