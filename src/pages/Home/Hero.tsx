@@ -1,5 +1,5 @@
 import heroCover from '../../assets/images/hero-back.jpg';
-// import blueBg from '../../assets/images/home blue bg.jpg';
+import lightHeroCover from '../../assets/images/lightHero.png';
 import Cta from '../shared/Cta';
 import { useTheme } from '../../context/ThemeContext';
 const Hero = () => {
@@ -97,7 +97,9 @@ const Hero = () => {
     <section className="text-center">
       <div
         style={{
-          backgroundImage: `${gradient}, url(${heroCover})`,
+          backgroundImage: `${gradient}, url(${
+            theme === 'dark' ? heroCover : lightHeroCover
+          })`,
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}

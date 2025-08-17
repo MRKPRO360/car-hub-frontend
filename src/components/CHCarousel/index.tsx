@@ -116,8 +116,6 @@ function Carousel({
     };
   }, [api, onSelect]);
 
-  console.log(slidesCount);
-
   return (
     <CarouselContext.Provider
       value={{
@@ -154,6 +152,7 @@ function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
     useCarousel();
 
   const isHorizontal = orientation === 'horizontal';
+
   return (
     <div
       ref={carouselRef}
@@ -162,11 +161,11 @@ function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
     >
       {/* Fade Left */}
       {isHorizontal && canScrollPrev && (
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-18 z-10 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent" />
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent" />
       )}
       {/* Fade Right */}
       {isHorizontal && canScrollNext && (
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-18 z-10 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
+        <div className="pointer-events-none  absolute right-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
       )}
       <div
         className={cn(
