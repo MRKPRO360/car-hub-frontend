@@ -55,7 +55,9 @@ function Login() {
     const toastId = toast.loading('Logging in...');
 
     try {
-      const res = await googleLogin(credentialResponse.credential).unwrap();
+      const res = await googleLogin({
+        token: credentialResponse.credential,
+      }).unwrap();
 
       const user = verifyToken(res.data.token) as IUser;
 

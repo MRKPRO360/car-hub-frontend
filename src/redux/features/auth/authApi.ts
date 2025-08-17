@@ -6,7 +6,7 @@ const authApi = baseApi.injectEndpoints({
       query: (token) => ({
         url: '/auth/google-login',
         method: 'POST',
-        body: { token },
+        body: token,
       }),
     }),
 
