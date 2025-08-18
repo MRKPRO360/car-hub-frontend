@@ -2,21 +2,65 @@ import heroCover from '../../assets/images/hero-back.jpg';
 import lightHeroCover from '../../assets/images/light-hero.png';
 import Cta from '../shared/Cta';
 import { useTheme } from '../../context/ThemeContext';
-const Hero = () => {
-  const { theme } = useTheme();
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import Select from '../../components/ui/form/Select';
+import { brandOptions } from '../../constant/car';
 
-  const gradient =
-    theme === 'dark'
-      ? 'linear-gradient(to right bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8))'
-      : 'linear-gradient(to right bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(closest-corner at 50% 80%, rgba(0,0,0,0.8), rgba(127, 17, 224, .4) )';
+const Hero = () => {
+  gsap.registerPlugin(useGSAP);
+
+  const { theme } = useTheme();
+  const bgRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  // GRADIENT VALUES
+  const darkGredient =
+    'linear-gradient(to right bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8))';
+
+  const lightGradient =
+    'linear-gradient(to right bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(closest-corner at 50% 80%, rgba(0,0,0,0.8), rgba(127, 17, 224, .4) )';
+
+  useGSAP(
+    () => {
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+        return;
+      }
+
+      if (bgRef.current) {
+        // Animating background fade theme changes
+        gsap.fromTo(
+          bgRef.current,
+          { opacity: 0, scale: 1.05 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: 'power3.out',
+          }
+        );
+      }
+    },
+    {
+      scope: bgRef,
+      dependencies: [theme],
+    }
+  );
+
+  const handleChange = (value: string) => {
+    console.log(value);
+  };
 
   return (
-    <section className="text-center">
+    <section className="text-center overflow-hidden">
       <div
+        ref={bgRef}
         style={{
-          backgroundImage: `${gradient}, url(${
-            theme === 'dark' ? heroCover : lightHeroCover
-          })`,
+          backgroundImage: `${
+            theme === 'dark' ? darkGredient : lightGradient
+          }, url(${theme === 'dark' ? heroCover : lightHeroCover})`,
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
@@ -36,10 +80,11 @@ const Hero = () => {
             <div className="relative w-60 z-30">
               <select className="px-4 py-3 border-0 rounded-full text-sm w-full bg-white text-gray-800  drop-shadow-xl   focus:ring-2 focus:ring-blue-700 focus:outline-none appearance-none cursor-pointer hover:bg-gray-50 transition-colors duration-200">
                 <option className="text-gray-400">Select make</option>
-                <option>Toyota</option>
-                <option>Kia</option>
-                <option>Mazda</option>
+                {brandOptions.map((el) => (
+                  <option key={el.label}>{el.value}</option>
+                ))}
               </select>
+
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <svg
                   className="w-5 h-5 text-blue-600"
