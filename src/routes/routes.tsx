@@ -24,7 +24,7 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 import NotFound from '../pages/NotFound';
 import UserProfiles from '../pages/profile/UserProfiles';
 import BasicTables from '../pages/Tables/BasicTables';
-import AdminStats from '../pages/Stats/AdminStats';
+import AdminStats from '../pages/admin/Stats/AdminStats';
 import CustomerOrders from '../pages/admin/CustomerOrders';
 import AllCars from '../pages/admin/AllCars';
 import AllUsers from '../pages/admin/AllUsers';
@@ -32,6 +32,7 @@ import AddACar from '../pages/admin/AddACar';
 import UpdateACar from '../pages/admin/UpdateACar';
 import Wishlist from '../pages/Wishlist';
 import CarDetails from '../pages/Cars/CarDetails';
+import UserStats from '../pages/user/Stats/UserStats';
 
 const router = createBrowserRouter([
   {
@@ -131,10 +132,18 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard/stats',
+        path: '/dashboard/admin-stats',
         element: (
           <ProtectedRoute allowedRoles={['admin']}>
             <AdminStats />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/dashboard/user-stats',
+        element: (
+          <ProtectedRoute allowedRoles={['user']}>
+            <UserStats />
           </ProtectedRoute>
         ),
       },

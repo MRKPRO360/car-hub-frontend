@@ -1,12 +1,12 @@
-import DemographicCard from '../../components/admin/stats/DemographicCard';
-import EcommerceMetrics from '../../components/admin/stats/EcommerceMetrics';
-import MonthlySalesChart from '../../components/admin/stats/MonthlySalesChart';
-import MonthlyTarget from '../../components/admin/stats/MonthlyTarget';
-import RecentOrders from '../../components/admin/stats/RecentOrders';
-import StatisticsChart from '../../components/admin/stats/StatisticsChart';
-import PageMeta from '../shared/PageMeta';
+import DemographicCard from '../../../components/user/stats/DemographicCard';
+import EcommerceMetrics from '../../../components/user/stats/EcommerceMetrics';
+import MonthlySalesChart from '../../../components/user/stats/MonthlySalesChart';
+import MonthlyTarget from '../../../components/user/stats/MonthlyTarget';
+import RecentOrders from '../../../components/user/stats/RecentOrders';
+import StatisticsChart from '../../../components/user/stats/StatisticsChart';
+import PageMeta from '../../shared/PageMeta';
 
-export default function AdminStats() {
+export default function UserStats() {
   return (
     <>
       <PageMeta

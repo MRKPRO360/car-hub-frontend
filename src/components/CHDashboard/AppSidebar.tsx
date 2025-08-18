@@ -21,7 +21,7 @@ const userNavItems: NavItem[] = [
     icon: <GridIcon />,
     name: 'Dashboard',
     subItems: [
-      { name: 'My Stats', path: '/dashboard/stats', pro: false },
+      { name: 'My Stats', path: '/dashboard/user-stats', pro: false },
       { name: 'My Orders', path: '/dashboard/my-orders', pro: false },
     ],
   },
@@ -38,7 +38,7 @@ const adminNavItems: NavItem[] = [
     icon: <GridIcon />,
     name: 'Dashboard',
     subItems: [
-      { name: 'My Stats', path: '/dashboard/stats', pro: false },
+      { name: 'My Stats', path: '/dashboard/admin-stats', pro: false },
       { name: 'All Orders', path: '/dashboard/customer-orders', pro: false },
     ],
   },
