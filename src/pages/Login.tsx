@@ -32,6 +32,10 @@ function Login() {
     },
   });
 
+  const handleFacebookLogin = async () => {
+    window.location.href = 'http://localhost:5000/api/v1/auth/facebook';
+  };
+
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Logging in...');
     try {
@@ -216,6 +220,7 @@ function Login() {
           <button
             className="w-full flex items-center justify-center mb-6 md:mb-0 border border-primary text-sm text-gray-500 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
             type="button"
+            onClick={handleFacebookLogin}
           >
             <FaFacebook className="text-2xl text-blue-600" />
             <span>Facebook</span>

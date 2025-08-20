@@ -33,6 +33,7 @@ import UpdateACar from '../pages/admin/UpdateACar';
 import Wishlist from '../pages/Wishlist';
 import CarDetails from '../pages/Cars/CarDetails';
 import UserStats from '../pages/user/Stats/UserStats';
+import FBLoginSuccess from '../pages/shared/FBLoginSuccess';
 
 const router = createBrowserRouter([
   {
@@ -250,6 +251,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/fblogin-success',
+    element: <FBLoginSuccess />,
   },
 
   {
