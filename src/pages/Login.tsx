@@ -2,23 +2,20 @@
 import { FaFacebook } from 'react-icons/fa';
 import Cta from './shared/Cta';
 import { useAppDispatch } from '../redux/hooks';
-import {
-  useGoogleLoginMutation,
-  useLoginMutation,
-} from '../redux/features/auth/authApi';
+import { useLoginMutation } from '../redux/features/auth/authApi';
 import { toast } from 'sonner';
 import { FieldValues, useForm } from 'react-hook-form';
 import { verifyToken } from '../utils/verifyToken';
 import { IUser } from '../types';
 import { setUser } from '../redux/features/auth/authSlice';
 import { Link, useNavigate } from 'react-router';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+
+import GoogleLoginBtn from './shared/GoogleLoginBtn';
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
-  const [googleLogin] = useGoogleLoginMutation();
 
   const {
     register,
@@ -47,25 +44,6 @@ function Login() {
       const user = verifyToken(res.data.token) as IUser;
       dispatch(setUser({ user: user, token: res.data.token }));
 
-      toast.success('Logged in', { id: toastId, duration: 2000 });
-      navigate('/dashboard');
-    } catch (err) {
-      console.log(err);
-      toast.error('Something went wrong', { id: toastId, duration: 2000 });
-    }
-  };
-
-  const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
-    const toastId = toast.loading('Logging in...');
-
-    try {
-      const res = await googleLogin({
-        token: credentialResponse.credential,
-      }).unwrap();
-
-      const user = verifyToken(res.data.token) as IUser;
-
-      dispatch(setUser({ user: user, token: res.data.token }));
       toast.success('Logged in', { id: toastId, duration: 2000 });
       navigate('/dashboard');
     } catch (err) {
@@ -202,23 +180,10 @@ function Login() {
           <span className="h-px w-full bg-gray-200"></span>
         </div>
         <div className="flex justify-center gap-5 w-full">
-          {/* <button
-            className="w-full flex items-center justify-center mb-6 md:mb-0 border border-primary text-sm text-gray-500 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
-            type="button"
-          >
-            <FcGoogle className="text-2xl" />
-            <span>Google</span>
-          </button> */}
-
-          <GoogleLogin
-            onSuccess={handleGoogleLogin}
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          />
+          <GoogleLoginBtn />
 
           <button
-            className="w-full flex items-center justify-center mb-6 md:mb-0 border border-primary text-sm text-gray-500 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
+            className="min-w-[200px] max-w-[400px] flex items-center justify-center mb-6 md:mb-0 border border-primary text-sm text-gray-500 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
             type="button"
             onClick={handleFacebookLogin}
           >

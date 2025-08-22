@@ -7,7 +7,6 @@ import { setUser } from '../../redux/features/auth/authSlice';
 function FBLoginSuccess() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log('ok');
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -15,7 +14,6 @@ function FBLoginSuccess() {
 
     if (token) {
       const user = verifyToken(token);
-      console.log({ user });
 
       dispatch(setUser({ user, token }));
       setTimeout(() => navigate('/dashboard'), 50);
