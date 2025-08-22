@@ -3,7 +3,7 @@ import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api
 
 import { ICar } from '../../types';
 import { IoIosSearch } from 'react-icons/io';
-import CarouselCarCard from '../shared/CarouselCard';
+import CarouselCarCard from '../shared/CarouselCarCard';
 
 function FilterCars() {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);

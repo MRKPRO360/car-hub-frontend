@@ -1,5 +1,5 @@
 import { Zap, BatteryCharging, SwitchCamera, Recycle } from 'lucide-react';
-import hybridCar from '../../assets/images/hybrid.png';
+
 import hybridDarkCar from '../../assets/images/hybrid-dark.png';
 
 import Cta from '../shared/Cta';
@@ -117,14 +117,9 @@ const Benefit = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
         <div className="left-col">
           <img
-            src={hybridCar}
-            alt="Hybrid Vehicles"
-            className="w-full block h-auto dark:hidden"
-          />
-          <img
             src={hybridDarkCar}
             alt="Hybrid Vehicles"
-            className="w-full h-auto hidden dark:block"
+            className="w-full h-auto drop-shadow-[2px_3px_4px_rgba(0,0,0,0.4)] dark:drop-shadow-[2px_3px_4px_rgba(37,99,235,0.2)]"
           />
         </div>
         <div className="right-col">

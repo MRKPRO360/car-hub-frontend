@@ -1,7 +1,7 @@
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
 import { Link } from 'react-router';
 import HomeButton from '../shared/HomeButton';
-import CarouselCarCard from '../shared/CarouselCard';
+import CarouselCarCard from '../shared/CarouselCarCard';
 
 function Cars({ renderBtn }: { renderBtn: boolean }) {
   const { data: cars } = useGetAllCarsQuery(undefined);

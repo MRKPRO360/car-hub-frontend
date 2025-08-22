@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from '../../components/CHCarousel';
 import Cta from '../shared/Cta';
-import CarouselCarCard from '../shared/CarouselCard';
+import CarouselCarCard from '../shared/CarouselCarCard';
 import CarouselSkeletonCard from '../shared/CarouselSkeletonCard';
 
 const MatchYourBudget = () => {
@@ -32,7 +32,7 @@ const MatchYourBudget = () => {
           <CarouselContent className="-ml-1 pb-3 sm:pb-6 ">
             {isLoading
               ? Array.from({ length: 4 }).map((_, i) => (
-                  <CarouselSkeletonCard />
+                  <CarouselSkeletonCard key={i} />
                 ))
               : data?.map((car: ICar) => (
                   <CarouselCarCard key={car._id} car={car} />

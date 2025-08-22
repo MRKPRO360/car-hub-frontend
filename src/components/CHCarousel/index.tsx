@@ -147,7 +147,42 @@ function Carousel({
   );
 }
 
-function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
+// function CarouselContent ({ className, ...props }: React.ComponentProps<'div'>) {
+//   const { carouselRef, orientation, canScrollPrev, canScrollNext } =
+//     useCarousel();
+
+//   const isHorizontal = orientation === 'horizontal';
+
+//   return (
+//     <div
+//       ref={carouselRef}
+//       className="overflow-hidden"
+//       data-slot="carousel-content"
+//     >
+//       {/* Fade Left */}
+//       {isHorizontal && canScrollPrev && (
+//         <div className="pointer-events-none absolute left-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent" />
+//       )}
+//       {/* Fade Right */}
+//       {isHorizontal && canScrollNext && (
+//         <div className="pointer-events-none  absolute right-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
+//       )}
+//       <div
+//         className={cn(
+//           'flex',
+//           orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
+//           className
+//         )}
+//         {...props}
+//       />
+//     </div>
+//   );
+// }
+
+const CarouselContent = React.forwardRef<
+  HTMLDivElement, // 👈 the element type you want ref for
+  React.ComponentProps<'div'> // 👈 props type
+>(({ className, ...props }, ref) => {
   const { carouselRef, orientation, canScrollPrev, canScrollNext } =
     useCarousel();
 
@@ -155,8 +190,8 @@ function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
 
   return (
     <div
-      ref={carouselRef}
-      className="overflow-hidden"
+      ref={carouselRef} // from carousel context
+      className="overflow-hidden relative"
       data-slot="carousel-content"
     >
       {/* Fade Left */}
@@ -165,19 +200,20 @@ function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
       )}
       {/* Fade Right */}
       {isHorizontal && canScrollNext && (
-        <div className="pointer-events-none  absolute right-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
       )}
       <div
+        ref={ref} // 👈 forward the ref here
         className={cn(
           'flex',
-          orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
+          isHorizontal ? '-ml-4' : '-mt-4 flex-col',
           className
         )}
         {...props}
       />
     </div>
   );
-}
+});
 
 function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
   const { orientation } = useCarousel();
