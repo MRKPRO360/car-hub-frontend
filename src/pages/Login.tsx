@@ -11,6 +11,7 @@ import { setUser } from '../redux/features/auth/authSlice';
 import { Link, useNavigate } from 'react-router';
 
 import GoogleLoginBtn from './shared/GoogleLoginBtn';
+import FBLoginBtn from './shared/FBLoginBtn';
 
 function Login() {
   const navigate = useNavigate();
@@ -28,10 +29,6 @@ function Login() {
       remember: false,
     },
   });
-
-  const handleFacebookLogin = async () => {
-    window.location.href = 'http://localhost:5000/api/v1/auth/facebook';
-  };
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Logging in...');
@@ -181,15 +178,7 @@ function Login() {
         </div>
         <div className="flex justify-center gap-5 w-full">
           <GoogleLoginBtn />
-
-          <button
-            className="min-w-[200px] max-w-[400px] flex items-center justify-center mb-6 md:mb-0 border border-primary text-sm text-gray-500 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
-            type="button"
-            onClick={handleFacebookLogin}
-          >
-            <FaFacebook className="text-2xl text-blue-600" />
-            <span>Facebook</span>
-          </button>
+          <FBLoginBtn />
         </div>
       </div>
     </div>
