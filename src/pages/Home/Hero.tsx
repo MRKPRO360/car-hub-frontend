@@ -5,7 +5,6 @@ import { useTheme } from '../../context/ThemeContext';
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import Select from '../../components/ui/form/Select';
 import { brandOptions } from '../../constant/car';
 
 const Hero = () => {
@@ -13,7 +12,9 @@ const Hero = () => {
 
   const { theme } = useTheme();
   const bgRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
+  const h1Refs = useRef<(HTMLElement | null)[]>([]);
+  const paraRef = useRef<HTMLParagraphElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   // GRADIENT VALUES
   const darkGredient =
@@ -24,14 +25,11 @@ const Hero = () => {
 
   useGSAP(
     () => {
-      if (isFirstRender.current) {
-        isFirstRender.current = false;
-        return;
-      }
+      const tl = gsap.timeline();
 
       if (bgRef.current) {
         // Animating background fade theme changes
-        gsap.fromTo(
+        tl.fromTo(
           bgRef.current,
           { opacity: 0, scale: 1.05 },
           {
@@ -42,16 +40,41 @@ const Hero = () => {
           }
         );
       }
+
+      if (h1Refs.current?.length && paraRef.current) {
+        tl.from(h1Refs.current, {
+          y: 50,
+          opacity: 0,
+          stagger: 0.4,
+          duration: 0.8,
+          ease: 'power3.out',
+        }).from(paraRef.current, {
+          opacity: 0,
+          y: 20,
+          duration: 0.6,
+          ease: 'power3.out',
+        });
+      }
+
+      if (searchRef.current) {
+        const children = Array.from(
+          searchRef.current.children
+        ) as HTMLElement[];
+
+        tl.from(children, {
+          opacity: 0,
+          y: 10,
+          duration: 0.6,
+          stagger: 0.4,
+          ease: 'power3.out',
+        });
+      }
     },
     {
       scope: bgRef,
-      dependencies: [theme],
+      // dependencies: [theme],
     }
   );
-
-  const handleChange = (value: string) => {
-    console.log(value);
-  };
 
   return (
     <section className="text-center overflow-hidden">
@@ -67,16 +90,32 @@ const Hero = () => {
         className="min-h-[60vh] md:min-h-[90vh] lg:py-14  bg-blend-overlay dark:bg-blend-darken bg-[length:100%_100%] md:bg-cover grid place-content-center"
       >
         <div className="md:-translate-y-20">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-4 ">
-            <span className="text-blue-600">Find</span>{' '}
-            <span className="text-light">your next match.</span>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-4 overflow-hidden">
+            <span
+              className="text-blue-600 inline-block"
+              ref={(el) => (h1Refs.current[0] = el)}
+            >
+              Find
+            </span>{' '}
+            <span
+              className="text-light inline-block"
+              ref={(el) => (h1Refs.current[1] = el)}
+            >
+              your next match.
+            </span>
           </h1>
-          <p className="text-gray-300 text-xl tracking-tight mb-8">
-            Find the right price, dealer and advice.
-          </p>
+          <div className="overflow-y-hidden mb-8">
+            <p ref={paraRef} className="text-gray-200 text-xl tracking-tight">
+              Find the right price, dealer and advice.
+            </p>
+          </div>
 
           {/* Search Filters */}
-          <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
+
+          <div
+            className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-6"
+            ref={searchRef}
+          >
             <div className="relative w-60 z-30">
               <select className="px-4 py-3 border-0 rounded-full text-sm w-full bg-white text-gray-800  drop-shadow-xl   focus:ring-2 focus:ring-blue-700 focus:outline-none appearance-none cursor-pointer hover:bg-gray-50 transition-colors duration-200">
                 <option className="text-gray-400">Select make</option>
@@ -128,7 +167,9 @@ const Hero = () => {
               </div>
             </div>
 
-            <Cta text="View 4,820 Cars" />
+            <div>
+              <Cta text="View 4,820 Cars" />
+            </div>
           </div>
         </div>
       </div>

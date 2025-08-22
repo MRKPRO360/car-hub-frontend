@@ -9,6 +9,7 @@ interface ICta {
   size?: 'sm' | 'lg';
   isSubmitting?: boolean;
   submittingText?: string;
+  isLoading?: boolean;
 }
 
 function Cta({
@@ -19,6 +20,7 @@ function Cta({
   size = 'lg',
   isSubmitting = false,
   submittingText,
+  isLoading,
 }: ICta) {
   const baseClasses = ` ${
     size === 'lg' ? 'py-3 px-4' : 'py-2 px-8'
@@ -41,7 +43,7 @@ function Cta({
           isSubmitting && 'cursor-not-allowed'
         }`}
       >
-        {isSubmitting ? submittingText : text}
+        {isSubmitting ? submittingText : isLoading ? 'Loading...' : text}
         {/* {text} */}
         {isSubmitting && <LoaderCircle className="animate-spin w-5 h-5" />}
         {arrowRight && <FaArrowRightLong className="text-xl" />}

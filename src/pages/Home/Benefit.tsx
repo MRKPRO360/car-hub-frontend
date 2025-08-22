@@ -3,6 +3,10 @@ import hybridCar from '../../assets/images/hybrid.png';
 import hybridDarkCar from '../../assets/images/hybrid-dark.png';
 
 import Cta from '../shared/Cta';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { useRef } from 'react';
 const hybridBenefits = [
   {
     title: 'Effortless Acceleration',
@@ -30,15 +34,92 @@ const hybridBenefits = [
   },
 ];
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Benefit = () => {
+  const hybridBenefitsRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      // const tl = gsap.timeline();
+
+      const ctx = gsap.context(() => {
+        if (!sectionRef.current) return;
+
+        gsap.from(sectionRef.current!.querySelector('.left-col'), {
+          x: -150,
+          opacity: 0,
+          duration: 0.4,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current!.querySelector(
+              '.left-col img:not(.hidden)'
+            ),
+            start: 'top 80%',
+            end: 'top 20%',
+            toggleActions: 'play resume resume reset',
+          },
+        });
+        gsap.from(sectionRef.current!.querySelector('.right-col'), {
+          x: 150,
+          opacity: 0,
+          ease: 'power3.out',
+          duration: 0.4,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            // markers: true,
+            start: 'top 40%',
+            end: 'top 20%',
+            toggleActions: 'play resume resume reset',
+          },
+        });
+
+        if (hybridBenefitsRef.current) {
+          const children = Array.from(
+            hybridBenefitsRef.current.children
+          ) as HTMLElement[];
+
+          gsap.fromTo(
+            children,
+            {
+              opacity: 0,
+              y: 20,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              stagger: 0.3,
+              ease: 'power3.inOut',
+              scrollTrigger: {
+                trigger: hybridBenefitsRef.current,
+                start: 'top 70%',
+                end: 'top 20%',
+                toggleActions: 'play resume resume reset',
+              },
+            }
+          );
+        }
+      });
+
+      return () => ctx.revert();
+    },
+    {
+      scope: sectionRef,
+    }
+  );
   return (
-    <section className="container mx-auto py-12 lg:py-18 px-4 sm:px-0">
+    <section
+      className="container mx-auto py-12 lg:py-18 px-4 sm:px-0 overflow-x-hidden"
+      ref={sectionRef}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-        <div>
+        <div className="left-col">
           <img
             src={hybridCar}
             alt="Hybrid Vehicles"
-            className="w-full h-auto dark:hidden"
+            className="w-full block h-auto dark:hidden"
           />
           <img
             src={hybridDarkCar}
@@ -46,7 +127,7 @@ const Benefit = () => {
             className="w-full h-auto hidden dark:block"
           />
         </div>
-        <div>
+        <div className="right-col">
           <h2 className="text-4xl font-bold dark:text-gray-300  text-gray-900 mb-6">
             What are the <span className="text-blue-600">Benefits</span>
             &nbsp;of <br />
@@ -67,7 +148,10 @@ const Benefit = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ">
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+        ref={hybridBenefitsRef}
+      >
         {hybridBenefits.map((item, index) => (
           <div
             key={index}

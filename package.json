@@ -16,6 +16,7 @@
     "@react-jvectormap/world": "^1.1.2",
     "@react-oauth/google": "^0.12.2",
     "@reduxjs/toolkit": "^2.5.1",
+    "@studio-freight/lenis": "^1.0.42",
     "@tailwindcss/vite": "^4.0.0",
     "apexcharts": "^4.1.0",
     "clsx": "^2.1.1",

@@ -9,6 +9,7 @@ import {
 } from '../../components/CHCarousel';
 
 import CarouselCarCard from '../shared/CarouselCard';
+import CarouselSkeletonCard from '../shared/CarouselSkeletonCard';
 
 // const cars = [
 //   {
@@ -62,9 +63,13 @@ const FeaturedCars = () => {
 
         <Carousel className="md:w-full ">
           <CarouselContent className="-ml-1 pb-3 sm:pb-6 ">
-            {data?.map((car: ICar) => (
-              <CarouselCarCard key={car._id} car={car} />
-            ))}
+            {!isLoading
+              ? Array.from({ length: 4 }).map((_, i) => (
+                  <CarouselSkeletonCard />
+                ))
+              : data?.map((car: ICar) => (
+                  <CarouselCarCard key={car._id} car={car} />
+                ))}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />

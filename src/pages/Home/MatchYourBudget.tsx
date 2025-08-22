@@ -9,6 +9,7 @@ import {
 } from '../../components/CHCarousel';
 import Cta from '../shared/Cta';
 import CarouselCarCard from '../shared/CarouselCard';
+import CarouselSkeletonCard from '../shared/CarouselSkeletonCard';
 
 const MatchYourBudget = () => {
   const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
@@ -28,17 +29,21 @@ const MatchYourBudget = () => {
         </h2>
 
         <Carousel className="md:w-full ">
-          <CarouselContent className="-ml-1 pb-3 sm:pb-6">
-            {data?.map((car: ICar) => (
-              <CarouselCarCard car={car} key={car._id} />
-            ))}
+          <CarouselContent className="-ml-1 pb-3 sm:pb-6 ">
+            {isLoading
+              ? Array.from({ length: 4 }).map((_, i) => (
+                  <CarouselSkeletonCard />
+                ))
+              : data?.map((car: ICar) => (
+                  <CarouselCarCard key={car._id} car={car} />
+                ))}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
       </div>
       <div className="text-center my-10">
-        <Cta text="Browse All Cars Under $20K" />
+        <Cta isLoading={isLoading} text="Browse All Cars Under $20K" />
       </div>
     </section>
   );

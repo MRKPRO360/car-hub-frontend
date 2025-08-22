@@ -21,7 +21,7 @@ function CarouselCarCard({ car }: { car: ICar }) {
   };
 
   return (
-    <CarouselItem className="pl-1 sm:basis-1/2 lg:basis-1/3  xl:basis-1/4">
+    <CarouselItem className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
       <div className="bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)]  dark:hover:drop-shadow-[0_8px_16px_rgba(37,99,235,0.15)] transition duration-300 relative  z-100">
         <button
           onClick={() => handleWishlist(car)}
