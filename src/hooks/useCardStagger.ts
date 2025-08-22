@@ -14,13 +14,13 @@ const useCardStagger = (
   useGSAP(
     () => {
       if (!containerRef.current || !headingRef.current) return;
+      const children = Array.from(containerRef.current.children);
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: headingRef.current,
-          start: 'top 75%',
+          start: 'top 50%',
           end: 'top 20%',
-          markers: true,
           toggleActions: 'play resume resume reset',
         },
       });
@@ -32,7 +32,6 @@ const useCardStagger = (
         ease: 'power3.inOut',
       });
 
-      const children = Array.from(containerRef.current.children);
       tl.from(children, {
         y: 20,
         opacity: 0,
@@ -40,10 +39,12 @@ const useCardStagger = (
         stagger: 0.15,
         ease: 'power3.inOut',
       });
+
+      ScrollTrigger.refresh();
     },
     {
       // scope: containerRef,
-      dependencies: [deps],
+      dependencies: [containerRef.current?.children.length, deps],
     }
   );
 };

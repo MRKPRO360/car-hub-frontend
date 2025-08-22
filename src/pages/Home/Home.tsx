@@ -1,5 +1,3 @@
-import Benefit from './Benefit';
-
 import Features from './Feature';
 import FeaturedCars from './FeaturedCar';
 import Hero from './Hero';
@@ -7,6 +5,7 @@ import LoveOnline from './LoveOnline';
 import MatchYourBudget from './MatchYourBudget';
 
 import WhyCarHub from './WhyCarHub';
+import HyBridBenefit from './HyBridBenefit';
 
 function Home() {
   return (
@@ -19,7 +18,7 @@ function Home() {
         <FeaturedCars />
         <WhyCarHub />
         <MatchYourBudget />
-        <Benefit />
+        <HyBridBenefit />
         <LoveOnline />
       </div>
       {/* <Accessories />

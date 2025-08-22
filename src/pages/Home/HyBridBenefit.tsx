@@ -36,14 +36,12 @@ const hybridBenefits = [
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Benefit = () => {
+const HyBridBenefit = () => {
   const hybridBenefitsRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      // const tl = gsap.timeline();
-
       const ctx = gsap.context(() => {
         if (!sectionRef.current) return;
 
@@ -166,4 +164,4 @@ const Benefit = () => {
   );
 };
 
-export default Benefit;
+export default HyBridBenefit;

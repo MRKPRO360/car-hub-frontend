@@ -1,6 +1,6 @@
 import { useGetAllCarsQuery } from '../../redux/features/admin/carManagement.api';
 import { ICar } from '../../types';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
   Carousel,
   CarouselContent,

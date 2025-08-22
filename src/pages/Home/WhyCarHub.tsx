@@ -1,8 +1,10 @@
-import { useGSAP } from '@gsap/react';
+// import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShieldCheck, Car, CheckCircle, Zap } from 'lucide-react';
 import { useRef } from 'react';
+import useCardStagger from '../../hooks/useCardStagger';
+import Benefit from '../shared/Benefit';
 
 const benefits = [
   {
@@ -35,48 +37,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 const WhyCarHub = () => {
   const benefitsRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (benefitsRef.current) {
-        const children = Array.from(
-          benefitsRef.current.children
-        ) as HTMLElement[];
-
-        gsap.fromTo(
-          children,
-          {
-            opacity: 0,
-            y: 20,
-          },
-          {
-            duration: 0.4,
-            opacity: 1,
-            y: 0,
-            stagger: 0.3,
-            ease: 'power1',
-            scrollTrigger: {
-              trigger: benefitsRef.current,
-              // markers: true,
-              start: 'top 80%',
-              end: 'top 20%',
-              toggleActions: 'play resume resume reset',
-            },
-          }
-        );
-      }
-    },
-    {
-      scope: benefitsRef,
-    }
-  );
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  useCardStagger(headingRef, benefitsRef);
 
   return (
     <section className="bg-light-bg dark:bg-gray-900 py-12 lg:py-18 px-4 sm:px-0">
       <div className="container mx-auto ">
-        {/* <section className=""> */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-gray-300 mb-12">
+        <div className="overflow-y-hidden text-center mb-12">
+          <h2
+            ref={headingRef}
+            className="text-4xl font-bold text-center text-gray-900 dark:text-gray-300 mb-12"
+          >
             Why <span className="text-blue-600">Carhub</span>
           </h2>
         </div>
@@ -85,20 +56,7 @@ const WhyCarHub = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] dark:hover:drop-shadow-[0_8px_16px_rgba(37,99,235,0.15)] transition duration-300 px-4 py-10"
-            >
-              <div className="mb-6 flex items-center justify-center">
-                {benefit.icon}
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3 dark:text-gray-300">
-                {benefit.title}
-              </h3>
-              <p className="text-gray-600 leading-tighter dark:text-gray-400">
-                {benefit.description}
-              </p>
-            </div>
+            <Benefit benefit={benefit} key={index} />
           ))}
         </div>
       </div>
