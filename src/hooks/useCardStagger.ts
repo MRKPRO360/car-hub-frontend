@@ -21,12 +21,12 @@ const useCardStagger = (
           trigger: headingRef.current,
           start: 'top 50%',
           end: 'top 20%',
-          toggleActions: 'play resume resume reset',
+          toggleActions: 'play none none reverse',
         },
       });
 
       tl.from(headingRef.current, {
-        y: 15,
+        y: 50,
         opacity: 0,
         duration: 0.5,
         ease: 'power3.inOut',

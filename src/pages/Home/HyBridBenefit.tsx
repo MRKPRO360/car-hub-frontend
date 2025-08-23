@@ -94,7 +94,7 @@ const HyBridBenefit = () => {
                 trigger: hybridBenefitsRef.current,
                 start: 'top 70%',
                 end: 'top 20%',
-                toggleActions: 'play resume resume reset',
+                toggleActions: 'play none none reverse',
               },
             }
           );

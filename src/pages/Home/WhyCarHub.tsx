@@ -1,10 +1,10 @@
-// import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShieldCheck, Car, CheckCircle, Zap } from 'lucide-react';
 import { useRef } from 'react';
-import useCardStagger from '../../hooks/useCardStagger';
-import Benefit from '../shared/Benefit';
+
+import Benefit from '../shared/Home/Benefit';
+import { useGSAP } from '@gsap/react';
 
 const benefits = [
   {
@@ -37,23 +37,72 @@ gsap.registerPlugin(ScrollTrigger);
 
 const WhyCarHub = () => {
   const benefitsRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  useCardStagger(headingRef, benefitsRef);
+  const benefitsRefContainer = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (!benefitsRef.current || !benefitsRefContainer.current) return;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: benefitsRef.current,
+          start: 'top 65%',
+          end: 'top 50%',
+          toggleActions: 'play none none reverse',
+        },
+      });
+
+      const heading = benefitsRef.current.querySelector('h2');
+      if (heading) {
+        tl.from(heading, {
+          opacity: 0,
+          y: 30,
+          duration: 0.5,
+        });
+      }
+
+      const children = Array.from(
+        benefitsRefContainer.current.children
+      ) as HTMLElement[];
+
+      if (children.length > 0) {
+        tl.fromTo(
+          children,
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+          },
+          {
+            opacity: 1,
+            duration: 0.6,
+            y: 0,
+            stagger: 0.2,
+            ease: 'power3.inOut',
+          }
+        );
+      }
+      ScrollTrigger.refresh();
+    },
+    {
+      dependencies: [], // Add empty dependencies array
+    }
+  );
 
   return (
-    <section className="bg-light-bg dark:bg-gray-900 py-12 lg:py-18 px-4 sm:px-0">
-      <div className="container mx-auto ">
+    <section
+      ref={benefitsRef}
+      className="benefits bg-light-bg dark:bg-gray-900 py-12 lg:py-18 px-4 sm:px-0"
+    >
+      <div className="container mx-auto">
         <div className="overflow-y-hidden text-center mb-12">
-          <h2
-            ref={headingRef}
-            className="text-4xl font-bold text-center text-gray-900 dark:text-gray-300 mb-12"
-          >
+          <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-gray-300">
             Why <span className="text-blue-600">Carhub</span>
           </h2>
         </div>
         <div
-          ref={benefitsRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          ref={benefitsRefContainer}
+          className="benefits-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {benefits.map((benefit, index) => (
             <Benefit benefit={benefit} key={index} />

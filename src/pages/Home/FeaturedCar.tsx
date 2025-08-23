@@ -24,7 +24,7 @@ const FeaturedCars = () => {
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-12 lg:py-18">
       <div>
-        <div className="overflow-y-hidden  mb-12">
+        <div className="overflow-y-hidden mb-12">
           <h2
             ref={headingRef}
             className="text-4xl font-bold text-center dark:text-gray-300 text-gray-900"

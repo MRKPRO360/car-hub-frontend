@@ -91,7 +91,7 @@ const Navbar = () => {
                 <NavLink
                   key={key}
                   to={el.path}
-                  className="relative inline-block hover:text-primary transition duration-300 py-5"
+                  className="relative inline-block 2xsm:text-base lg:text-[15px] hover:text-primary transition duration-300 py-5"
                 >
                   {({ isActive }) => (
                     <>
@@ -109,7 +109,7 @@ const Navbar = () => {
           </nav>
 
           {/* Right-side Icons */}
-          <div className="flex w-full xsm:w-auto items-center space-x-4 text-blue-700 text-lg order-3">
+          <div className="flex w-full pb-3 xsm:pb-0 xsm:w-auto items-center space-x-4 text-blue-700 text-lg order-3">
             <SearchBox />
             <ThemeToggleButton isBorder={false} />
             <button

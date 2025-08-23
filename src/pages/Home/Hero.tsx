@@ -21,7 +21,7 @@ const Hero = () => {
     'linear-gradient(to right bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8))';
 
   const lightGradient =
-    'linear-gradient(to right bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(closest-corner at 50% 80%, rgba(0,0,0,0.8), rgba(127, 17, 224, .4) )';
+    'linear-gradient(to right bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.2)), radial-gradient(closest-corner at 50% 80%, rgba(0,0,0,0.8), rgba(127, 17, 224, .4) )';
 
   useGSAP(
     () => {
@@ -87,10 +87,11 @@ const Hero = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
-        className="min-h-[60vh] md:min-h-[90vh] lg:py-14  bg-blend-overlay dark:bg-blend-darken bg-[length:100%_100%] md:bg-cover grid place-content-center"
+        //bg-cover xsm:bg-[length:100%_100%]
+        className="min-h-[80vh] md:min-h-[90vh] lg:py-14 bg-cover bg-blend-overlay dark:bg-blend-darken  md:bg-cover grid place-content-center"
       >
         <div className="md:-translate-y-20">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-4 overflow-hidden">
+          <h1 className="text-3xl xsm:text-4xl md:text-5xl font-bold text-gray-300 mb-4 overflow-hidden">
             <span
               className="text-blue-600 inline-block"
               ref={(el) => (h1Refs.current[0] = el)}
