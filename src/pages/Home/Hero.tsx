@@ -1,8 +1,11 @@
 import heroCover from '../../assets/images/hero-back.jpg';
 import lightHeroCover from '../../assets/images/light-hero.png';
+import mobileLightHeroCover from '../../assets/images/mobile-light.png';
+import mobileDarkHeroCover from '../../assets/images/mobile-dark.jpg';
+
 import Cta from '../shared/Cta';
 import { useTheme } from '../../context/ThemeContext';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { brandOptions } from '../../constant/car';
@@ -21,7 +24,7 @@ const Hero = () => {
     'linear-gradient(to right bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8))';
 
   const lightGradient =
-    'linear-gradient(to right bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.2)), radial-gradient(closest-corner at 50% 80%, rgba(0,0,0,0.8), rgba(127, 17, 224, .4) )';
+    'linear-gradient(to right bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), radial-gradient(closest-corner at 50% 80%, rgba(0,0,0,0.8), rgba(127, 17, 224, .4) )';
 
   useGSAP(
     () => {
@@ -42,13 +45,17 @@ const Hero = () => {
       }
 
       if (h1Refs.current?.length && paraRef.current) {
-        tl.from(h1Refs.current, {
-          y: 50,
-          opacity: 0,
-          stagger: 0.4,
-          duration: 0.8,
-          ease: 'power3.out',
-        }).from(paraRef.current, {
+        tl.from(
+          h1Refs.current,
+          {
+            y: 50,
+            opacity: 0,
+            stagger: 0.4,
+            duration: 0.8,
+            ease: 'power3.out',
+          },
+          '-=.8'
+        ).from(paraRef.current, {
           opacity: 0,
           y: 20,
           duration: 0.6,
@@ -63,9 +70,9 @@ const Hero = () => {
 
         tl.from(children, {
           opacity: 0,
-          y: 10,
-          duration: 0.6,
-          stagger: 0.4,
+          y: 5,
+          duration: 0.8,
+          stagger: 0.6,
           ease: 'power3.out',
         });
       }
@@ -76,6 +83,15 @@ const Hero = () => {
     }
   );
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 425);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section className="text-center overflow-hidden">
       <div
@@ -83,12 +99,19 @@ const Hero = () => {
         style={{
           backgroundImage: `${
             theme === 'dark' ? darkGredient : lightGradient
-          }, url(${theme === 'dark' ? heroCover : lightHeroCover})`,
-          backgroundPosition: 'center',
+          }, url(${
+            theme === 'dark' && !isMobile
+              ? heroCover
+              : theme === 'dark' && isMobile
+              ? mobileDarkHeroCover
+              : theme === 'light' && !isMobile
+              ? lightHeroCover
+              : mobileLightHeroCover
+          })`,
           backgroundRepeat: 'no-repeat',
         }}
         //bg-cover xsm:bg-[length:100%_100%]
-        className="min-h-[80vh] md:min-h-[90vh] lg:py-14 bg-cover bg-blend-overlay dark:bg-blend-darken  md:bg-cover grid place-content-center"
+        className="min-h-[60vh] md:min-h-[90vh] lg:py-14 bg-cover xsm:bg-center bg-blend-overlay dark:bg-blend-darken  md:bg-cover grid place-content-center"
       >
         <div className="md:-translate-y-20">
           <h1 className="text-3xl xsm:text-4xl md:text-5xl font-bold text-gray-300 mb-4 overflow-hidden">
