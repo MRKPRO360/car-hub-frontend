@@ -24,7 +24,7 @@ function Cta({
 }: ICta) {
   const baseClasses = ` ${
     size === 'lg' ? 'py-3 px-4' : 'py-2 px-8'
-  } rounded-full text-sm focus:ring-2 focus:ring-blue-700 focus:outline-none active:translate-y-0.5 appearance-none cursor-pointer transition duration-200 inline-block ${className}`;
+  } rounded-full text-lg sm:text-base focus:ring-2 focus:ring-blue-700 focus:outline-none active:translate-y-0.5 appearance-none cursor-pointer transition duration-200 inline-block ${className}`;
 
   const filledClasses =
     'bg-blue-600 text-white hover:bg-blue-700 drop-shadow-[0_4px_4px_rgba(37,99,235,0.3)] border-0';

@@ -33,9 +33,9 @@ const FeaturedCars = () => {
             <span className="text-blue-600">Cars</span>
           </h2>
         </div>
-        <Carousel className="md:w-full ">
+        <Carousel className="md:w-full">
           {isLoading && (
-            <CarouselContent className="-ml-1 pb-3 sm:pb-6">
+            <CarouselContent className="-ml-1 ">
               {Array.from({ length: 4 }).map((_, i) => (
                 <CarouselSkeletonCard key={i} />
               ))}
@@ -43,7 +43,7 @@ const FeaturedCars = () => {
           )}
 
           {!isLoading && (
-            <CarouselContent className="-ml-1 pb-3 sm:pb-6" ref={containerRef}>
+            <CarouselContent className="-ml-1 " ref={containerRef}>
               {cars?.data?.map((car: ICar) => (
                 <CarouselCarCard key={car._id} car={car} />
               ))}

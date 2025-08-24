@@ -115,7 +115,7 @@ const Footer = () => {
   return (
     <footer
       ref={footerRef}
-      className="footer text-gray-800 dark:text-gray-300 container mx-auto py-12 lg:py-18 px-4 sm:px-0 overflow-x-hidden"
+      className="footer text-gray-800 dark:text-gray-300 container mx-auto py-12 lg:py-18 px-4 md:px-0 overflow-x-hidden"
     >
       <div
         ref={boxesRef}
@@ -144,13 +144,13 @@ const Footer = () => {
         </div>
       </div>
       <div
-        className="mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 font-medium text-gray-600 dark:text-gray-300"
+        className="mx-auto grid grid-cols-1 2xsm:grid-cols-2 md:grid-cols-4 gap-8 font-medium text-gray-600 dark:text-gray-300"
         ref={linkRefContainer}
       >
         <div className="self-start">
           <h4 className="text-lg font-semibold mb-3">CARHUB</h4>
           <ul>
-            <li className="text-sm">Find the right price, dealer and advice</li>
+            <li className="text-md">Find the right price, dealer and advice</li>
           </ul>
         </div>
 
@@ -158,7 +158,7 @@ const Footer = () => {
           <h4 className="navigation-heading mb-3 text-xs font-bold text-gray-700 dark:text-gray-300 tracking-widest uppercase">
             Navigation
           </h4>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2 text-md">
             <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
               Home
             </li>
@@ -181,7 +181,7 @@ const Footer = () => {
           <h4 className="mb-3 text-xs font-bold text-gray-700 dark:text-gray-300 tracking-widest uppercase">
             Popular Makes
           </h4>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2 text-md">
             <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
               Toyota
             </li>
@@ -204,7 +204,7 @@ const Footer = () => {
           <h4 className="mb-3 text-xs font-bold text-gray-700 dark:text-gray-300 tracking-widest uppercase">
             Social
           </h4>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2 text-md">
             <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
               <span>Facebook</span>
               <FaFacebook />

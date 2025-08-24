@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShieldCheck, Car, CheckCircle, Zap } from 'lucide-react';
 import { useRef } from 'react';
 
-import Benefit from '../shared/Home/Benefit';
+import Benefit from './Benefit';
 import { useGSAP } from '@gsap/react';
 
 const benefits = [

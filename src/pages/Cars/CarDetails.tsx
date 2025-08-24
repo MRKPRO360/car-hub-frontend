@@ -15,14 +15,17 @@ import {
 
 import { ICar } from '../../types';
 import { useCreateOrderMutation } from '../../redux/features/admin/orderManagement.api';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import Cta from '../shared/Cta';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import CarDetailsSkeleton from './CarDetailsSkeleton';
 
 function CarDetails() {
   const { id } = useParams();
 
-  const { data: car } = useGetACarQuery(id as string);
+  const { data: car, isLoading: carLoading } = useGetACarQuery(id as string);
 
   const [creatOrder, { isLoading, isSuccess, data, isError, error }] =
     useCreateOrderMutation();
@@ -56,15 +59,113 @@ function CarDetails() {
     if (isError) toast.error(JSON.stringify(error), { id: toastId });
   }, [data?.data, data?.message, error, isError, isLoading, isSuccess]);
 
+  const detailsRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        duration: 0.6,
+        ease: 'power3.inOut',
+      });
+
+      if (!detailsRef.current) return;
+
+      tl.from(detailsRef.current.querySelector('.col-left'), {
+        x: -100,
+        opacity: 0,
+      });
+
+      tl.fromTo(
+        detailsRef.current.querySelector('.image'),
+        {
+          scale: 0.8,
+        },
+        {
+          scale: 1,
+        }
+      );
+
+      tl.fromTo(
+        detailsRef.current.querySelectorAll('.col-left .images'),
+        {
+          opacity: 0,
+          y: 20,
+          borderRadius: '0',
+        },
+        {
+          borderRadius: '7px',
+          opacity: 1,
+          y: 0,
+
+          stagger: 0.6,
+        }
+      );
+
+      tl.from(detailsRef.current.querySelector('.col-right-upper'), {
+        y: 20,
+        opacity: 0,
+      });
+
+      tl.from(detailsRef.current.querySelector('.classification-boxes'), {
+        y: 20,
+        opacity: 0,
+        stagger: 0.5,
+      });
+
+      tl.fromTo(
+        '.cta',
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: 20,
+        },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+        }
+      );
+
+      tl.from(detailsRef.current.querySelectorAll('.feature-heading'), {
+        x: -100,
+        opacity: 0,
+      });
+
+      tl.fromTo(
+        detailsRef.current.querySelectorAll('.feature-box'),
+        {
+          opacity: 0,
+          x: -20,
+          scale: 0.9,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          stagger: 0.5,
+        }
+      );
+    },
+    {
+      scope: detailsRef,
+      dependencies: [car?.data],
+    }
+  );
+
+  if (!car?.data && carLoading) return <CarDetailsSkeleton />;
+
   if (car?.data) {
     return (
-      <div className="container mx-auto pt-14 pb-6">
+      <section
+        ref={detailsRef}
+        className="container mx-auto pt-14 pb-6 overflow-x-hidden"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
+          <div className="col-left">
             <img
               src={car?.data?.coverImage as string}
               alt={car.data.model}
-              className="rounded-md w-full h-40 sm:h-60 lg:h-80 object-cover"
+              className="image rounded-md w-full h-40 sm:h-60 lg:h-80 object-cover"
             />
             <div className="flex flex-wrap mt-4 gap-2">
               {(car?.data?.images as string[])?.map(
@@ -73,25 +174,27 @@ function CarDetails() {
                     key={i}
                     src={img}
                     alt={`Car ${i}`}
-                    className="h-24 w-40 rounded-md object-cover shadow"
+                    className="images h-24 w-40  object-cover shadow"
                   />
                 )
               )}
             </div>
           </div>
-          <div className="md:justify-self-end md:self-end">
-            <h1 className="text-2xl font-bold dark:text-gray-300">{`${car?.data.year} ${car?.data.brand} ${car?.data.model}`}</h1>
-            <p className="text-lg text-gray-600 dark:text-gray-200">
-              ${Number(car?.data.price).toFixed(2)}
-            </p>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">
-              {car?.data?.location?.city}, {car?.data?.location?.state},{' '}
-              {car?.data?.location?.country}
-            </p>
-            <p className="mt-4 text-base text-gray-700 dark:text-gray-400">
-              {car?.data?.description}
-            </p>
-            <div className="grid grid-cols-2 gap-4 mt-6 text-sm dark:text-gray-400">
+          <div className="col-right md:justify-self-end md:self-end">
+            <div className="col-right-upper">
+              <h1 className="text-3xl sm:text-2xl font-bold dark:text-gray-300">{`${car?.data.year} ${car?.data.brand} ${car?.data.model}`}</h1>
+              <p className="text-2xl sm:text-lg text-gray-600 dark:text-gray-200">
+                ${Number(car?.data.price).toFixed(2)}
+              </p>
+              <p className="mt-2 text-xl sm:text-lg text-gray-500 dark:text-gray-200">
+                {car?.data?.location?.city}, {car?.data?.location?.state},{' '}
+                {car?.data?.location?.country}
+              </p>
+              <p className="mt-4 text-xl sm:text-lg text-gray-700 dark:text-gray-400">
+                {car?.data?.description}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mt-6 text-lg sm:text-base dark:text-gray-400 classification-boxes ">
               <div className="flex items-center gap-2 ">
                 <div className="bg-primary/10 rounded-full p-2">
                   <Fuel strokeWidth={3} className="w-4 h-4 text-primary" />
@@ -178,7 +281,7 @@ function CarDetails() {
                 </span>
               </div>
             </div>
-            <div className="mt-4" onClick={() => handleClick(car.data)}>
+            <div className="mt-4 cta" onClick={() => handleClick(car.data)}>
               <Cta
                 className="w-full flex items-center justify-center"
                 text="Checkout"
@@ -187,14 +290,24 @@ function CarDetails() {
           </div>
         </div>
         <div className="mt-6">
-          <h3 className="font-semibold mb-2 text-lg dark:text-gray-300">
-            Features
-          </h3>
-          <ul className="text-sm space-y-2 dark:text-gray-400">
+          <div className="overflow-x-hidden">
+            <h3 className="feature-heading font-semibold mb-2 text-xl sm:text-xl dark:text-gray-300">
+              Features
+            </h3>
+          </div>
+          <ul className="text-lg sm:text-base font-semibold text-gray-800  dark:text-gray-400 space-y-4 sm:space-y-0 sm:flex items-center sm:gap-6">
             {car?.data?.features?.map((feature: string, idx: number) => (
-              <li key={idx} className="flex items-center gap-2">
-                <div className="bg-primary/10 rounded-full p-2">
-                  <Zap strokeWidth={3} className="w-4 h-4 text-primary" />
+              <li key={idx} className="flex items-center gap-2 feature-box">
+                {/* Container div - this stays static and maintains layout */}
+                <div className="relative rounded-full p-2">
+                  {/* Animated background layer - this is what gets animated */}
+                  <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse" />
+
+                  {/* Icon layer - this stays completely static */}
+                  <Zap
+                    strokeWidth={3}
+                    className="w-4 h-4 text-primary relative z-10"
+                  />
                 </div>
 
                 <span>{feature}</span>
@@ -202,7 +315,7 @@ function CarDetails() {
             ))}
           </ul>
         </div>
-      </div>
+      </section>
     );
   }
   // return (

@@ -23,7 +23,7 @@ function CarouselSkeletonCard() {
   });
 
   return (
-    <div className="min-w-0 shrink-0 grow-0 basis-full pl-4 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+    <div className="min-w-0 shrink-0 grow-0 basis-full pl-4 2xsm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
       <div
         ref={skeletonRef}
         className="bg-white dark:bg-gray-950 rounded-lg transition duration-300 relative animate-pulse shadow z-100"

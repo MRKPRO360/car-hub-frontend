@@ -38,7 +38,7 @@ function CarouselCarCard({ car }: { car: ICar }) {
           <img
             src={car.coverImage as string}
             alt={car.model}
-            className="w-full sm:h-50 object-cover"
+            className="w-full h-50 object-cover"
           />
         </Link>
         <div className="p-5">
@@ -46,7 +46,7 @@ function CarouselCarCard({ car }: { car: ICar }) {
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-300">
               {car.brand} {car.model}
             </h3>
-            <span className="text-[10px] font-semibold bg-blue-100 dark:bg-blue-light-950 text-primary dark:text-gray-300 px-2 py-1 rounded ">
+            <span className="text-xs sm:text-sm font-semibold bg-blue-100 dark:bg-blue-light-950 text-primary dark:text-gray-300 px-2 py-1 rounded ">
               {car.condition}
             </span>
           </div>

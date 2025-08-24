@@ -33,16 +33,16 @@ const MatchYourBudget = () => {
       </div>
       <Carousel className="md:w-full ">
         {isLoading && (
-          <CarouselContent className="-ml-1 pb-3 sm:pb-6">
+          <CarouselContent className="-ml-1">
             {Array.from({ length: 4 }).map((_, i) => (
               <CarouselSkeletonCard key={i} />
             ))}
           </CarouselContent>
         )}
 
-        {!isLoading && (
-          <CarouselContent className="-ml-1 pb-3 sm:pb-6" ref={containerRef}>
-            {cars?.data?.map((car: ICar) => (
+        {!isLoading && cars?.data && (
+          <CarouselContent className="-ml-1" ref={containerRef}>
+            {cars.data?.map((car: ICar) => (
               <CarouselCarCard key={car._id} car={car} />
             ))}
           </CarouselContent>

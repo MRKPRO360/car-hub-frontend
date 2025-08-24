@@ -17,6 +17,11 @@ type CarouselProps = {
   setApi?: (api: CarouselApi) => void;
 };
 
+type CarouselButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: 'outline' | 'primary';
+  size?: 'sm' | 'md' | 'lg';
+};
+
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0];
   api: ReturnType<typeof useEmblaCarousel>[1];
@@ -191,16 +196,17 @@ const CarouselContent = React.forwardRef<
   return (
     <div
       ref={carouselRef} // from carousel context
-      className="overflow-hidden relative"
+      className="overflow-hidden relative sm:pb-6
+pb-3 "
       data-slot="carousel-content"
     >
       {/* Fade Left */}
       {isHorizontal && canScrollPrev && (
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent" />
+        <div className="pointer-events-none absolute left-0 top-0 h-[90%] sm:h-[94%]  w-18 z-10 sm:bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent" />
       )}
       {/* Fade Right */}
       {isHorizontal && canScrollNext && (
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0  h-[90%] sm:h-[94%] w-18 z-10 sm:bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
       )}
       <div
         ref={ref} // 👈 forward the ref here
@@ -238,19 +244,22 @@ function CarouselPrevious({
   variant = 'outline',
   size = 'lg',
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: CarouselButtonProps) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
     <button
       data-slot="carousel-previous"
-      variant={variant}
-      size={size}
       className={cn(
-        'absolute size-8 rounded-full shadow-md dark:shadow-gray-800 cursor-pointer z-10 dark:text-gray-400',
+        'absolute rounded-full shadow-md dark:shadow-gray-800 cursor-pointer z-10 dark:text-gray-300 transition duration-300',
         orientation === 'horizontal'
           ? 'top-1/2 left-2 2xl:-left-6 -translate-y-1/2'
           : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
+        variant === 'primary'
+          ? 'bg-primary/90 hover:bg-primary text-white'
+          : 'bg-light border border-gray-200 dark:border-gray-800/90 hover:dark:border-gray-600 hover:border-gray-300',
+        size === 'sm' ? 'size-6' : size === 'md' ? 'size-7' : 'size-8',
+
         className
       )}
       disabled={!canScrollPrev}
@@ -259,8 +268,8 @@ function CarouselPrevious({
     >
       <ArrowLeft
         style={{
-          height: '30px',
-          width: '30px',
+          height: '2rem',
+          width: '2rem',
         }}
       />
       <span className="sr-only">Previous slide</span>
@@ -273,19 +282,21 @@ function CarouselNext({
   variant = 'outline',
   size = 'lg',
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: CarouselButtonProps) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
     <button
       data-slot="carousel-next"
-      variant={variant}
-      size={size}
       className={cn(
-        'absolute size-8 rounded-full shadow-md cursor-pointer z-10 dark:text-gray-400 dark:shadow-gray-800',
+        'absolute size-8 rounded-full shadow-md cursor-pointer z-100 dark:text-gray-400 dark:shadow-gray-800',
         orientation === 'horizontal'
           ? 'top-1/2 right-2 2xl:-right-6 -translate-y-1/2'
           : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
+        variant === 'primary'
+          ? 'bg-primary/90 hover:bg-primary text-white'
+          : 'bg-light border border-gray-200 dark:border-gray-800/90 hover:dark:border-gray-600 hover:border-gray-300',
+        size === 'sm' ? 'size-6' : size === 'md' ? 'size-7' : 'size-8',
         className
       )}
       disabled={!canScrollNext}
@@ -294,8 +305,8 @@ function CarouselNext({
     >
       <ArrowRight
         style={{
-          height: '30px',
-          width: '30px',
+          height: '2rem',
+          width: '2rem',
         }}
       />
       <span className="sr-only">Next slide</span>
