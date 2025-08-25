@@ -7,7 +7,9 @@ import { ICar, ICarFilters } from '../types';
 
 function Stock() {
   const { data: carData } = useGetAllCarsQuery(undefined);
+
   const [showFilter, setShowFilter] = useState<boolean>(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [filteredCars, setFilteredCars] = useState<ICar[] | undefined>(
@@ -157,7 +159,7 @@ function Stock() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 2xsm:grid-cols-2 sm:grid-cols-3  2xl:grid-cols-4 gap-8">
               {carsToDisplay?.map((car) => (
                 <CarCard car={car} key={car._id} />
               ))}

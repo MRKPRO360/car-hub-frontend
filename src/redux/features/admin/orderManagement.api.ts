@@ -21,10 +21,27 @@ const ordersApi = baseApi.injectEndpoints({
       },
       providesTags: ['orders'],
     }),
+
     getAnOrder: builder.query({
       query: (id) => {
         return {
           url: `/orders/${id}`,
+          method: 'GET',
+        };
+      },
+    }),
+    getAllOrdersAndCustomers: builder.query({
+      query: () => {
+        return {
+          url: '/orders/customers',
+          method: 'GET',
+        };
+      },
+    }),
+    getMonthlySales: builder.query({
+      query: () => {
+        return {
+          url: '/orders/monthly-sales',
           method: 'GET',
         };
       },
@@ -66,6 +83,8 @@ const ordersApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllOrdersQuery,
+  useGetAllOrdersAndCustomersQuery,
+  useGetMonthlySalesQuery,
   useCreateOrderMutation,
   useGetAnOrderQuery,
   useDeleteAnOrderMutation,

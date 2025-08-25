@@ -36,7 +36,7 @@ function CarCard({ car }: { car: ICar }) {
         <img
           src={car.coverImage as string}
           alt={car.model}
-          className="w-full h-36 object-cover"
+          className="w-full h-36 md:h-44 object-cover"
         />
       </Link>
       <div className="p-5">
@@ -44,7 +44,7 @@ function CarCard({ car }: { car: ICar }) {
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-300">
             <TruncateText maxLength={20} text={`${car.brand} ${car.model}`} />
           </h3>
-          <span className="text-xs font-semibold bg-blue-100 text-primary px-2 py-1 rounded">
+          <span className="text-xs sm:text-xs font-semibold bg-blue-100 text-primary px-2 py-1 rounded">
             {car.condition}
           </span>
         </div>

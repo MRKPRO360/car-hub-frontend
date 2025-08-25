@@ -34,8 +34,8 @@ export default function UserProfiles() {
   return (
     <>
       <PageMeta
-        title="Carhub | Digital solution"
-        description="Car hub is the digital platform for buying car without any further delay"
+        title="Car Hub | Digital Solution"
+        description="A trustworthy platform where you can get your wished car in your budget. Giving you the highest preference of your day to day life."
       />
       <PageBreadcrumb pageTitle="Profile" />
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/1 lg:p-6">

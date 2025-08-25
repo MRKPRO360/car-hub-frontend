@@ -4,9 +4,29 @@ import {
   BoxIconLine,
   GroupIcon,
 } from '../../../assets/icons';
+import { IOrder, IUser } from '../../../types';
 import Badge from '../../ui/badge/Badge';
 
-export default function EcommerceMetrics() {
+export default function EcommerceMetrics({
+  ordersAndCustomers,
+}: {
+  ordersAndCustomers: {
+    cur: {
+      customers: IUser[];
+      orders: IOrder[];
+    };
+    prev: {
+      customers: IUser[];
+      orders: IOrder[];
+    };
+    analytics: {
+      customerChange: number;
+      orderChange: number;
+      customerGrowth: 'positive' | 'negatie';
+      orderGrowth: 'positive' | 'negatie';
+    };
+  };
+}) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
       {/* <!-- Metric Item Start --> */}
@@ -21,12 +41,22 @@ export default function EcommerceMetrics() {
               Customers
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              3,782
+              {ordersAndCustomers?.cur.customers?.length || 0}
             </h4>
           </div>
-          <Badge color="success">
-            <ArrowUpIcon />
-            11.01%
+          <Badge
+            color={
+              ordersAndCustomers?.analytics?.customerGrowth === 'positive'
+                ? 'success'
+                : 'error'
+            }
+          >
+            {ordersAndCustomers?.analytics?.customerGrowth === 'positive' ? (
+              <ArrowUpIcon />
+            ) : (
+              <ArrowDownIcon />
+            )}
+            {Math.abs(ordersAndCustomers?.analytics?.customerChange || 0)}%
           </Badge>
         </div>
       </div>
@@ -43,13 +73,23 @@ export default function EcommerceMetrics() {
               Orders
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              {ordersAndCustomers?.cur?.orders?.length || 0}
             </h4>
           </div>
 
-          <Badge color="error">
-            <ArrowDownIcon />
-            9.05%
+          <Badge
+            color={
+              ordersAndCustomers?.analytics?.orderGrowth === 'positive'
+                ? 'success'
+                : 'error'
+            }
+          >
+            {ordersAndCustomers?.analytics?.orderGrowth === 'positive' ? (
+              <ArrowUpIcon />
+            ) : (
+              <ArrowDownIcon />
+            )}
+            {Math.abs(ordersAndCustomers?.analytics?.orderChange || 0)}%
           </Badge>
         </div>
       </div>

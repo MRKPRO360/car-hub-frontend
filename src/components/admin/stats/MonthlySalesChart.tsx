@@ -4,8 +4,19 @@ import { Dropdown } from '../../ui/dropdown/Dropdown';
 import { DropdownItem } from '../../ui/dropdown/DropdownItem';
 import { MoreDotIcon } from '../../../assets/icons';
 import { useState } from 'react';
+import { useGetMonthlySalesQuery } from '../../../redux/features/admin/orderManagement.api';
+interface IMonthlySales {
+  month: string;
+  sales: any;
+  revenue: any;
+  quantity: any;
+}
 
 export default function MonthlySalesChart() {
+  const { data: monthlySales } = useGetMonthlySalesQuery(undefined) as {
+    data: { data: IMonthlySales[] };
+  };
+
   const options: ApexOptions = {
     colors: ['#465fff'],
     chart: {
@@ -33,20 +44,7 @@ export default function MonthlySalesChart() {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      categories: monthlySales?.data?.map((item) => item.month),
       axisBorder: {
         show: false,
       },
@@ -85,10 +83,37 @@ export default function MonthlySalesChart() {
       },
     },
   };
+
+  // const getSeries = () => {
+  //   switch (chartType) {
+  //     case 'revenue':
+  //       return [
+  //         {
+  //           name: 'Revenue',
+  //           data: monthlySales?.data?.map((item) => item.revenue || 0),
+  //         },
+  //       ];
+  //     case 'orders':
+  //       return [
+  //         {
+  //           name: 'Orders',
+  //           data: monthlySales?.data?.map((item) => item.sales), // Assuming sales = order count
+  //         },
+  //       ];
+  //     default:
+  //       return [
+  //         {
+  //           name: 'Sales',
+  //           data: monthlySales?.data?.map((item) => item.sales),
+  //         },
+  //       ];
+  //   }
+  // };
+
   const series = [
     {
       name: 'Sales',
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      data: monthlySales?.data?.map((item) => item.sales),
     },
   ];
   const [isOpen, setIsOpen] = useState(false);
