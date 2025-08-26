@@ -46,6 +46,14 @@ const ordersApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getMonthlyTarget: builder.query({
+      query: () => {
+        return {
+          url: '/orders/monthly-target',
+          method: 'GET',
+        };
+      },
+    }),
     createOrder: builder.mutation({
       query: (data) => {
         return {
@@ -85,6 +93,7 @@ export const {
   useGetAllOrdersQuery,
   useGetAllOrdersAndCustomersQuery,
   useGetMonthlySalesQuery,
+  useGetMonthlyTargetQuery,
   useCreateOrderMutation,
   useGetAnOrderQuery,
   useDeleteAnOrderMutation,
