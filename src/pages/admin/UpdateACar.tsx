@@ -831,8 +831,14 @@ const UpdateACar = () => {
             multiple={true}
             minFiles={3}
             onChange={(files) => {
-              setValue('images', files);
-              trigger('images');
+              if (
+                Array.isArray(files) &&
+                files.length > 0 &&
+                files[0] instanceof File
+              ) {
+                setValue('images', files);
+                trigger('images');
+              }
             }}
             initialImages={
               car?.data?.images ? (car?.data?.images as string[]) : []

@@ -170,7 +170,7 @@ export default function CustomerOrders() {
                       <img
                         width={40}
                         height={40}
-                        src={order?.user.profileImg}
+                        src={order?.user.profileImg as string}
                         alt={order?.user.name}
                       />
                     </div>

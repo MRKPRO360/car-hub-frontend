@@ -195,3 +195,18 @@ export const countriesOptions: string[] = [
   'Zambia',
   'Zimbabwe',
 ];
+
+export const months: string[] = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import App from '../App';
 import Login from '../pages/Login';
-import ChangePassword from '../pages/user/ChangePassword';
+// import ChangePassword from '../pages/user/ChangePassword';
 import Home from '../pages/Home/Home';
 import About from '../pages/About';
 import Signup from '../pages/Signup';
@@ -60,10 +60,10 @@ const router = createBrowserRouter([
         path: '/cars/:id',
         element: <CarDetails />,
       },
-      {
-        path: '/change-password',
-        element: <ChangePassword />,
-      },
+      // {
+      //   path: '/change-password',
+      //   element: <ChangePassword />,
+      // },
       {
         path: '/about',
         element: <About />,

@@ -117,7 +117,7 @@ const ManageCars: React.FC = () => {
   };
 
   const handleUpdate = async (item: ICar) => {
-    navigate(`/admin/dashboard/manage-cars/${item.id}`);
+    navigate(`/admin/dashboard/manage-cars/${item._id}`);
   };
 
   if (isLoading) {
@@ -177,7 +177,7 @@ const ManageCars: React.FC = () => {
                     <td className="p-3 ">
                       <img
                         className="w-10 h-10 sm:w-16 sm:h-16 object-cover"
-                        src={`${item.img}`}
+                        src={`${item.coverImage as string}`}
                         alt=""
                       />
                     </td>

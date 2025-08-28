@@ -1,5 +1,3 @@
-// import { FcGoogle } from 'react-icons/fc';
-import { FaFacebook } from 'react-icons/fa';
 import Cta from './shared/Cta';
 import { useAppDispatch } from '../redux/hooks';
 import { useLoginMutation } from '../redux/features/auth/authApi';
@@ -12,6 +10,7 @@ import { Link, useNavigate } from 'react-router';
 
 import GoogleLoginBtn from './shared/GoogleLoginBtn';
 import FBLoginBtn from './shared/FBLoginBtn';
+import loginImg from '../assets/images/login.png';
 
 function Login() {
   const navigate = useNavigate();
@@ -51,11 +50,12 @@ function Login() {
 
   return (
     <div className="bg-white flex justify-center items-center h-screen">
-      <div className="w-1/2 h-screen hidden lg:block">
+      <div className="w-1/2 hidden lg:block ">
         <img
-          src="https://img.freepik.com/fotos-premium/imagen-fondo_910766-187.jpg?w=826"
+          src={loginImg}
+          // src="https://img.freepik.com/fotos-premium/imagen-fondo_910766-187.jpg?w=826"
           alt="Placeholder Image"
-          className="object-cover w-full h-full"
+          className="block object-cover w-full h-full"
         />
       </div>
 

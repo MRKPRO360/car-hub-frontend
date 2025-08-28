@@ -4,6 +4,7 @@ import { Dropdown } from '../../ui/dropdown/Dropdown';
 import { DropdownItem } from '../../ui/dropdown/DropdownItem';
 import { MoreDotIcon } from '../../../assets/icons';
 import { useState } from 'react';
+import { months } from '../../../constant/city';
 
 export default function MonthlySalesChart() {
   const options: ApexOptions = {
@@ -33,20 +34,7 @@ export default function MonthlySalesChart() {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      categories: months,
       axisBorder: {
         show: false,
       },

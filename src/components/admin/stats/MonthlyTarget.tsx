@@ -6,6 +6,7 @@ import { DropdownItem } from '../../ui/dropdown/DropdownItem';
 import { MoreDotIcon } from '../../../assets/icons';
 import { useGetMonthlyTargetQuery } from '../../../redux/features/admin/orderManagement.api';
 import formatCurrency from '../../../utils/formatCurrency';
+import { IMonthlyTargetData } from '../../../types';
 
 interface IMonthlyTarget {
   title?: string;
@@ -23,24 +24,7 @@ export default function MonthlyTarget({
   } = useGetMonthlyTargetQuery(undefined) as {
     isLoading: boolean;
     isError: boolean;
-    data: {
-      data: {
-        targetAmount: number;
-        curRevenue: number;
-        todayRevenue: number;
-        progressPercentage: number;
-        growthPercentage: number;
-        isGrowthPositive: boolean;
-        message: string;
-        additionalStats: {
-          curMonthOrders: number;
-          remainingAmount: number;
-          daysInMonth: number;
-          daysPassed: number;
-          averageDailyRevenue: number;
-        };
-      };
-    };
+    data: IMonthlyTargetData;
   };
 
   // Get arrow icon color based on growth

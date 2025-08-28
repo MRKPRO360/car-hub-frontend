@@ -795,8 +795,16 @@ const AddACar = () => {
             label="Cover Photo (One Image)"
             multiple={false}
             onChange={(files) => {
-              setValue('coverImage', files, { shouldValidate: true });
-              trigger('coverImage');
+              if (
+                Array.isArray(files) &&
+                files.length > 0 &&
+                files[0] instanceof File
+              ) {
+                setValue('coverImage', files as File[], {
+                  shouldValidate: true,
+                });
+                trigger('coverImage');
+              }
             }}
           />
 
@@ -825,8 +833,14 @@ const AddACar = () => {
             multiple={true}
             minFiles={3}
             onChange={(files) => {
-              setValue('images', files);
-              trigger('images');
+              if (
+                Array.isArray(files) &&
+                files.length > 0 &&
+                files[0] instanceof File
+              ) {
+                setValue('images', files as File[]);
+                trigger('images');
+              }
             }}
           />
 

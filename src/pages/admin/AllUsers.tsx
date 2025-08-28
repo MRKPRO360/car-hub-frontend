@@ -8,11 +8,7 @@ import {
   TableRow,
 } from '../../components/ui/table';
 import { toast } from 'sonner';
-import {
-  BsChevronLeft,
-  BsChevronRight,
-  BsThreeDotsVertical,
-} from 'react-icons/bs';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import { MdDeleteOutline } from 'react-icons/md';
 import { ImEyeBlocked } from 'react-icons/im';
 

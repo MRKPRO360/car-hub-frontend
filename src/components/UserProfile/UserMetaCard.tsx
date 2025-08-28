@@ -224,8 +224,16 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                       label="Profile Picture"
                       multiple={false}
                       onChange={(files) => {
-                        setValue('profileImg', files, { shouldValidate: true });
-                        trigger('profileImg');
+                        if (
+                          Array.isArray(files) &&
+                          files.length > 0 &&
+                          files[0] instanceof File
+                        ) {
+                          setValue('profileImg', files as File[], {
+                            shouldValidate: true,
+                          });
+                          trigger('profileImg');
+                        }
                       }}
                       initialImages={
                         user?.profileImg ? [user?.profileImg as string] : []
@@ -259,7 +267,11 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                 Close
               </Button>
               <button type="submit">
-                <Cta text="Save Changes" size="sm" />
+                <Cta
+                  isSubmitting={isSubmitting}
+                  text="Save Changes"
+                  size="sm"
+                />
               </button>
             </div>
           </form>

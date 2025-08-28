@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 const UpdateCar = () => {
   const { id } = useParams();
 
-  const { data: car } = useGetACarQuery(id);
+  const { data: car } = useGetACarQuery(id as string);
   const [updateCar] = useUpdateCarMutation();
 
   const {

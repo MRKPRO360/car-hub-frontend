@@ -88,7 +88,7 @@ export default function NotFound() {
       </div>
 
       {/* Add custom animations in your global CSS */}
-      <style jsx global>{`
+      <style>{`
         @keyframes float {
           0%,
           100% {

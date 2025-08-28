@@ -5,12 +5,7 @@ import { DropdownItem } from '../../ui/dropdown/DropdownItem';
 import { MoreDotIcon } from '../../../assets/icons';
 import { useState } from 'react';
 import { useGetMonthlySalesQuery } from '../../../redux/features/admin/orderManagement.api';
-interface IMonthlySales {
-  month: string;
-  sales: any;
-  revenue: any;
-  quantity: any;
-}
+import { IMonthlySales } from '../../../types';
 
 export default function MonthlySalesChart() {
   const { data: monthlySales } = useGetMonthlySalesQuery(undefined) as {
@@ -44,7 +39,7 @@ export default function MonthlySalesChart() {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: monthlySales?.data?.map((item) => item.month),
+      categories: monthlySales?.data?.map((item) => item.month) || [],
       axisBorder: {
         show: false,
       },
@@ -113,7 +108,7 @@ export default function MonthlySalesChart() {
   const series = [
     {
       name: 'Sales',
-      data: monthlySales?.data?.map((item) => item.sales),
+      data: monthlySales?.data?.map((item) => item.sales) || [],
     },
   ];
   const [isOpen, setIsOpen] = useState(false);
