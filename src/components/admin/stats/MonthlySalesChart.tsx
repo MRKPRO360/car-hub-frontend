@@ -8,7 +8,10 @@ import { useGetMonthlySalesQuery } from '../../../redux/features/admin/orderMana
 import { IMonthlySales } from '../../../types';
 
 export default function MonthlySalesChart() {
-  const { data: monthlySales } = useGetMonthlySalesQuery(undefined) as {
+  const { data: monthlySales, isLoading } = useGetMonthlySalesQuery(
+    undefined
+  ) as {
+    isLoading: boolean;
     data: { data: IMonthlySales[] };
   };
 
@@ -120,6 +123,15 @@ export default function MonthlySalesChart() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  if (isLoading || !monthlySales?.data)
+    return (
+      <div className="flex items-center justify-center h-44">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span className="ml-3 text-gray-500">Loading sales data...</span>
+      </div>
+    );
+
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
       <div className="flex items-center justify-between">

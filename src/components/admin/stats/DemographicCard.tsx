@@ -13,7 +13,7 @@ function getCountryInfo(name: string) {
   );
 
   if (!country) {
-    return { code: 'un', lat: 0, lng: 0 };
+    return null;
   }
 
   return {
@@ -53,6 +53,17 @@ export default function DemographicCard() {
 
   function closeDropdown() {
     setIsOpen(false);
+  }
+
+  if (isLoading || !countryData?.data) {
+    return (
+      <div className="flex items-center justify-center h-80">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span className="ml-3 text-gray-500">
+          Loading customer demographic data...
+        </span>
+      </div>
+    );
   }
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] sm:p-6">
@@ -95,14 +106,18 @@ export default function DemographicCard() {
           className="mapOne map-btn -mx-4 -my-6 h-[212px] w-[252px] 2xsm:w-[307px] xsm:w-[358px] sm:-mx-6 md:w-[668px] lg:w-[634px] xl:w-[393px] 2xl:w-[554px]"
         >
           <CountryMap
-            countryData={processedData.map((country) => {
-              const info = getCountryInfo(country.country);
-              return {
-                name: country.country,
-                latLng: [info.lat, info.lng],
-                customerCount: country.customerCount,
-              };
-            })}
+            countryData={processedData
+              .map((country) => {
+                const info = getCountryInfo(country.country);
+                if (!info) return null;
+
+                return {
+                  name: country.country,
+                  latLng: [info.lat, info.lng],
+                  customerCount: country.customerCount,
+                };
+              })
+              .filter(Boolean)}
           />
         </div>
       </div>
