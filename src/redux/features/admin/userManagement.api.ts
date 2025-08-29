@@ -21,6 +21,13 @@ const usersApi = baseApi.injectEndpoints({
       },
       providesTags: ['users'],
     }),
+    getUsersByCountry: builder.query({
+      query: () => ({
+        url: '/users/by-country',
+        method: 'GET',
+      }),
+      providesTags: ['users'],
+    }),
     getAUser: builder.query({
       query: (id) => {
         return {
@@ -66,6 +73,7 @@ export const {
   useGetAllUsersQuery,
   useGetAUserQuery,
   useDeleteAUserMutation,
+  useGetUsersByCountryQuery,
   // useUpdateUserMutation,
   useDeactivateUserMutation,
   useActivateUserMutation,

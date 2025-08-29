@@ -1,10 +1,50 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MoreDotIcon } from '../../../assets/icons';
 import CountryMap from './CountryMap';
 import { Dropdown } from '../../ui/dropdown/Dropdown';
 import { DropdownItem } from '../../ui/dropdown/DropdownItem';
+import { useGetUsersByCountryQuery } from '../../../redux/features/admin/userManagement.api';
+import countries from 'world-countries';
+import { ICountryData } from '../../../types';
+
+function getCountryInfo(name: string) {
+  const country = countries.find(
+    (c) => c.name.common.toLowerCase() === name.toLowerCase()
+  );
+
+  if (!country) {
+    return { code: 'un', lat: 0, lng: 0 };
+  }
+
+  return {
+    code: country.cca2.toLowerCase(),
+    lat: country.latlng[0],
+    lng: country.latlng[1],
+  };
+}
 
 export default function DemographicCard() {
+  const { data: countryData, isLoading } = useGetUsersByCountryQuery(undefined);
+
+  // CALCULATING PERCENTAGES AND PROCESS DATA
+
+  const processedData = useMemo(() => {
+    if (!countryData?.data) return [];
+
+    const totalCustomers = countryData.data.reduce(
+      (acc: number, curr: ICountryData) => acc + curr.customerCount,
+      0
+    );
+
+    return countryData.data.map((item: ICountryData) => ({
+      ...item,
+      percentage:
+        totalCustomers > 0
+          ? Math.round((item.customerCount / totalCustomers) * 100)
+          : 0,
+    }));
+  }, [countryData?.data]);
+
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {
@@ -54,60 +94,58 @@ export default function DemographicCard() {
           id="mapOne"
           className="mapOne map-btn -mx-4 -my-6 h-[212px] w-[252px] 2xsm:w-[307px] xsm:w-[358px] sm:-mx-6 md:w-[668px] lg:w-[634px] xl:w-[393px] 2xl:w-[554px]"
         >
-          <CountryMap />
+          <CountryMap
+            countryData={processedData.map((country) => {
+              const info = getCountryInfo(country.country);
+              return {
+                name: country.country,
+                latLng: [info.lat, info.lng],
+                customerCount: country.customerCount,
+              };
+            })}
+          />
         </div>
       </div>
 
       <div className="space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="items-center w-full rounded-full max-w-8">
-              <img src="./images/country/country-01.svg" alt="usa" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-800 text-theme-sm dark:text-white/90">
-                USA
-              </p>
-              <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                2,379 Customers
-              </span>
-            </div>
-          </div>
+        {processedData.map((country: ICountryData) => {
+          const { code } = getCountryInfo(country.country);
+          return (
+            <div
+              key={country.country}
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <div className="items-center w-full rounded-full max-w-8">
+                  <img
+                    src={`https://flagcdn.com/w40/${code}.png`}
+                    alt={country.country}
+                  />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800 text-theme-sm dark:text-white/90">
+                    {country.country}
+                  </p>
+                  <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
+                    {country.customerCount} Customers
+                  </span>
+                </div>
+              </div>
 
-          <div className="flex w-full max-w-[140px] items-center gap-3">
-            <div className="relative block h-2 w-full max-w-[100px] rounded-sm bg-gray-200 dark:bg-gray-800">
-              <div className="absolute left-0 top-0 flex h-full w-[79%] items-center justify-center rounded-sm bg-brand-500 text-xs font-medium text-white"></div>
+              <div className="flex w-full max-w-[140px] items-center gap-3">
+                <div className="relative block h-2 w-full max-w-[100px] rounded-sm bg-gray-200 dark:bg-gray-800">
+                  <div
+                    style={{ width: `${country.percentage}%` }}
+                    className="absolute left-0 top-0 flex h-full items-center justify-center rounded-sm bg-brand-500 text-xs font-medium text-white"
+                  ></div>
+                </div>
+                <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                  {country.percentage}%
+                </p>
+              </div>
             </div>
-            <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-              79%
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="items-center w-full rounded-full max-w-8">
-              <img src="./images/country/country-02.svg" alt="france" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-800 text-theme-sm dark:text-white/90">
-                France
-              </p>
-              <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                589 Customers
-              </span>
-            </div>
-          </div>
-
-          <div className="flex w-full max-w-[140px] items-center gap-3">
-            <div className="relative block h-2 w-full max-w-[100px] rounded-sm bg-gray-200 dark:bg-gray-800">
-              <div className="absolute left-0 top-0 flex h-full w-[23%] items-center justify-center rounded-sm bg-brand-500 text-xs font-medium text-white"></div>
-            </div>
-            <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-              23%
-            </p>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -47,3 +47,9 @@ export interface ICustomerOrderAnalytics {
     orderGrowth: 'positive' | 'negative';
   };
 }
+
+export interface ICountryData {
+  country: string;
+  customerCount: number;
+  percentage?: number;
+}
