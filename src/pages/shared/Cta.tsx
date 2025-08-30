@@ -6,7 +6,7 @@ interface ICta {
   variant?: 'filled' | 'outline';
   arrowRight?: boolean;
   className?: string;
-  size?: 'sm' | 'lg';
+  size?: 'xs' | 'sm' | 'lg';
   isSubmitting?: boolean;
   submittingText?: string;
   isLoading?: boolean;
@@ -23,8 +23,12 @@ function Cta({
   isLoading,
 }: ICta) {
   const baseClasses = ` ${
-    size === 'lg' ? 'py-3 px-4' : 'py-2 px-8'
-  } rounded-full text-lg sm:text-base focus:ring-2 focus:ring-blue-700 focus:outline-none active:translate-y-0.5 appearance-none cursor-pointer transition duration-200 inline-block ${className}`;
+    size === 'lg'
+      ? 'py-3 px-4 text-lg sm:text-base'
+      : size === 'sm'
+      ? 'py-2 px-8 text-xs sm:text-base'
+      : 'py-1 px-2 text-lg sm:text-[12px] sm:text-base'
+  } rounded-full  focus:ring-2 focus:ring-blue-700  focus:outline-none active:translate-y-0.5 appearance-none cursor-pointer transition duration-200 inline-block ${className}`;
 
   const filledClasses =
     'bg-blue-600 text-white hover:bg-blue-700 drop-shadow-[0_4px_4px_rgba(37,99,235,0.3)] border-0';

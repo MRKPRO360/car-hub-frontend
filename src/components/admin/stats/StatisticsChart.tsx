@@ -11,6 +11,7 @@ import {
 } from '../../../types';
 import useStatisticsData from '../../../hooks/useStatisticsData';
 import { months } from '../../../constant/city';
+import Cta from '../../../pages/shared/Cta';
 
 export default function StatisticsChart() {
   const [chartType, setChartType] = useState<IChartType>('sales');
@@ -343,14 +344,11 @@ export default function StatisticsChart() {
             {subtitle}
           </p>
         </div>
-        <div className="flex items-start w-full gap-3 sm:justify-end">
-          <button
-            onClick={refetch}
-            className="px-3 py-1 text-sm bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200 transition-colors dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : 'Refresh'}
+        <div className="flex items-center w-full gap-3 sm:justify-end">
+          <button onClick={refetch}>
+            <Cta size="xs" text={loading ? 'Loading...' : 'Refresh'} />
           </button>
+
           <ChartTab setChartType={setChartType} chartType={chartType} />
         </div>
       </div>
