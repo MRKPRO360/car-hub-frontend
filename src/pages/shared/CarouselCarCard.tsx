@@ -9,6 +9,7 @@ import {
   selectWishlistedCar,
 } from '../../redux/features/wishlist/wishlistSlice';
 import formatPrice from '../../utils/formatPrice';
+import truncate from '../../utils/truncate';
 
 function CarouselCarCard({ car }: { car: ICar }) {
   const dispatch = useAppDispatch();
@@ -43,10 +44,18 @@ function CarouselCarCard({ car }: { car: ICar }) {
         </Link>
         <div className="p-5">
           <div className="flex justify-between items-center mb-2">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-300">
-              {car.brand} {car.model}
+            <h3
+              className="text-lg font-semibold text-gray-800 dark:text-gray-300"
+              title={`${car.brand} ${car.model}`}
+            >
+              <span className="hidden 2xsm:block">
+                {truncate(`${car.brand} ${car.model}`, 20, { wordSafe: true })}
+              </span>
+              <span className="2xsm:hidden">
+                {car.brand} {car.model}
+              </span>
             </h3>
-            <span className="text-xs sm:text-sm font-semibold bg-blue-100 dark:bg-blue-light-950 text-primary dark:text-gray-300 px-2 py-1 rounded ">
+            <span className="hidden sm:block text-xs sm:text-sm font-semibold bg-blue-100 dark:bg-blue-light-950 text-primary dark:text-gray-300 px-2 py-1 rounded ">
               {car.condition}
             </span>
           </div>
@@ -60,7 +69,7 @@ function CarouselCarCard({ car }: { car: ICar }) {
               {formatPrice(car.price)}
             </p>
           </div>
-          <div className="flex flex-wrap text-sm text-gray-600 dark:text-gray-300 gap-x-4 gap-y-2 my-2 font-semibold ">
+          <div className="flex flex-wrap text-sm text-gray-600 dark:text-gray-300 gap-x-3 2xsm:gap-x-1 sm:gap-x-4 gap-y-2 my-2 font-semibold ">
             <div className="flex items-center gap-1">
               <GaugeCircle className="w-4 h-4 text-primary" strokeWidth={2.5} />
               <span>{car.horsepower}</span>

@@ -826,10 +826,3 @@ html {
     font-size: 80%;
   }
 }
-
-@media (max-width: 639px) {
-  /* Below sm */
-  html {
-    font-size: 75%;
-  }
-}

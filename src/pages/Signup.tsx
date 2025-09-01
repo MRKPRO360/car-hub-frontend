@@ -15,19 +15,21 @@ import { useAppDispatch } from '../redux/hooks';
 
 import { Link, useNavigate } from 'react-router';
 import Cta from './shared/Cta';
-import ImageUpload from './shared/ImageUpload';
 import GoogleLoginBtn from './shared/GoogleLoginBtn';
 import FBLoginBtn from './shared/FBLoginBtn';
-// import signupImg from '../assets/images/signup.jpg';
 
 import loginImg from '../assets/images/login.png';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import ImageUpload from '../components/ui/imageUpload/ImageUpload';
+
 function Signup() {
   const [signup] = useSignupMutation();
-  const [step, setStep] = useState(3);
-
+  const totalSteps = 3;
+  const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -36,10 +38,49 @@ function Signup() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    trigger,
   } = useForm();
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        '.form-step',
+        { x: -100, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+        }
+      );
+    },
+    {
+      dependencies: [step],
+    }
+  );
+
+  const handleNext = async () => {
+    let fieldsToValidate: string[] = [];
+
+    if (step === 1) fieldsToValidate = ['name', 'email', 'password'];
+    if (step === 2) fieldsToValidate = ['phone', 'country', 'address'];
+    if (step === 3) fieldsToValidate = ['terms'];
+
+    const valid = await trigger(fieldsToValidate);
+
+    if (valid) {
+      setStep(step + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    setStep(step - 1);
+  };
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Signing up...');
+    return;
 
     const formData = new FormData();
     const file = data.userImg[0];
@@ -54,6 +95,7 @@ function Signup() {
     };
 
     formData.append('data', JSON.stringify(userData));
+
     if (file) formData.append('file', file);
 
     try {
@@ -85,11 +127,20 @@ function Signup() {
           Create Account
         </h1>
 
-        {/* Social Login Buttons */}
+        {/* PROGRESS BAR */}
+        <div className="w-full bg-gray-200/80 h-2 rounded-full mb-6">
+          <div
+            style={{
+              width: `${(step / totalSteps) * 100}%`,
+              willChange: 'width',
+            }}
+            className="bg-primary h-2 rounded-full transition-all duration-500"
+          ></div>
+        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form className="overflow-hidden" onSubmit={handleSubmit(onSubmit)}>
           {step === 1 && (
-            <>
+            <div className="form-step space-y-4">
               <div className="relative">
                 <label htmlFor="name" className="block text-gray-600 mb-1">
                   Full Name
@@ -185,11 +236,11 @@ function Signup() {
                   </p>
                 )}
               </div>
-            </>
+            </div>
           )}
 
           {step === 2 && (
-            <>
+            <div className="form-step space-y-4">
               <div className="relative">
                 <label htmlFor="phone" className="block text-gray-600 mb-1">
                   Phone Number
@@ -237,12 +288,49 @@ function Signup() {
                   />
                 </div>
               </div>
-            </>
+            </div>
           )}
 
           {step === 3 && (
-            <div className="lg:min-h-[230px]">
-              <ImageUpload register={register} name="userImg" errors={errors} />
+            <div className="form-step space-y-4 sm:min-h-[230px] ">
+              {/* <ImageUpload register={register} name="userImg" errors={errors} /> */}
+              <div className="w-full">
+                <ImageUpload
+                  label="Profile Picture"
+                  multiple={false}
+                  onChange={(files) => {
+                    if (
+                      Array.isArray(files) &&
+                      files.length > 0 &&
+                      files[0] instanceof File
+                    ) {
+                      setValue('userImg', files as File[], {
+                        shouldValidate: true,
+                      });
+                      trigger('userImg');
+                    }
+                  }}
+                />
+
+                <input
+                  type="hidden"
+                  {...register(
+                    'userImg'
+                    //    {
+                    //   validate: (files: File[]) =>
+                    //     files?.length > 0 || 'Please select a profile image',
+                    // }
+                  )}
+                />
+                {/* {errors.userImg && (
+                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                    <MdError className="text-lg" />
+                    {typeof errors.userImg.message === 'string'
+                      ? errors.userImg.message
+                      : 'Invalid Profile Picture'}
+                  </p>
+                )} */}
+              </div>
 
               {/* Terms and Submit */}
               <div className="flex items-center mt-6">
@@ -256,7 +344,7 @@ function Signup() {
                 />
                 <label
                   htmlFor="terms"
-                  className="ml-2 block text-sm text-gray-700"
+                  className="ml-2 block text-base text-gray-700"
                 >
                   I agree to the{' '}
                   <a href="#" className="text-primary hover:underline">
@@ -285,14 +373,14 @@ function Signup() {
     hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600
     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
                 type="button"
-                onClick={() => setStep((prevStep) => prevStep - 1)}
+                onClick={handlePrev}
               >
                 <ChevronLeft className="h-5 w-5" />
                 Prev
               </button>
             )}
 
-            {step < 3 && (
+            {step < totalSteps && (
               <button
                 className="flex items-center gap-1 px-4 py-2 rounded-md 
     bg-white border border-gray-300 text-gray-700 
@@ -300,14 +388,14 @@ function Signup() {
     hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600
     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
                 type="button"
-                onClick={() => setStep((prevStep) => prevStep + 1)}
+                onClick={handleNext}
               >
                 Next
                 <ChevronRight className="h-5 w-5" />
               </button>
             )}
 
-            {step === 3 && (
+            {step === totalSteps && (
               <button type="submit" className="">
                 <Cta size="sm" className="w-full" text="Sign Up" />
               </button>
@@ -335,7 +423,9 @@ function Signup() {
           <span className="text-gray-200 font-normal">or</span>
           <span className="h-px w-full bg-gray-200"></span>
         </div>
-        <div className="flex justify-center gap-5 w-full">
+
+        {/* SOCIAL BUTTON */}
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-5 w-full">
           <GoogleLoginBtn />
           <FBLoginBtn />
         </div>

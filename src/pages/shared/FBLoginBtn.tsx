@@ -9,7 +9,7 @@ function FBLoginBtn() {
 
   return (
     <button
-      className="min-w-[200px] max-w-[400px] flex items-center justify-center mb-6 md:mb-0 border bg-white  border-gray-300 text-gray-700  text-sm  hover:border-blue-400 hover:text-blue-600 py-2 px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
+      className="min-w-[180px] sm:max-w-[400px] flex items-center justify-center  border bg-white  border-gray-300 text-gray-700 text-lg sm:text-base  hover:border-blue-400 hover:text-blue-600 py-2.5 sm:py-3 md:py-2.5 sm:px-5 gap-1 rounded-md tracking-wide font-medium cursor-pointer transition ease-in duration-500"
       type="button"
       onClick={handleFacebookLogin}
     >
