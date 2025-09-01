@@ -19,7 +19,7 @@ const ChartTab = ({ chartType, setChartType }: IChartTab) => {
           'sales'
         )}`}
       >
-        Monthly
+        Sales
       </button>
 
       <button
@@ -28,7 +28,7 @@ const ChartTab = ({ chartType, setChartType }: IChartTab) => {
           'target'
         )}`}
       >
-        Quarterly
+        Target
       </button>
 
       <button
@@ -37,7 +37,7 @@ const ChartTab = ({ chartType, setChartType }: IChartTab) => {
           'analytics'
         )}`}
       >
-        Annually
+        Analytics
       </button>
     </div>
   );

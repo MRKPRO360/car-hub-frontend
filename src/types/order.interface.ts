@@ -24,3 +24,10 @@ export interface IOrder {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IRecentOrders {
+  limit?: number;
+  showFilters?: boolean;
+  showPagination?: boolean;
+  title?: string;
+}
