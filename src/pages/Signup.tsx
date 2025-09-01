@@ -18,10 +18,16 @@ import Cta from './shared/Cta';
 import ImageUpload from './shared/ImageUpload';
 import GoogleLoginBtn from './shared/GoogleLoginBtn';
 import FBLoginBtn from './shared/FBLoginBtn';
-import signupImg from '../assets/images/signup.jpg';
+// import signupImg from '../assets/images/signup.jpg';
+
+import loginImg from '../assets/images/login.png';
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 function Signup() {
   const [signup] = useSignupMutation();
+  const [step, setStep] = useState(3);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -67,7 +73,7 @@ function Signup() {
       {/* Left Side Image */}
       <div className="w-1/2 hidden lg:block ">
         <img
-          src={signupImg}
+          src={loginImg}
           alt="Signup background"
           className="block object-cover w-full"
         />
@@ -82,184 +88,231 @@ function Signup() {
         {/* Social Login Buttons */}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Name Field */}
-          <div className="relative">
-            <label htmlFor="name" className="block text-gray-600 mb-1">
-              Full Name
-            </label>
-            <div className="relative">
-              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                id="name"
-                type="text"
-                placeholder="John Doe"
-                className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                  errors.name
-                    ? 'border-red-500 focus:ring-red-200'
-                    : 'border-gray-300 focus:border-primary focus:ring-blue-200'
-                }`}
-                {...register('name', { required: 'Name is required' })}
-              />
-            </div>
-            {errors.name && (
-              <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                <MdError className="text-lg" />
-                {typeof errors.name.message === 'string'
-                  ? errors.name.message
-                  : 'Invalid name'}
-              </p>
-            )}
-          </div>
-
-          {/* Email Field */}
-          <div className="relative">
-            <label htmlFor="email" className="block text-gray-600 mb-1">
-              Email
-            </label>
-            <div className="relative">
-              <MdEmail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                id="email"
-                type="email"
-                placeholder="example@email.com"
-                className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                  errors.email
-                    ? 'border-red-500 focus:ring-red-200'
-                    : 'border-gray-300 focus:border-primary focus:ring-blue-200'
-                }`}
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address',
-                  },
-                })}
-              />
-            </div>
-            {errors.email && (
-              <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                <MdError className="text-lg" />
-                {typeof errors.email.message === 'string'
-                  ? errors.email.message
-                  : 'Invalid email'}
-              </p>
-            )}
-          </div>
-
-          {/* Password Field */}
-          <div className="relative">
-            <label htmlFor="password" className="block text-gray-600 mb-1">
-              Password
-            </label>
-            <div className="relative">
-              <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                  errors.password
-                    ? 'border-red-500 focus:ring-red-200'
-                    : 'border-gray-300 focus:border-primary focus:ring-blue-200'
-                }`}
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                })}
-              />
-            </div>
-            {errors.password && (
-              <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                <MdError className="text-lg" />{' '}
-                {typeof errors.password.message === 'string'
-                  ? errors.password.message
-                  : 'Invalid password'}
-              </p>
-            )}
-          </div>
-          {/*  */}
-          <div className="relative">
-            <label htmlFor="phone" className="block text-gray-600 mb-1">
-              Phone Number
-            </label>
-            <div className="relative">
-              <MdLocalPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                id="phone"
-                type="tel"
-                placeholder="+1234567890"
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
-                {...register('phone')}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="relative">
-              <label htmlFor="country" className="block text-gray-600 mb-1">
-                Country
-              </label>
+          {step === 1 && (
+            <>
               <div className="relative">
-                <MdLocationOn className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  id="country"
-                  type="text"
-                  placeholder="Your country"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
-                  {...register('country')}
-                />
+                <label htmlFor="name" className="block text-gray-600 mb-1">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    id="name"
+                    type="text"
+                    placeholder="John Doe"
+                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.name
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                    }`}
+                    {...register('name', { required: 'Name is required' })}
+                  />
+                </div>
+                {errors.name && (
+                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                    <MdError className="text-lg" />
+                    {typeof errors.name.message === 'string'
+                      ? errors.name.message
+                      : 'Invalid name'}
+                  </p>
+                )}
               </div>
-            </div>
 
-            <div className="relative">
-              <label htmlFor="address" className="block text-gray-600 mb-1">
-                Address
-              </label>
               <div className="relative">
-                <MdHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  id="address"
-                  type="text"
-                  placeholder="Street Address"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
-                  {...register('address')}
-                />
+                <label htmlFor="email" className="block text-gray-600 mb-1">
+                  Email
+                </label>
+                <div className="relative">
+                  <MdEmail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="example@email.com"
+                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.email
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                    }`}
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: 'Invalid email address',
+                      },
+                    })}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                    <MdError className="text-lg" />
+                    {typeof errors.email.message === 'string'
+                      ? errors.email.message
+                      : 'Invalid email'}
+                  </p>
+                )}
               </div>
-            </div>
-          </div>
 
-          <ImageUpload register={register} name="userImg" errors={errors} />
-
-          {/* Terms and Submit */}
-          <div className="flex items-center mt-6">
-            <input
-              id="terms"
-              type="checkbox"
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-              {...register('terms', { required: 'You must accept the terms' })}
-            />
-            <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-              I agree to the{' '}
-              <a href="#" className="text-primary hover:underline">
-                Terms and Conditions
-              </a>
-            </label>
-          </div>
-          {errors.terms && (
-            <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-              <MdError className="text-lg" />{' '}
-              {typeof errors.terms.message === 'string'
-                ? errors.terms.message
-                : 'Invalid terms'}
-            </p>
+              <div className="relative">
+                <label htmlFor="password" className="block text-gray-600 mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.password
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                    }`}
+                    {...register('password', {
+                      required: 'Password is required',
+                      minLength: {
+                        value: 6,
+                        message: 'Password must be at least 6 characters',
+                      },
+                    })}
+                  />
+                </div>
+                {errors.password && (
+                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                    <MdError className="text-lg" />{' '}
+                    {typeof errors.password.message === 'string'
+                      ? errors.password.message
+                      : 'Invalid password'}
+                  </p>
+                )}
+              </div>
+            </>
           )}
 
-          <button type="submit" className="w-full">
-            <Cta className="w-full mt-6" text="Sign Up" />
-          </button>
+          {step === 2 && (
+            <>
+              <div className="relative">
+                <label htmlFor="phone" className="block text-gray-600 mb-1">
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <MdLocalPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    id="phone"
+                    type="tel"
+                    placeholder="+1234567890"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
+                    {...register('phone')}
+                  />
+                </div>
+              </div>
+
+              <div className="relative">
+                <label htmlFor="country" className="block text-gray-600 mb-1">
+                  Country
+                </label>
+                <div className="relative">
+                  <MdLocationOn className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    id="country"
+                    type="text"
+                    placeholder="Your country"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
+                    {...register('country')}
+                  />
+                </div>
+              </div>
+
+              <div className="relative">
+                <label htmlFor="address" className="block text-gray-600 mb-1">
+                  Address
+                </label>
+                <div className="relative">
+                  <MdHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    id="address"
+                    type="text"
+                    placeholder="Street Address"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
+                    {...register('address')}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {step === 3 && (
+            <div className="lg:min-h-[230px]">
+              <ImageUpload register={register} name="userImg" errors={errors} />
+
+              {/* Terms and Submit */}
+              <div className="flex items-center mt-6">
+                <input
+                  id="terms"
+                  type="checkbox"
+                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                  {...register('terms', {
+                    required: 'You must accept the terms',
+                  })}
+                />
+                <label
+                  htmlFor="terms"
+                  className="ml-2 block text-sm text-gray-700"
+                >
+                  I agree to the{' '}
+                  <a href="#" className="text-primary hover:underline">
+                    Terms and Conditions
+                  </a>
+                </label>
+              </div>
+              {errors.terms && (
+                <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                  <MdError className="text-lg" />{' '}
+                  {typeof errors.terms.message === 'string'
+                    ? errors.terms.message
+                    : 'Invalid terms'}
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* NAVIGATION BUTTON */}
+          <div className="flex justify-between mt-6">
+            {step > 1 && (
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md 
+    bg-white border border-gray-300 text-gray-700 
+    font-medium transition-all duration-200
+    hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+                type="button"
+                onClick={() => setStep((prevStep) => prevStep - 1)}
+              >
+                <ChevronLeft className="h-5 w-5" />
+                Prev
+              </button>
+            )}
+
+            {step < 3 && (
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md 
+    bg-white border border-gray-300 text-gray-700 
+    font-medium transition-all duration-200
+    hover:bg-gray-50 hover:border-blue-400 hover:text-blue-600
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+                type="button"
+                onClick={() => setStep((prevStep) => prevStep + 1)}
+              >
+                Next
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            )}
+
+            {step === 3 && (
+              <button type="submit" className="">
+                <Cta size="sm" className="w-full" text="Sign Up" />
+              </button>
+            )}
+          </div>
         </form>
 
         <div className="text-center mt-4">
