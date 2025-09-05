@@ -717,7 +717,7 @@ const AddACar = () => {
         {/* CITY, STREET, COUNTRY */}
 
         <div className="flex items-center gap-3">
-          <div className="flex-1">
+          <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="city"
               className="block text-gray-600 dark:text-white/80 font-semibold text-base"
@@ -733,10 +733,24 @@ const AddACar = () => {
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
               }`}
-              {...register('location.city')}
+              {...register('location.city', {
+                required: 'City is required',
+              })}
             />
+            {errors.location?.city && (
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                {typeof errors.location?.city.message === 'string'
+                  ? errors.location.city.message
+                  : 'Invalid city'}
+
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
+              </p>
+            )}
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="street"
               className="block text-gray-600 dark:text-white/80 font-semibold text-base"
@@ -755,7 +769,7 @@ const AddACar = () => {
               {...register('location.state')}
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-h-[90px]">
             <div>
               <label
                 className="block text-gray-600 dark:text-white/80 font-semibold text-base"
@@ -772,20 +786,40 @@ const AddACar = () => {
                     : 'border-gray-300 focus:border-primary'
                 }
               `}
-                {...register('location.country')}
+                {...register('location.country', {
+                  required: 'Country is required',
+                  validate: (value) =>
+                    value !== '' || 'Please select your country',
+                })}
               >
                 {/* Default unselected placeholder */}
                 <option className="dark:text-white/80" value="" disabled hidden>
-                  -- Select a country (optional)--
+                  -- Select a country --
                 </option>
 
                 {countriesOptions.map((country, idx) => (
-                  <option className="dark:text-gray-800" key={idx} value={''}>
+                  <option
+                    className="dark:text-gray-800"
+                    key={idx}
+                    value={country}
+                  >
                     {country}
                   </option>
                 ))}
               </select>
             </div>
+            {errors.location?.country && (
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                {typeof errors.location?.country.message === 'string'
+                  ? errors.location.country.message
+                  : 'Invalid country'}
+
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
+              </p>
+            )}
           </div>
         </div>
 

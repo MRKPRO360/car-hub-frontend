@@ -1,11 +1,5 @@
 import { FaLock, FaUser } from 'react-icons/fa';
-import {
-  MdEmail,
-  MdLocalPhone,
-  MdLocationOn,
-  MdHome,
-  MdError,
-} from 'react-icons/md';
+import { MdEmail, MdLocalPhone, MdLocationOn, MdHome } from 'react-icons/md';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useSignupMutation } from '../redux/features/auth/authApi';
 import { toast } from 'sonner';
@@ -20,7 +14,7 @@ import FBLoginBtn from './shared/FBLoginBtn';
 
 import loginImg from '../assets/images/login.png';
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CircleAlert } from 'lucide-react';
 
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -160,11 +154,15 @@ function Signup() {
                   />
                 </div>
                 {errors.name && (
-                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                    <MdError className="text-lg" />
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                     {typeof errors.name.message === 'string'
                       ? errors.name.message
                       : 'Invalid name'}
+
+                    <CircleAlert
+                      className="text-red-800 dark:text-red-500"
+                      size={20}
+                    />
                   </p>
                 )}
               </div>
@@ -194,11 +192,15 @@ function Signup() {
                   />
                 </div>
                 {errors.email && (
-                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                    <MdError className="text-lg" />
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                     {typeof errors.email.message === 'string'
                       ? errors.email.message
                       : 'Invalid email'}
+
+                    <CircleAlert
+                      className="text-red-800 dark:text-red-500"
+                      size={20}
+                    />
                   </p>
                 )}
               </div>
@@ -228,11 +230,15 @@ function Signup() {
                   />
                 </div>
                 {errors.password && (
-                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                    <MdError className="text-lg" />{' '}
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                     {typeof errors.password.message === 'string'
                       ? errors.password.message
                       : 'Invalid password'}
+
+                    <CircleAlert
+                      className="text-red-800 dark:text-red-500"
+                      size={20}
+                    />
                   </p>
                 )}
               </div>
@@ -267,11 +273,15 @@ function Signup() {
                   />
                 </div>
                 {errors.phone && (
-                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                    <MdError className="text-lg" />{' '}
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                     {typeof errors.phone.message === 'string'
                       ? errors.phone.message
                       : 'Invalid phone number'}
+
+                    <CircleAlert
+                      className="text-red-800 dark:text-red-500"
+                      size={20}
+                    />
                   </p>
                 )}
               </div>
@@ -318,12 +328,16 @@ function Signup() {
                     ))}
                   </select>
                 </div>
-                {errors.country && (
-                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                    <MdError className="text-lg" />{' '}
-                    {typeof errors.country.message === 'string'
+                {errors?.country && (
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                    {typeof errors?.country.message === 'string'
                       ? errors.country.message
                       : 'Invalid country'}
+
+                    <CircleAlert
+                      className="text-red-800 dark:text-red-500"
+                      size={20}
+                    />
                   </p>
                 )}
               </div>
@@ -355,11 +369,15 @@ function Signup() {
                 </div>
 
                 {errors.address && (
-                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                    <MdError className="text-lg" />{' '}
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                     {typeof errors.address.message === 'string'
                       ? errors.address.message
                       : 'Invalid address'}
+
+                    <CircleAlert
+                      className="text-red-800 dark:text-red-500"
+                      size={20}
+                    />
                   </p>
                 )}
               </div>
@@ -406,7 +424,6 @@ function Signup() {
                   </p>
                 )} */}
               </div>
-
               {/* Terms and Submit */}
               <div className="flex items-center mt-6">
                 <input
@@ -428,13 +445,17 @@ function Signup() {
                 </label>
               </div>
               {errors.terms && (
-                <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
-                  <MdError className="text-lg" />{' '}
+                <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                   {typeof errors.terms.message === 'string'
                     ? errors.terms.message
                     : 'Invalid terms'}
+
+                  <CircleAlert
+                    className="text-red-800 dark:text-red-500"
+                    size={20}
+                  />
                 </p>
-              )}
+              )}{' '}
             </div>
           )}
 

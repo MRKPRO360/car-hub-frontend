@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router';
 import GoogleLoginBtn from './shared/GoogleLoginBtn';
 import FBLoginBtn from './shared/FBLoginBtn';
 import loginImg from '../assets/images/login.png';
+import { CircleAlert } from 'lucide-react';
 
 function Login() {
   const navigate = useNavigate();
@@ -88,10 +89,15 @@ function Login() {
               })}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {typeof errors.email.message === 'string'
                   ? errors.email.message
                   : 'Invalid email'}
+
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>
@@ -121,10 +127,15 @@ function Login() {
               })}
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                 {typeof errors.password.message === 'string'
                   ? errors.password.message
                   : 'Invalid password'}
+
+                <CircleAlert
+                  className="text-red-800 dark:text-red-500"
+                  size={20}
+                />
               </p>
             )}
           </div>

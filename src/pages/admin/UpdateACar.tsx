@@ -56,6 +56,8 @@ const UpdateACar = () => {
     }
   }, [car?.data, reset]);
 
+  console.log(car?.data);
+
   const {
     fields: featuresFilelds,
     append: addFeatures,
@@ -721,7 +723,7 @@ const UpdateACar = () => {
         {/* CITY, STREET, COUNTRY */}
 
         <div className="flex items-center gap-3">
-          <div className="flex-1">
+          <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="city"
               className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
@@ -731,16 +733,33 @@ const UpdateACar = () => {
             <input
               type="text"
               id="city"
-              placeholder="exmp. 2.2L mHawk Diesel"
+              placeholder="exmp. New York city"
               className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.location?.city
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
               }`}
-              {...register('location.city')}
+              {...register('location.city', {
+                required: 'City is required',
+              })}
             />
+
+            <div className="relative h-6">
+              {errors.location?.city && (
+                <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                  {typeof errors.location?.city.message === 'string'
+                    ? errors.location.city.message
+                    : 'Invalid city'}
+
+                  <CircleAlert
+                    className="text-red-800 dark:text-red-500"
+                    size={20}
+                  />
+                </p>
+              )}
+            </div>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="street"
               className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
@@ -750,7 +769,7 @@ const UpdateACar = () => {
             <input
               type="text"
               id="state"
-              placeholder="exmp. 2.2L mHawk Diesel"
+              placeholder="exmp. New York"
               className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
                 errors.location?.state
                   ? 'border-red-800'
@@ -759,36 +778,57 @@ const UpdateACar = () => {
               {...register('location.state')}
             />
           </div>
-          <div className="flex-1">
-            <div>
-              <label
-                className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
-                htmlFor="country"
-              >
-                Country
-              </label>
-              <select
-                defaultValue=""
-                id="country"
-                className={`py-2 px-3 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
-                  errors.location?.country
-                    ? 'border-red-500'
-                    : 'border-gray-300 focus:border-primary'
-                }
+          <div className="flex-1 min-h-[90px]">
+            <label
+              className="block text-gray-600 dark:text-gray-400 font-semibold text-base mb-[1px]"
+              htmlFor="country"
+            >
+              Country
+            </label>
+            <select
+              defaultValue=""
+              id="country"
+              className={`py-2 px-3 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
+                errors.location?.country
+                  ? 'border-red-500'
+                  : 'border-gray-300 focus:border-primary'
+              }
                 `}
-                {...register('location.country')}
-              >
-                {/* Default unselected placeholder */}
-                <option className="dark:text-gray-400" value="" disabled hidden>
-                  -- Select a country (optional)--
-                </option>
+              {...register('location.country', {
+                required: 'Country is required',
+                validate: (value) =>
+                  value !== '' || 'Please select your country',
+              })}
+            >
+              {/* Default unselected placeholder */}
+              <option className="dark:text-gray-400" value="" hidden disabled>
+                -- Country --
+              </option>
 
-                {countriesOptions.map((country, idx) => (
-                  <option className="dark:text-gray-800" key={idx} value={''}>
-                    {country}
-                  </option>
-                ))}
-              </select>
+              {countriesOptions.map((country, idx) => (
+                <option
+                  className="dark:text-gray-800"
+                  key={idx}
+                  value={country}
+                >
+                  {country}
+                </option>
+              ))}
+            </select>
+
+            <div className="h-6 relative">
+              {errors.location?.country && (
+                <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                  {typeof errors.location?.country.message === 'string'
+                    ? errors.location.country.message
+                    : 'Invalid country'}
+
+                  <CircleAlert
+                    className="text-red-800 dark:text-red-500"
+                    size={20}
+                  />
+                </p>
+              )}
             </div>
           </div>
         </div>
