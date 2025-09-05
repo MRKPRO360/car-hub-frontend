@@ -25,6 +25,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ImageUpload from '../components/ui/imageUpload/ImageUpload';
+import { countriesOptions } from '../constant/city';
 
 function Signup() {
   const [signup] = useSignupMutation();
@@ -36,7 +37,7 @@ function Signup() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
     setValue,
     trigger,
@@ -80,7 +81,6 @@ function Signup() {
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading('Signing up...');
-    return;
 
     const formData = new FormData();
     const file = data.userImg[0];
@@ -104,7 +104,7 @@ function Signup() {
       dispatch(setUser({ user: user, token: res.data.token }));
       toast.success('Signed up successfully', { id: toastId });
       reset();
-      navigate(`/dashboard`);
+      navigate('/dashboard');
     } catch (err: any) {
       toast.error(err?.message || 'Something went wrong', { id: toastId });
     }
@@ -251,26 +251,81 @@ function Signup() {
                     id="phone"
                     type="tel"
                     placeholder="+1234567890"
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
                     {...register('phone')}
+                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.phone
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                    }`}
+                    {...register('phone', {
+                      required: 'Phone is required',
+                      minLength: {
+                        value: 10,
+                        message: 'Phone must be at least 10 numbers',
+                      },
+                    })}
                   />
                 </div>
+                {errors.phone && (
+                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                    <MdError className="text-lg" />{' '}
+                    {typeof errors.phone.message === 'string'
+                      ? errors.phone.message
+                      : 'Invalid phone number'}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
                 <label htmlFor="country" className="block text-gray-600 mb-1">
                   Country
                 </label>
+
                 <div className="relative">
                   <MdLocationOn className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input
+
+                  <select
                     id="country"
-                    type="text"
-                    placeholder="Your country"
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
-                    {...register('country')}
-                  />
+                    className={`pl-10 pr-3 py-2 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
+                      errors.country
+                        ? 'border-red-500'
+                        : 'border-gray-300 focus:border-primary'
+                    } `}
+                    {...register('country', {
+                      required: 'Country is required',
+                      validate: (value) =>
+                        value !== '' || 'Please select your country',
+                    })}
+                    defaultValue=""
+                  >
+                    <option
+                      className="dark:text-gray-400"
+                      value=""
+                      hidden
+                      disabled
+                    >
+                      --- Your country --
+                    </option>
+
+                    {countriesOptions.map((country, idx) => (
+                      <option
+                        className="dark:text-gray-800"
+                        key={idx}
+                        value={country}
+                      >
+                        {country}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+                {errors.country && (
+                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                    <MdError className="text-lg" />{' '}
+                    {typeof errors.country.message === 'string'
+                      ? errors.country.message
+                      : 'Invalid country'}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
@@ -283,10 +338,30 @@ function Signup() {
                     id="address"
                     type="text"
                     placeholder="Street Address"
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-primary focus:ring-blue-200"
                     {...register('address')}
+                    className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                      errors.address
+                        ? 'border-red-500 focus:ring-red-200'
+                        : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                    }`}
+                    {...register('address', {
+                      required: 'Address is required',
+                      minLength: {
+                        value: 3,
+                        message: 'Please add your address',
+                      },
+                    })}
                   />
                 </div>
+
+                {errors.address && (
+                  <p className="bg-red-600 text-white rounded-md  px-2 py-[.8px] text-sm mt-1 inline-flex gap-1 items-center">
+                    <MdError className="text-lg" />{' '}
+                    {typeof errors.address.message === 'string'
+                      ? errors.address.message
+                      : 'Invalid address'}
+                  </p>
+                )}
               </div>
             </div>
           )}
@@ -347,9 +422,9 @@ function Signup() {
                   className="ml-2 block text-base text-gray-700"
                 >
                   I agree to the{' '}
-                  <a href="#" className="text-primary hover:underline">
+                  <span className="text-primary hover:underline cursor-pointer">
                     Terms and Conditions
-                  </a>
+                  </span>
                 </label>
               </div>
               {errors.terms && (
@@ -397,7 +472,13 @@ function Signup() {
 
             {step === totalSteps && (
               <button type="submit" className="">
-                <Cta size="sm" className="w-full" text="Sign Up" />
+                <Cta
+                  submittingText="Signing Up"
+                  isSubmitting={isSubmitting}
+                  size="sm"
+                  className="w-full"
+                  text="Sign Up"
+                />
               </button>
             )}
           </div>

@@ -4,11 +4,11 @@ import { worldMill } from '@react-jvectormap/world';
 // Define the component props
 interface CountryMapProps {
   mapColor?: string;
-  countryData: {
+  countryData: ({
     name: string;
     latLng: [number, number];
     customerCount: number;
-  }[];
+  } | null)[];
 }
 
 const CountryMap: React.FC<CountryMapProps> = ({ mapColor, countryData }) => {
@@ -26,8 +26,8 @@ const CountryMap: React.FC<CountryMapProps> = ({ mapColor, countryData }) => {
       markers={
         countryData?.length > 0
           ? countryData.map((c) => ({
-              latLng: c.latLng,
-              name: `${c.name} (${c.customerCount})`,
+              latLng: c?.latLng ?? [0, 0],
+              name: `${c?.name} (${c?.customerCount})`,
               style: {
                 fill: '#465FFF',
                 borderWidth: 1,

@@ -43,7 +43,7 @@ export default function DemographicCard() {
           ? Math.round((item.customerCount / totalCustomers) * 100)
           : 0,
     }));
-  }, [countryData?.data]);
+  }, [countryData]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -106,14 +106,14 @@ export default function DemographicCard() {
           className="mapOne map-btn -mx-4 -my-6 h-[212px] w-[252px] 2xsm:w-[307px] xsm:w-[358px] sm:-mx-6 md:w-[668px] lg:w-[634px] xl:w-[393px] 2xl:w-[554px]"
         >
           <CountryMap
-            countryData={processedData
+            countryData={(processedData as ICountryData[])
               .map((country) => {
                 const info = getCountryInfo(country.country);
                 if (!info) return null;
 
                 return {
                   name: country.country,
-                  latLng: [info.lat, info.lng],
+                  latLng: [info.lat, info.lng] as [number, number],
                   customerCount: country.customerCount,
                 };
               })
@@ -124,7 +124,8 @@ export default function DemographicCard() {
 
       <div className="space-y-5">
         {processedData.map((country: ICountryData) => {
-          const { code } = getCountryInfo(country.country);
+          const data = getCountryInfo(country.country);
+          if (!data) return null;
           return (
             <div
               key={country.country}
@@ -133,7 +134,7 @@ export default function DemographicCard() {
               <div className="flex items-center gap-3">
                 <div className="items-center w-full rounded-full max-w-8">
                   <img
-                    src={`https://flagcdn.com/w40/${code}.png`}
+                    src={`https://flagcdn.com/w40/${data!.code}.png`}
                     alt={country.country}
                   />
                 </div>

@@ -69,6 +69,7 @@ export interface ICarFilters {
   model?: string[];
   year?: [number, number];
   price?: [number, number];
+  mileage?: [number, number];
   category?: string[];
   fuelType?: string[];
   transmission?: string[];

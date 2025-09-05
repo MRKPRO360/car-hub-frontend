@@ -57,7 +57,7 @@ export default function UserInfoCard({ user }: { user: IUser | null }) {
                 Phone
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
+                {user?.phone}
               </p>
             </div>
           </div>

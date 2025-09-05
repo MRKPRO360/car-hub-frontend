@@ -20,10 +20,7 @@ const userNavItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: 'Dashboard',
-    subItems: [
-      { name: 'My Stats', path: '/dashboard/user-stats', pro: false },
-      { name: 'My Orders', path: '/dashboard/my-orders', pro: false },
-    ],
+    subItems: [{ name: 'My Orders', path: '/dashboard/my-orders', pro: false }],
   },
 
   {

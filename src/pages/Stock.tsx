@@ -1,86 +1,122 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Filter, Search, X } from 'lucide-react';
 import { useGetAllCarsQuery } from '../redux/features/admin/carManagement.api';
 import CarCard from './shared/CarCard';
 import FilterSidebar from './Stock/FilterSidebar';
-import { ICar, ICarFilters } from '../types';
+import { ICarFilters, IQueryParam } from '../types';
+import useDebounce from '../hooks/useDebounce';
+import CarouselSkeletonCard from './shared/CarouselSkeletonCard';
 
 function Stock() {
-  const { data: carData } = useGetAllCarsQuery(undefined);
-
   const [showFilter, setShowFilter] = useState<boolean>(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const [filteredCars, setFilteredCars] = useState<ICar[] | undefined>(
-    undefined
-  );
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState<ICarFilters>({});
 
-  useEffect(() => {
-    if (!carData?.data) return;
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-    const filtered = carData.data.filter((car: ICar) => {
-      if (filters.brand?.length && !filters.brand.includes(car.brand))
-        return false;
-      if (
-        filters.price &&
-        (car.price < filters.price[0] || car.price > filters.price[1])
-      )
-        return false;
-      if (
-        filters.year &&
-        (car.year < filters.year[0] || car.year > filters.year[1])
-      )
-        return false;
-      if (filters.category?.length && !filters.category.includes(car.category))
-        return false;
-      if (filters.fuelType?.length && !filters.fuelType.includes(car.fuelType))
-        return false;
-      if (
-        filters.transmission?.length &&
-        !filters.transmission.includes(car.transmission)
-      )
-        return false;
-      if (
-        filters.condition?.length &&
-        !filters.condition.includes(car.condition as string)
-      )
-        return false;
+  const queryParams = useMemo(() => {
+    const params: IQueryParam[] = [];
 
-      if (filters.location?.length) {
-        const carLocation = `${car?.location?.city}, ${car?.location?.state}`;
-        if (!filters.location.includes(carLocation)) return false;
-      }
+    // PAGINATION
+    params.push({ name: 'page', value: currentPage.toString() });
+    params.push({ name: 'limit', value: itemsPerPage.toString() });
 
-      if (searchTerm.trim()) {
-        const term = searchTerm.toLowerCase();
-        const matches = [
-          car.brand,
-          car.model,
-          car?.location?.city,
-          car?.location?.state,
-        ].some((field) => field?.toLowerCase().includes(term));
-        if (!matches) return false;
-      }
+    // SEARCH
+    if (debouncedSearchTerm.trim()) {
+      params.push({ name: 'searchTerm', value: debouncedSearchTerm });
+    }
 
-      return true;
-    });
+    // FILTER
+    if (filters.brand?.length) {
+      filters.brand.forEach((brand) => {
+        params.push({ name: 'brand', value: brand });
+      });
+    }
 
-    setFilteredCars(filtered);
-  }, [filters, searchTerm, carData]);
+    if (filters.category?.length) {
+      filters.category.forEach((cat) => {
+        params.push({ name: 'category', value: cat });
+      });
+    }
 
-  const handleFilterChange = (updatedFilters: ICarFilters) => {
+    if (filters.fuelType?.length) {
+      filters.fuelType.forEach((fuel) => {
+        params.push({ name: 'fuelType', value: fuel });
+      });
+    }
+
+    if (filters.transmission?.length) {
+      filters.transmission.forEach((tran) => {
+        params.push({ name: 'transmission', value: tran });
+      });
+    }
+
+    if (filters.condition?.length) {
+      filters.condition.forEach((cond) => {
+        params.push({ name: 'condition', value: cond });
+      });
+    }
+
+    if (filters.location?.length) {
+      params.push({ name: 'searchTerm', value: filters.location.join(',') });
+    }
+
+    if (filters.year?.length === 2) {
+      params.push({ name: 'minYear', value: filters.year[0].toString() });
+      params.push({ name: 'maxYear', value: filters.year[1].toString() });
+    }
+
+    if (filters.price) {
+      params.push({ name: 'price[gte]', value: filters.price[0].toString() });
+      params.push({ name: 'price[lte]', value: filters.price[1].toString() });
+    }
+    // if (filters.priceMax)
+    //   params.push({ name: 'price[lte]', value: filters.priceMax });
+    // if (filters.yearMin)
+    //   params.push({ name: 'year[gte]', value: filters.yearMin });
+    // if (filters.yearMax)
+    //   params.push({ name: 'year[lte]', value: filters.yearMax });
+
+    return params;
+  }, [currentPage, debouncedSearchTerm, filters]);
+
+  const handleFilterChange = useCallback((updatedFilters: ICarFilters) => {
     setFilters(updatedFilters);
-  };
+  }, []);
 
-  const allCars = filteredCars ?? carData?.data ?? [];
-  const totalPages = Math.ceil(allCars.length / itemsPerPage);
-  const carsToDisplay = allCars.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(e.target.value);
+    },
+    []
   );
+
+  const {
+    data: carsData,
+    isError,
+    isLoading,
+  } = useGetAllCarsQuery(queryParams);
+
+  const cars = carsData?.data || [];
+  const totalCars = carsData?.meta?.total || 0;
+  const totalPages = carsData?.meta?.totalPage || 1;
+
+  if (isError) {
+    return (
+      <div className="px-2 min-h-screen pt-14 pb-4">
+        <div className="text-center py-10">
+          <h3 className="text-lg font-medium text-red-600">
+            Error loading cars
+          </h3>
+          <p className="text-gray-500 mt-2">Please try again later</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-2 min-h-screen pt-14 pb-4">
@@ -88,7 +124,7 @@ function Stock() {
         <input
           type="text"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
           placeholder="Search by brand, model, or location"
           className="bg-white dark:bg-gray-950 dark:text-gray-50 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300
       w-full px-6 py-3 
@@ -102,6 +138,18 @@ function Stock() {
         />
         <Search className="absolute right-3 top-3 h-5 w-5 text-primary" />
       </div>
+
+      <div className="mt-4 text-sm text-gray-600">
+        {isLoading ? (
+          <span>Loading...</span>
+        ) : (
+          <span>
+            Showing {cars.length} of {totalCars} cars
+            {debouncedSearchTerm && ` for "${debouncedSearchTerm}"`}
+          </span>
+        )}
+      </div>
+
       {/* Mobile filter toggle */}
       <div className="lg:hidden relative my-5 ">
         <button
@@ -127,11 +175,12 @@ function Stock() {
       </div>
 
       {/* Mobile Sidebar */}
-      {showFilter && carData?.data && (
+      {showFilter && carsData?.data && (
         <div className="w-full mt-5 lg:hidden">
           <FilterSidebar
-            cars={carData.data}
+            cars={carsData.data}
             onFilterChange={handleFilterChange}
+            currentFilters={filters}
           />
         </div>
       )}
@@ -139,17 +188,45 @@ function Stock() {
       <div className="flex gap-8 mt-16 mb-10">
         {/* Desktop Sidebar */}
         <div className="w-full max-w-xs hidden lg:block">
-          {carData?.data && (
+          {carsData?.data && (
             <FilterSidebar
-              cars={carData.data}
+              cars={carsData.data}
               onFilterChange={handleFilterChange}
+              currentFilters={filters}
             />
           )}
         </div>
 
         {/* Car Listings */}
         <div className="flex-1">
-          {filteredCars && filteredCars.length === 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 2xsm:grid-cols-2 sm:grid-cols-3  2xl:grid-cols-4 gap-8">
+              {Array.from({ length: itemsPerPage }).map((_, index: number) => (
+                <CarouselSkeletonCard key={index} />
+              ))}
+            </div>
+          ) : cars.length === 0 ? (
+            <div className="text-center py-10">
+              <h3 className="text-lg font-medium">
+                {debouncedSearchTerm || Object.keys(filters).length > 0
+                  ? 'No cars match your search criteria'
+                  : 'No cars available'}
+              </h3>
+              <p className="text-gray-500 mt-2">
+                {debouncedSearchTerm || Object.keys(filters).length > 0
+                  ? 'Try adjusting your search or filter criteria'
+                  : 'Please check back later'}
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 2xsm:grid-cols-2 sm:grid-cols-3  2xl:grid-cols-4 gap-8">
+              {cars?.map((car) => (
+                <CarCard car={car} key={car._id} />
+              ))}
+            </div>
+          )}
+
+          {/* {filteredCars && filteredCars.length === 0 ? (
             <div className="text-center py-10">
               <h3 className="text-lg font-medium">
                 No cars match your filters
@@ -164,7 +241,7 @@ function Stock() {
                 <CarCard car={car} key={car._id} />
               ))}
             </div>
-          )}
+          )} */}
 
           {totalPages > 1 && (
             <div className="flex justify-center mt-8 space-x-2 text-xs xl:text-sm">

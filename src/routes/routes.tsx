@@ -32,7 +32,6 @@ import AddACar from '../pages/admin/AddACar';
 import UpdateACar from '../pages/admin/UpdateACar';
 import Wishlist from '../pages/Wishlist';
 import CarDetails from '../pages/Cars/CarDetails';
-import UserStats from '../pages/user/Stats/UserStats';
 import FBLoginSuccess from '../pages/shared/FBLoginSuccess';
 
 const router = createBrowserRouter([
@@ -140,14 +139,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      {
-        path: '/dashboard/user-stats',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <UserStats />
-          </ProtectedRoute>
-        ),
-      },
+
       {
         path: '/dashboard/profile',
         element: (

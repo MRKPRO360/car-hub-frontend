@@ -11,7 +11,6 @@ import {
 } from '../../../types';
 import useStatisticsData from '../../../hooks/useStatisticsData';
 import { months } from '../../../constant/city';
-import Cta from '../../../pages/shared/Cta';
 
 export default function StatisticsChart() {
   const [chartType, setChartType] = useState<IChartType>('sales');
@@ -61,7 +60,7 @@ export default function StatisticsChart() {
           };
         }
 
-        const targetVsActual = months.map((month, index) => {
+        const targetVsActual = months.map((_, index) => {
           if (index === curMonth) {
             return {
               target: Math.round(targetData.targetAmount / 1000),

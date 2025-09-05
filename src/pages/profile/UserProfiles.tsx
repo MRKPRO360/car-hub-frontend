@@ -18,7 +18,6 @@ export default function UserProfiles() {
 
   const [user, setUser] = useState<IUser | null>(myInfo?.data);
 
-  console.log(user, 'profile');
   useEffect(() => {
     if (myInfo?.data) setUser(myInfo.data);
   }, [myInfo]);

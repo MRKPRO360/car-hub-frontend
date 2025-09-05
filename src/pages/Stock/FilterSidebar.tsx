@@ -1,28 +1,64 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiX, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { ICar, ICarFilters } from '../../types';
+import formatPrice from '../../utils/formatPrice';
 
 type FilterSidebarProps = {
   cars: ICar[];
   onFilterChange: (filters: ICarFilters) => void;
+  currentFilters?: ICarFilters;
 };
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   cars,
   onFilterChange,
+  currentFilters = {},
 }) => {
   // Extract unique values for each filter from the cars data
-  const allBrands = [...new Set(cars.map((car) => car.brand))];
-  const allCategories = [...new Set(cars.map((car) => car.category))];
-  const allFuelTypes = [...new Set(cars.map((car) => car.fuelType))];
-  const allTransmissions = [...new Set(cars.map((car) => car.transmission))];
-  const allConditions = [...new Set(cars.map((car) => car.condition))];
+  const [allBrands] = useState(() =>
+    [...new Set(cars.map((car) => car.brand))].sort()
+  );
 
-  const allLocations = [
-    ...new Set(
-      cars.map((car) => `${car?.location?.city}, ${car?.location?.state}`)
-    ),
-  ];
+  const [allCategories] = useState(() => [
+    ...new Set(cars.map((car) => car.category)),
+  ]);
+  const [allFuelTypes] = useState(() => [
+    ...new Set(cars.map((car) => car.fuelType)),
+  ]);
+
+  const [allTransmissions] = useState(() => [
+    ...new Set(cars.map((car) => car.transmission)),
+  ]);
+
+  const [allConditions] = useState(() => [
+    ...new Set(cars.map((car) => car.condition)),
+  ]);
+
+  const [allLocations] = useState(() =>
+    [
+      ...new Set(
+        // cars.map((car) => car?.location?.country)
+        cars.map(
+          (car) =>
+            `${
+              car?.location?.city ||
+              car?.location?.state ||
+              car?.location?.country
+            }`
+        )
+      ),
+    ].sort()
+  );
+
+  const [yearRange, setYearRange] = useState<[number, number]>(() => [
+    Math.min(...cars.map((car) => car.year)),
+    Math.max(...cars.map((car) => car.year)),
+  ]);
+
+  const [priceRange, setPriceRange] = useState<[number, number]>(() => [
+    Math.min(...cars.map((car) => car.price)),
+    Math.max(...cars.map((car) => car.price)),
+  ]);
 
   // Get min and max for range filters
   const minYear = Math.min(...cars.map((car) => car.year));
@@ -33,7 +69,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const maxMileage = Math.max(...cars.map((car) => car.mileage));
 
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const [filters, setFilters] = useState<ICarFilters>({});
+
   const [rangeValues, setRangeValues] = useState({
     year: [minYear, maxYear] as [number, number],
     price: [minPrice, maxPrice] as [number, number],
@@ -45,70 +81,90 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const handleMultiSelect = (filterName: keyof ICarFilters, value: string) => {
-    setFilters((prev) => {
-      const currentValues = prev[filterName] || [];
-      const newValues = currentValues.includes(value as unknown as never)
-        ? (currentValues as number[] | string[]).filter((v) => v !== value)
-        : [...currentValues, value];
+    const currentValues = currentFilters[filterName] || [];
+    const newValues = currentValues.includes(value as unknown as never)
+      ? (currentValues as number[] | string[]).filter((v) => v !== value)
+      : [...currentValues, value];
 
-      const newFilters = {
-        ...prev,
-        [filterName]: newValues.length ? newValues : undefined,
-      };
+    const newFilters = {
+      ...currentFilters,
+      [filterName]: newValues.length ? newValues : undefined,
+    };
 
-      // Trigger filter change
-      onFilterChange(newFilters);
-
-      return newFilters;
+    // Remove undefined values to clean up the filters object
+    Object.keys(newFilters).forEach((key) => {
+      if (newFilters[key as keyof ICarFilters] === undefined) {
+        delete newFilters[key as keyof ICarFilters];
+      }
     });
+
+    onFilterChange(newFilters);
   };
 
+  useEffect(() => {
+    setRangeValues({
+      year: (currentFilters.year as [number, number]) || [minYear, maxYear],
+      price: (currentFilters.price as [number, number]) || [minPrice, maxPrice],
+      mileage: (currentFilters.mileage as [number, number]) || [
+        minMileage,
+        maxMileage,
+      ],
+    });
+  }, [
+    currentFilters,
+    minYear,
+    maxYear,
+    minPrice,
+    maxPrice,
+    minMileage,
+    maxMileage,
+  ]);
+
   const handleRangeChange = (
-    filterName: 'year' | 'price' | 'mileage',
-    index: number,
+    type: 'price' | 'year',
+    index: 0 | 1,
     value: number
   ) => {
-    setRangeValues((prev) => {
-      const newValues = [...prev[filterName]] as [number, number];
-      newValues[index] = value;
+    if (type === 'price') {
+      const newRange: [number, number] = [...priceRange] as [number, number];
+      newRange[index] = value;
+      setPriceRange(newRange);
+      onFilterChange?.({ ...currentFilters, price: newRange });
+    }
 
-      // Sort to ensure min is first
-      if (index === 0 && newValues[0] > newValues[1]) {
-        newValues[1] = newValues[0];
-      } else if (index === 1 && newValues[1] < newValues[0]) {
-        newValues[0] = newValues[1];
-      }
-
-      const newRangeValues = { ...prev, [filterName]: newValues };
-
-      // Update filters
-      setFilters((prevFilters) => {
-        const newFilters = {
-          ...prevFilters,
-          [filterName]:
-            newValues[0] === minYear && newValues[1] === maxYear
-              ? undefined
-              : newValues,
-        };
-
-        onFilterChange(newFilters);
-        return newFilters;
-      });
-
-      return newRangeValues;
-    });
+    if (type === 'year') {
+      const newRange: [number, number] = [...yearRange] as [number, number];
+      newRange[index] = value;
+      setYearRange(newRange);
+      onFilterChange?.({ ...currentFilters, year: newRange });
+    }
   };
 
   const clearFilter = (filterName: keyof ICarFilters) => {
-    setFilters((prev) => {
-      const newFilters = { ...prev, [filterName]: undefined };
-      onFilterChange(newFilters);
-      return newFilters;
-    });
+    const newFilters = { ...currentFilters };
+    delete newFilters[filterName];
+
+    // Reset range values if it's a range filter
+    if (
+      filterName === 'year' ||
+      filterName === 'price' ||
+      filterName === 'mileage'
+    ) {
+      setRangeValues((prev) => ({
+        ...prev,
+        [filterName]:
+          filterName === 'year'
+            ? ([minYear, maxYear] as [number, number])
+            : filterName === 'price'
+            ? ([minPrice, maxPrice] as [number, number])
+            : ([minMileage, maxMileage] as [number, number]),
+      }));
+    }
+
+    onFilterChange(newFilters);
   };
 
   const clearAllFilters = () => {
-    setFilters({});
     setRangeValues({
       year: [minYear, maxYear],
       price: [minPrice, maxPrice],
@@ -117,26 +173,28 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onFilterChange({});
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0,
-    }).format(price);
-  };
+  // Check if any filters are active
+  const hasActiveFilters = Object.keys(currentFilters).length > 0;
 
   return (
     <div className=" bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 w-full px-2 py-4 sticky top-4 dark:text-gray-300">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-300">
           Filters
+          {hasActiveFilters && (
+            <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-600 rounded-full">
+              {Object.keys(currentFilters).length}
+            </span>
+          )}
         </h2>
-        <button
-          onClick={clearAllFilters}
-          className="text-sm text-blue-600 hover:text-blue-800"
-        >
-          Clear all
-        </button>
+        {hasActiveFilters && (
+          <button
+            onClick={clearAllFilters}
+            className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            Clear all
+          </button>
+        )}
       </div>
 
       <div className="space-y-4">
@@ -150,45 +208,63 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('brand')}
           >
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-500 dark:text-gray-300">Brand</p>
-              {filters.brand?.length ? (
-                <p className="font-medium text-gray-800">
-                  {filters.brand.join(', ')}
+              {currentFilters.brand?.length ? (
+                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                  {currentFilters.brand.length === 1
+                    ? currentFilters.brand[0]
+                    : `${currentFilters.brand[0]} +${
+                        currentFilters.brand.length - 1
+                      } more`}
                 </p>
               ) : (
-                <p className="text-gray-400">Select brands</p>
+                <p className="text-gray-400 dark:text-gray-300">
+                  Select brands
+                </p>
               )}
             </div>
-            {filters.brand?.length ? (
-              <FiX
-                className="text-gray-400 hover:text-gray-600"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  clearFilter('brand');
-                }}
-              />
-            ) : activeFilter === 'brand' ? (
-              <FiChevronUp />
-            ) : (
-              <FiChevronDown />
-            )}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.brand?.length ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('brand');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              ) : null}
+              {activeFilter === 'brand' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'brand' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 dark:text-gray-300 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 dark:text-gray-300 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allBrands.map((brand) => (
                   <div
                     key={brand}
-                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer "
-                    onClick={() => handleMultiSelect('brand', brand)}
+                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleMultiSelect('brand', brand);
+                    }}
                   >
                     <input
                       type="checkbox"
-                      checked={filters.brand?.includes(brand) || false}
+                      checked={currentFilters.brand?.includes(brand) || false}
                       readOnly
                       className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        handleMultiSelect('brand', brand);
+                      }}
                     />
                     <span>{brand}</span>
                   </div>
@@ -208,20 +284,37 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('price')}
           >
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-500 dark:text-gray-300">
                 Price Range
               </p>
-              <p className="font-medium text-gray-500 dark:text-gray-300">
+              <p className="font-medium text-gray-500 dark:text-gray-300 truncate">
                 {formatPrice(rangeValues.price[0])} -{' '}
                 {formatPrice(rangeValues.price[1])}
               </p>
             </div>
-            {activeFilter === 'price' ? <FiChevronUp /> : <FiChevronDown />}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.price && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('price');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              )}
+              {activeFilter === 'price' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'price' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm text-gray-600 dark:text-gray-300">
@@ -231,7 +324,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     Max: {formatPrice(rangeValues.price[1])}
                   </span>
                 </div>
-                <div className="flex space-x-4">
+                {/* <div className="flex space-x-4">
                   <input
                     type="range"
                     min={minPrice}
@@ -247,6 +340,29 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     min={minPrice}
                     max={maxPrice}
                     value={rangeValues.price[1]}
+                    onChange={(e) =>
+                      handleRangeChange('price', 1, parseInt(e.target.value))
+                    }
+                    className="w-full"
+                  />
+                </div> */}
+
+                <div className="flex space-x-4">
+                  <input
+                    type="range"
+                    min={minPrice}
+                    max={maxPrice}
+                    value={priceRange[0]}
+                    onChange={(e) =>
+                      handleRangeChange('price', 0, parseInt(e.target.value))
+                    }
+                    className="w-full"
+                  />
+                  <input
+                    type="range"
+                    min={minPrice}
+                    max={maxPrice}
+                    value={priceRange[1]}
                     onChange={(e) =>
                       handleRangeChange('price', 1, parseInt(e.target.value))
                     }
@@ -268,7 +384,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('year')}
           >
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-500 dark:text-gray-300">
                 Year Range
               </p>
@@ -276,17 +392,34 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {rangeValues.year[0]} - {rangeValues.year[1]}
               </p>
             </div>
-            {activeFilter === 'year' ? <FiChevronUp /> : <FiChevronDown />}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.year && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('year');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              )}
+              {activeFilter === 'year' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'year' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
                     Min: {rangeValues.year[0]}
                   </span>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
                     Max: {rangeValues.year[1]}
                   </span>
                 </div>
@@ -327,13 +460,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('category')}
           >
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-500 dark:text-gray-300">
                 Category
               </p>
-              {filters.category?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300">
-                  {filters.category.join(', ')}
+              {currentFilters.category?.length ? (
+                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                  {currentFilters.category.length === 1
+                    ? currentFilters.category[0]
+                    : `${currentFilters.category[0]} +${
+                        currentFilters.category.length - 1
+                      } more`}
                 </p>
               ) : (
                 <p className="text-gray-400 dark:text-gray-300">
@@ -341,23 +478,28 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 </p>
               )}
             </div>
-            {filters.category?.length ? (
-              <FiX
-                className="text-gray-400 hover:text-gray-600"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  clearFilter('category');
-                }}
-              />
-            ) : activeFilter === 'category' ? (
-              <FiChevronUp />
-            ) : (
-              <FiChevronDown />
-            )}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.category?.length ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('category');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              ) : null}
+              {activeFilter === 'category' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'category' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allCategories.map((category) => (
                   <div
@@ -367,11 +509,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   >
                     <input
                       type="checkbox"
-                      checked={filters.category?.includes(category) || false}
+                      checked={
+                        currentFilters.category?.includes(category) || false
+                      }
                       readOnly
                       className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
-                    <span>{category}</span>
+                    <span className="dark:text-gray-300">{category}</span>
                   </div>
                 ))}
               </div>
@@ -389,13 +533,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('fuelType')}
           >
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-500 dark:text-gray-300">
                 Fuel Type
               </p>
-              {filters.fuelType?.length ? (
-                <p className="font-medium text-gray-800">
-                  {filters.fuelType.join(', ')}
+              {currentFilters.fuelType?.length ? (
+                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                  {currentFilters.fuelType.length === 1
+                    ? currentFilters.fuelType[0]
+                    : `${currentFilters.fuelType[0]} +${
+                        currentFilters.fuelType.length - 1
+                      } more`}
                 </p>
               ) : (
                 <p className="text-gray-400 dark:text-gray-300">
@@ -403,23 +551,28 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 </p>
               )}
             </div>
-            {filters.fuelType?.length ? (
-              <FiX
-                className="text-gray-400  hover:text-gray-600"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  clearFilter('fuelType');
-                }}
-              />
-            ) : activeFilter === 'fuelType' ? (
-              <FiChevronUp />
-            ) : (
-              <FiChevronDown />
-            )}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.fuelType?.length ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('fuelType');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              ) : null}
+              {activeFilter === 'fuelType' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'fuelType' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allFuelTypes.map((fuelType) => (
                   <div
@@ -429,9 +582,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   >
                     <input
                       type="checkbox"
-                      checked={filters.fuelType?.includes(fuelType) || false}
+                      checked={
+                        currentFilters.fuelType?.includes(fuelType) || false
+                      }
                       readOnly
-                      className="mr-2 rounded border-gray-300  text-blue-600 focus:ring-blue-500"
+                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
                     <span className="dark:text-gray-300">{fuelType}</span>
                   </div>
@@ -451,13 +606,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('transmission')}
           >
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-500 dark:text-gray-300">
                 Transmission
               </p>
-              {filters.transmission?.length ? (
-                <p className="font-medium text-gray-800">
-                  {filters.transmission.join(', ')}
+              {currentFilters.transmission?.length ? (
+                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                  {currentFilters.transmission.length === 1
+                    ? currentFilters.transmission[0]
+                    : `${currentFilters.transmission[0]} +${
+                        currentFilters.transmission.length - 1
+                      } more`}
                 </p>
               ) : (
                 <p className="text-gray-400 dark:text-gray-300">
@@ -465,23 +624,28 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 </p>
               )}
             </div>
-            {filters.transmission?.length ? (
-              <FiX
-                className="text-gray-400 hover:text-gray-600"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  clearFilter('transmission');
-                }}
-              />
-            ) : activeFilter === 'transmission' ? (
-              <FiChevronUp />
-            ) : (
-              <FiChevronDown />
-            )}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.transmission?.length ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('transmission');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              ) : null}
+              {activeFilter === 'transmission' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'transmission' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allTransmissions.map((transmission) => (
                   <div
@@ -494,12 +658,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     <input
                       type="checkbox"
                       checked={
-                        filters.transmission?.includes(transmission) || false
+                        currentFilters.transmission?.includes(transmission) ||
+                        false
                       }
                       readOnly
                       className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
-                    <span>{transmission}</span>
+                    <span className="dark:text-gray-300">{transmission}</span>
                   </div>
                 ))}
               </div>
@@ -517,13 +682,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('condition')}
           >
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-xs text-gray-500 dark:text-gray-300">
                 Condition
               </p>
-              {filters.condition?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300">
-                  {filters.condition.join(', ')}
+              {currentFilters.condition?.length ? (
+                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                  {currentFilters.condition.length === 1
+                    ? currentFilters.condition[0]
+                    : `${currentFilters.condition[0]} +${
+                        currentFilters.condition.length - 1
+                      } more`}
                 </p>
               ) : (
                 <p className="text-gray-400 dark:text-gray-300">
@@ -531,23 +700,28 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 </p>
               )}
             </div>
-            {filters.condition?.length ? (
-              <FiX
-                className="text-gray-400 hover:text-gray-600"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  clearFilter('condition');
-                }}
-              />
-            ) : activeFilter === 'condition' ? (
-              <FiChevronUp />
-            ) : (
-              <FiChevronDown />
-            )}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.condition?.length ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('condition');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              ) : null}
+              {activeFilter === 'condition' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'condition' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border border-gray-200 dark:border-blue-500 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allConditions.map((condition) => (
                   <div
@@ -560,13 +734,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     <input
                       type="checkbox"
                       checked={
-                        filters.condition?.includes(condition as string) ||
-                        false
+                        currentFilters.condition?.includes(
+                          condition as string
+                        ) || false
                       }
                       readOnly
                       className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
-                    <span>{condition}</span>
+                    <span className="dark:text-gray-300">{condition}</span>
                   </div>
                 ))}
               </div>
@@ -584,33 +759,46 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             }`}
             onClick={() => handleFilterToggle('location')}
           >
-            <div>
-              <p className="text-xs text-gray-500">Location</p>
-              {filters.location?.length ? (
-                <p className="font-medium text-gray-800">
-                  {filters.location.join(', ')}
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-gray-500 dark:text-gray-300">
+                Location
+              </p>
+              {currentFilters.location?.length ? (
+                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                  {currentFilters.location.length === 1
+                    ? currentFilters.location[0]
+                    : `${currentFilters.location[0]} +${
+                        currentFilters.location.length - 1
+                      } more`}
                 </p>
               ) : (
-                <p className="text-gray-400">Select locations</p>
+                <p className="text-gray-400 dark:text-gray-300">
+                  Select locations
+                </p>
               )}
             </div>
-            {filters.location?.length ? (
-              <FiX
-                className="text-gray-400 hover:text-gray-600"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  clearFilter('location');
-                }}
-              />
-            ) : activeFilter === 'location' ? (
-              <FiChevronUp />
-            ) : (
-              <FiChevronDown />
-            )}
+            <div className="flex items-center space-x-2 ml-2">
+              {currentFilters.location?.length ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearFilter('location');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1"
+                >
+                  <FiX size={16} />
+                </button>
+              ) : null}
+              {activeFilter === 'location' ? (
+                <FiChevronUp size={16} />
+              ) : (
+                <FiChevronDown size={16} />
+              )}
+            </div>
           </div>
 
           {activeFilter === 'location' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allLocations.map((location) => (
                   <div
@@ -620,11 +808,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   >
                     <input
                       type="checkbox"
-                      checked={filters.location?.includes(location) || false}
+                      checked={
+                        currentFilters.location?.includes(location) || false
+                      }
                       readOnly
                       className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
-                    <span>{location}</span>
+                    <span className="dark:text-gray-300">{location}</span>
                   </div>
                 ))}
               </div>
