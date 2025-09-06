@@ -27,6 +27,14 @@ const carsApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getAllModelsByBrand: builder.query({
+      query: (brand) => {
+        return {
+          url: `/cars/models?brand=${brand}`,
+          method: 'GET',
+        };
+      },
+    }),
 
     getACar: builder.query<TResponse<ICar>, string>({
       query: (id) => {
@@ -72,4 +80,5 @@ export const {
   useAddCarMutation,
   useDeleteACarMutation,
   useUpdateCarMutation,
+  useGetAllModelsByBrandQuery,
 } = carsApi;

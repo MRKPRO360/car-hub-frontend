@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FiX, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import { ICar, ICarFilters } from '../../types';
 import formatPrice from '../../utils/formatPrice';
+import useDebounce from '../../hooks/useDebounce';
 
 type FilterSidebarProps = {
   cars: ICar[];
@@ -15,66 +18,117 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   currentFilters = {},
 }) => {
   // Extract unique values for each filter from the cars data
-  const [allBrands] = useState(() =>
-    [...new Set(cars.map((car) => car.brand))].sort()
+  const allBrands = useMemo(
+    () => [...new Set(cars.map((car) => car.brand))].sort(),
+    [cars]
   );
 
-  const [allCategories] = useState(() => [
-    ...new Set(cars.map((car) => car.category)),
-  ]);
-  const [allFuelTypes] = useState(() => [
-    ...new Set(cars.map((car) => car.fuelType)),
-  ]);
-
-  const [allTransmissions] = useState(() => [
-    ...new Set(cars.map((car) => car.transmission)),
-  ]);
-
-  const [allConditions] = useState(() => [
-    ...new Set(cars.map((car) => car.condition)),
-  ]);
-
-  const [allLocations] = useState(() =>
-    [
-      ...new Set(
-        // cars.map((car) => car?.location?.country)
-        cars.map(
-          (car) =>
-            `${
-              car?.location?.city ||
-              car?.location?.state ||
-              car?.location?.country
-            }`
-        )
-      ),
-    ].sort()
+  const allCategories = useMemo(
+    () => [...new Set(cars.map((car) => car.category))],
+    [cars]
+  );
+  const allFuelTypes = useMemo(
+    () => [...new Set(cars.map((car) => car.fuelType))],
+    [cars]
   );
 
-  const [yearRange, setYearRange] = useState<[number, number]>(() => [
-    Math.min(...cars.map((car) => car.year)),
-    Math.max(...cars.map((car) => car.year)),
-  ]);
+  const allTransmissions = useMemo(
+    () => [...new Set(cars.map((car) => car.transmission))],
+    [cars]
+  );
 
-  const [priceRange, setPriceRange] = useState<[number, number]>(() => [
-    Math.min(...cars.map((car) => car.price)),
-    Math.max(...cars.map((car) => car.price)),
-  ]);
+  const allConditions = useMemo(
+    () => [...new Set(cars.map((car) => car.condition))],
+    [cars]
+  );
 
-  // Get min and max for range filters
-  const minYear = Math.min(...cars.map((car) => car.year));
-  const maxYear = Math.max(...cars.map((car) => car.year));
-  const minPrice = Math.min(...cars.map((car) => car.price));
-  const maxPrice = Math.max(...cars.map((car) => car.price));
-  const minMileage = Math.min(...cars.map((car) => car.mileage));
-  const maxMileage = Math.max(...cars.map((car) => car.mileage));
+  const allLocations = useMemo(
+    () =>
+      [
+        ...new Set(
+          cars.map(
+            (car) =>
+              `${
+                car?.location?.city ||
+                car?.location?.state ||
+                car?.location?.country
+              }`
+          )
+        ),
+      ].sort(),
+    [cars]
+  );
+
+  // Get min and max for range filters with safety checks
+  const getMinMax = (
+    values: number[],
+    fallbackMin: number,
+    fallbackMax: number
+  ) => {
+    if (values.length === 0) {
+      return { min: fallbackMin, max: fallbackMax };
+    }
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    return {
+      min: isFinite(min) ? min : fallbackMin,
+      max: isFinite(max) ? max : fallbackMax,
+    };
+  };
+
+  const yearValues = cars
+    .map((car) => car.year)
+    .filter((year) => typeof year === 'number' && isFinite(year));
+  const priceValues = cars
+    .map((car) => car.price)
+    .filter((price) => typeof price === 'number' && isFinite(price));
+
+  const { min: minYear, max: maxYear } = getMinMax(yearValues, 2020, 2025);
+  const { min: minPrice, max: maxPrice } = getMinMax(
+    priceValues,
+    10000,
+    100000
+  );
 
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
-  const [rangeValues, setRangeValues] = useState({
-    year: [minYear, maxYear] as [number, number],
-    price: [minPrice, maxPrice] as [number, number],
-    mileage: [minMileage, maxMileage] as [number, number],
-  });
+  // Simple range state - no complex useEffect logic
+  const [yearRange, setYearRange] = useState<[number, number]>([
+    minYear,
+    maxYear,
+  ]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    minPrice,
+    maxPrice,
+  ]);
+
+  const debouncedYearRange = useDebounce(yearRange, 500);
+  const debouncedPriceRange = useDebounce(priceRange, 500);
+
+  // Sync range sliders with current filters
+  useEffect(() => {
+    if (
+      currentFilters.year &&
+      Array.isArray(currentFilters.year) &&
+      currentFilters.year.length === 2
+    ) {
+      setYearRange(currentFilters.year as [number, number]);
+    } else if (!currentFilters.year) {
+      // Reset to default range when no year filter is set
+      setYearRange([minYear, maxYear]);
+    }
+
+    if (
+      currentFilters.price &&
+      Array.isArray(currentFilters.price) &&
+      currentFilters.price.length === 2
+    ) {
+      setPriceRange(currentFilters.price as [number, number]);
+    } else if (!currentFilters.price) {
+      // Reset to default range when no price filter is set
+      setPriceRange([minPrice, maxPrice]);
+    }
+  }, [currentFilters, minYear, maxYear, minPrice, maxPrice]);
 
   const handleFilterToggle = (filterName: string) => {
     setActiveFilter(activeFilter === filterName ? null : filterName);
@@ -101,43 +155,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onFilterChange(newFilters);
   };
 
-  useEffect(() => {
-    setRangeValues({
-      year: (currentFilters.year as [number, number]) || [minYear, maxYear],
-      price: (currentFilters.price as [number, number]) || [minPrice, maxPrice],
-      mileage: (currentFilters.mileage as [number, number]) || [
-        minMileage,
-        maxMileage,
-      ],
-    });
-  }, [
-    currentFilters,
-    minYear,
-    maxYear,
-    minPrice,
-    maxPrice,
-    minMileage,
-    maxMileage,
-  ]);
+  // Simple range change handlers
+  const handleYearRangeChange = (value: number | number[]) => {
+    const newRange = value as [number, number];
+    setYearRange(newRange);
+    onFilterChange({ ...currentFilters, year: newRange });
+  };
 
-  const handleRangeChange = (
-    type: 'price' | 'year',
-    index: 0 | 1,
-    value: number
-  ) => {
-    if (type === 'price') {
-      const newRange: [number, number] = [...priceRange] as [number, number];
-      newRange[index] = value;
-      setPriceRange(newRange);
-      onFilterChange?.({ ...currentFilters, price: newRange });
-    }
-
-    if (type === 'year') {
-      const newRange: [number, number] = [...yearRange] as [number, number];
-      newRange[index] = value;
-      setYearRange(newRange);
-      onFilterChange?.({ ...currentFilters, year: newRange });
-    }
+  const handlePriceRangeChange = (value: number | number[]) => {
+    const newRange = value as [number, number];
+    setPriceRange(newRange);
+    onFilterChange({ ...currentFilters, price: newRange });
   };
 
   const clearFilter = (filterName: keyof ICarFilters) => {
@@ -145,31 +173,18 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     delete newFilters[filterName];
 
     // Reset range values if it's a range filter
-    if (
-      filterName === 'year' ||
-      filterName === 'price' ||
-      filterName === 'mileage'
-    ) {
-      setRangeValues((prev) => ({
-        ...prev,
-        [filterName]:
-          filterName === 'year'
-            ? ([minYear, maxYear] as [number, number])
-            : filterName === 'price'
-            ? ([minPrice, maxPrice] as [number, number])
-            : ([minMileage, maxMileage] as [number, number]),
-      }));
+    if (filterName === 'year') {
+      setYearRange([minYear, maxYear]);
+    } else if (filterName === 'price') {
+      setPriceRange([minPrice, maxPrice]);
     }
 
     onFilterChange(newFilters);
   };
 
   const clearAllFilters = () => {
-    setRangeValues({
-      year: [minYear, maxYear],
-      price: [minPrice, maxPrice],
-      mileage: [minMileage, maxMileage],
-    });
+    setYearRange([minYear, maxYear]);
+    setPriceRange([minPrice, maxPrice]);
     onFilterChange({});
   };
 
@@ -289,8 +304,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 Price Range
               </p>
               <p className="font-medium text-gray-500 dark:text-gray-300 truncate">
-                {formatPrice(rangeValues.price[0])} -{' '}
-                {formatPrice(rangeValues.price[1])}
+                {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
               </p>
             </div>
             <div className="flex items-center space-x-2 ml-2">
@@ -318,57 +332,20 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Min: {formatPrice(rangeValues.price[0])}
+                    Min: {formatPrice(priceRange[0])}
                   </span>
                   <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Max: {formatPrice(rangeValues.price[1])}
+                    Max: {formatPrice(priceRange[1])}
                   </span>
                 </div>
-                {/* <div className="flex space-x-4">
-                  <input
-                    type="range"
-                    min={minPrice}
-                    max={maxPrice}
-                    value={rangeValues.price[0]}
-                    onChange={(e) =>
-                      handleRangeChange('price', 0, parseInt(e.target.value))
-                    }
-                    className="w-full"
-                  />
-                  <input
-                    type="range"
-                    min={minPrice}
-                    max={maxPrice}
-                    value={rangeValues.price[1]}
-                    onChange={(e) =>
-                      handleRangeChange('price', 1, parseInt(e.target.value))
-                    }
-                    className="w-full"
-                  />
-                </div> */}
-
-                <div className="flex space-x-4">
-                  <input
-                    type="range"
-                    min={minPrice}
-                    max={maxPrice}
-                    value={priceRange[0]}
-                    onChange={(e) =>
-                      handleRangeChange('price', 0, parseInt(e.target.value))
-                    }
-                    className="w-full"
-                  />
-                  <input
-                    type="range"
-                    min={minPrice}
-                    max={maxPrice}
-                    value={priceRange[1]}
-                    onChange={(e) =>
-                      handleRangeChange('price', 1, parseInt(e.target.value))
-                    }
-                    className="w-full"
-                  />
-                </div>
+                <Slider
+                  range
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceRange}
+                  onChange={handlePriceRangeChange}
+                  className="mb-2"
+                />
               </div>
             </div>
           )}
@@ -389,7 +366,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 Year Range
               </p>
               <p className="font-medium text-gray-500 dark:text-gray-300">
-                {rangeValues.year[0]} - {rangeValues.year[1]}
+                {yearRange[0]} - {yearRange[1]}
               </p>
             </div>
             <div className="flex items-center space-x-2 ml-2">
@@ -417,34 +394,20 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Min: {rangeValues.year[0]}
+                    Min: {yearRange[0]}
                   </span>
                   <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Max: {rangeValues.year[1]}
+                    Max: {yearRange[1]}
                   </span>
                 </div>
-                <div className="flex space-x-4">
-                  <input
-                    type="range"
-                    min={minYear}
-                    max={maxYear}
-                    value={rangeValues.year[0]}
-                    onChange={(e) =>
-                      handleRangeChange('year', 0, parseInt(e.target.value))
-                    }
-                    className="w-full"
-                  />
-                  <input
-                    type="range"
-                    min={minYear}
-                    max={maxYear}
-                    value={rangeValues.year[1]}
-                    onChange={(e) =>
-                      handleRangeChange('year', 1, parseInt(e.target.value))
-                    }
-                    className="w-full"
-                  />
-                </div>
+                <Slider
+                  range
+                  min={minYear}
+                  max={maxYear}
+                  value={yearRange}
+                  onChange={handleYearRangeChange}
+                  className="mb-2"
+                />
               </div>
             </div>
           )}

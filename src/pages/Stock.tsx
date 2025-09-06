@@ -66,20 +66,16 @@ function Stock() {
     }
 
     if (filters.year?.length === 2) {
-      params.push({ name: 'minYear', value: filters.year[0].toString() });
-      params.push({ name: 'maxYear', value: filters.year[1].toString() });
+      params.push({ name: 'year[gte]', value: filters.year[0].toString() });
+      params.push({ name: 'year[lte]', value: filters.year[1].toString() });
     }
 
-    if (filters.price) {
+    if (filters.price?.length === 2) {
       params.push({ name: 'price[gte]', value: filters.price[0].toString() });
       params.push({ name: 'price[lte]', value: filters.price[1].toString() });
     }
-    // if (filters.priceMax)
-    //   params.push({ name: 'price[lte]', value: filters.priceMax });
-    // if (filters.yearMin)
-    //   params.push({ name: 'year[gte]', value: filters.yearMin });
-    // if (filters.yearMax)
-    //   params.push({ name: 'year[lte]', value: filters.yearMax });
+    // Debug logging
+    console.log('Query params being sent:', params);
 
     return params;
   }, [currentPage, debouncedSearchTerm, filters]);
@@ -175,10 +171,10 @@ function Stock() {
       </div>
 
       {/* Mobile Sidebar */}
-      {showFilter && carsData?.data && (
+      {showFilter && (
         <div className="w-full mt-5 lg:hidden">
           <FilterSidebar
-            cars={carsData.data}
+            cars={cars || []}
             onFilterChange={handleFilterChange}
             currentFilters={filters}
           />
@@ -188,13 +184,11 @@ function Stock() {
       <div className="flex gap-8 mt-16 mb-10">
         {/* Desktop Sidebar */}
         <div className="w-full max-w-xs hidden lg:block">
-          {carsData?.data && (
-            <FilterSidebar
-              cars={carsData.data}
-              onFilterChange={handleFilterChange}
-              currentFilters={filters}
-            />
-          )}
+          <FilterSidebar
+            cars={cars || []}
+            onFilterChange={handleFilterChange}
+            currentFilters={filters}
+          />
         </div>
 
         {/* Car Listings */}

@@ -9,15 +9,47 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { brandOptions } from '../../constant/car';
+import { useGetAllModelsByBrandQuery } from '../../redux/features/admin/carManagement.api';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router';
+
+interface IFormValue {
+  brand: string;
+  model: string;
+}
 
 const Hero = () => {
   gsap.registerPlugin(useGSAP);
-
   const { theme } = useTheme();
   const bgRef = useRef<HTMLDivElement>(null);
   const h1Refs = useRef<(HTMLElement | null)[]>([]);
   const paraRef = useRef<HTMLParagraphElement>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLFormElement>(null);
+
+  const navigate = useNavigate();
+
+  const { register, watch, handleSubmit } = useForm<IFormValue>({
+    defaultValues: { brand: '', model: '' },
+  });
+
+  const brand = watch('brand');
+  const model = watch('model');
+
+  const {
+    data: models,
+    isLoading,
+    isError,
+  } = useGetAllModelsByBrandQuery(brand, {
+    skip: !brand,
+  }) as {
+    isLoading: boolean;
+    isError: boolean;
+    data: { data: { _id: string; model: string }[] };
+  };
+
+  const onSubmit = (data: IFormValue) => {
+    navigate(`/cars/${data.model}`);
+  };
 
   // GRADIENT VALUES
   const darkGredient =
@@ -136,15 +168,23 @@ const Hero = () => {
 
           {/* Search Filters */}
 
-          <div
+          <form
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-6"
             ref={searchRef}
           >
             <div className="relative w-60 z-30">
-              <select className="px-4 py-3 border-0 rounded-full text-sm w-full bg-white text-gray-800  drop-shadow-xl   focus:ring-2 focus:ring-blue-700 focus:outline-none appearance-none cursor-pointer hover:bg-gray-50 transition-colors duration-200">
-                <option className="text-gray-400">Select make</option>
+              <select
+                {...register('brand')}
+                className="px-4 py-3 border-0 rounded-full text-sm w-full bg-white text-gray-800  drop-shadow-xl   focus:ring-2 focus:ring-blue-700 focus:outline-none appearance-none cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+              >
+                <option hidden value="" className="text-gray-400" disabled>
+                  Select make
+                </option>
                 {brandOptions.map((el) => (
-                  <option key={el.label}>{el.value}</option>
+                  <option key={el.label} value={el.value}>
+                    {el.value}
+                  </option>
                 ))}
               </select>
 
@@ -167,11 +207,27 @@ const Hero = () => {
             </div>
 
             <div className="relative w-60 z-30">
-              <select className="px-4 py-3 border-0 rounded-full text-sm w-full bg-white text-gray-800  drop-shadow-xl   focus:ring-2 focus:ring-blue-700 focus:outline-none appearance-none cursor-pointer hover:bg-gray-50 transition-colors duration-200">
-                <option>Select model</option>
-                <option>Corolla</option>
-                <option>Seltos</option>
-                <option>CX-5</option>
+              <select
+                {...register('model')}
+                disabled={!brand}
+                className="px-4 py-3 border-0 rounded-full text-sm w-full bg-white text-gray-800  drop-shadow-xl   focus:ring-2 focus:ring-blue-700 focus:outline-none appearance-none cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+              >
+                {!isLoading && isError && (
+                  <option value="">Something wrong</option>
+                )}
+
+                <option hidden value="" disabled>
+                  {brand ? 'Select model' : 'Select make first'}
+                </option>
+                {models?.data?.length <= 0 && (
+                  <option value="">No results available</option>
+                )}
+                {models?.data?.length > 0 &&
+                  models?.data?.map((el) => (
+                    <option value={el._id} key={el._id}>
+                      {el.model}
+                    </option>
+                  ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <svg
@@ -190,11 +246,16 @@ const Hero = () => {
                 </svg>
               </div>
             </div>
-
-            <div>
-              <Cta text="View 4,820 Cars" />
-            </div>
-          </div>
+            {model && models && models?.data?.length > 0 ? (
+              <button type="submit">
+                <Cta text="View Car" />
+              </button>
+            ) : (
+              <Link to="/stock">
+                <Cta text="View All Cars" />
+              </Link>
+            )}
+          </form>
         </div>
       </div>
     </section>
