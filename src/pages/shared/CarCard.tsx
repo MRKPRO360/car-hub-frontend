@@ -48,7 +48,7 @@ function CarCard({ car }: { car: ICar }) {
             {car.condition}
           </span>
         </div>
-        <div className="flex items-center border-b-2 border-b-gray-100 pb-2">
+        <div className="flex items-center border-b-2 border-b-gray-100 dark:border-b-blue-light-950 pb-2">
           <DollarSign
             strokeWidth={3}
             className="w-4 h-4 self-start text-gray-600 font-semibold"

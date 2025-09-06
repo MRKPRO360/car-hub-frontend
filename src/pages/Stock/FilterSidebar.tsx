@@ -219,7 +219,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'brand'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('brand')}
           >
@@ -295,7 +295,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'price'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('price')}
           >
@@ -357,7 +357,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'year'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('year')}
           >
@@ -419,7 +419,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'category'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('category')}
           >
@@ -492,7 +492,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'fuelType'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('fuelType')}
           >
@@ -565,7 +565,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'transmission'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('transmission')}
           >
@@ -641,7 +641,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'condition'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('condition')}
           >
@@ -718,7 +718,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
               activeFilter === 'location'
                 ? 'border-blue-500 ring-1 ring-blue-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 dark:border-blue-light-950 dark:hover:border-blue-light-900 hover:border-gray-400'
             }`}
             onClick={() => handleFilterToggle('location')}
           >
@@ -761,7 +761,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
 
           {activeFilter === 'location' && (
-            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200  rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 max-h-60 overflow-auto">
               <div className="p-2">
                 {allLocations.map((location) => (
                   <div
