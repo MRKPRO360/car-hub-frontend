@@ -826,3 +826,10 @@ html {
     font-size: 80%;
   }
 }
+
+/* Ensure navigation stays visible */
+nav,
+header {
+  position: relative !important;
+  z-index: 9999 !important;
+}
