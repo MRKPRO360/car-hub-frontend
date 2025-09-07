@@ -1,9 +1,12 @@
 import { useRef } from 'react';
 import carWithRoad from '../../assets/images/car with road.jpg';
+import carWithRoadDark from '../../assets/images/car with road dark.png';
 import Cta from '../shared/Cta';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTheme } from '../../context/ThemeContext';
+import { Link } from 'react-router';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +14,7 @@ function LoveOnline() {
   const loveOnlineRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const { theme } = useTheme();
 
   useGSAP(
     () => {
@@ -51,16 +55,23 @@ function LoveOnline() {
     <section
       ref={sectionRef}
       style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255, 1) 0%, rgba(0,0,0,0.1) 80%), url(${carWithRoad})`,
+        backgroundImage: `linear-gradient(to bottom, ${
+          theme === 'dark' ? 'rgba(16, 24, 40, .9)' : 'rgba(255,255,255, 1)'
+        } 0%, rgba(0,0,0,0.1) 80%), url(${
+          theme === 'dark' ? carWithRoadDark : carWithRoad
+        })`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
       }}
-      className="py-12 lg:py-18 text-center min-h-[60vh] dark:bg-gradient-to-b dark:via-80%   dark:from-gray-900 dark:to-[rgba(1,11,39,1)] dark:opacity-65"
+      className="py-12 lg:py-18 text-center min-h-[60vh] dark:bg-gradient-to-b dark:via-80%   dark:from-gray-900 dark:to-[rgba(1,11,39,1)] "
     >
       <div>
         <div className="overflow-y-hidden mb-6">
-          <h2 ref={headingRef} className="text-4xl font-bold  text-gray-900">
+          <h2
+            ref={headingRef}
+            className="text-4xl font-bold  dark:text-gray-300  text-gray-900"
+          >
             A better way to &nbsp;
             <span className="text-blue-600">buy a pre-loved</span>
             <br />
@@ -68,12 +79,14 @@ function LoveOnline() {
           </h2>
         </div>
         <div ref={loveOnlineRef}>
-          <p className="mb-8">
+          <p className="mb-8 text-gray-600 dark:text-gray-300">
             Connecter adipiscing elit duis tristique sollicitudin cursus vitae
             convallis.
           </p>
           <div>
-            <Cta arrowRight={true} text="Browse 4,020 Cars" />
+            <Link to="/stock">
+              <Cta arrowRight={true} text="Browse All Cars" />
+            </Link>
           </div>
         </div>
       </div>

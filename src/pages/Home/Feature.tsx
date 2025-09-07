@@ -43,6 +43,7 @@ const Features = () => {
           y: 20,
           stagger: 0.3,
           ease: 'power3.out',
+          clearProps: 'all',
           scrollTrigger: {
             trigger: featureRef.current,
             // markers: true,
@@ -61,11 +62,13 @@ const Features = () => {
     <section className="container mx-auto py-12 lg:py-18 px-4 sm:px-0">
       <div
         ref={featureRef}
-        className="grid grid-cols-1 2xsm:grid-cols-2 md:grid-cols-4 gap-8 text-center"
+        className="grid grid-cols-1 2xsm:grid-cols-2 md:grid-cols-4 gap-8 text-center "
       >
         {features.map((feature, index) => (
-          <div key={index} className="flex flex-col items-center">
-            <div className="mb-4">{feature.icon}</div>
+          <div key={index} className="flex flex-col items-center group ">
+            <div className="mb-4 transition transform duration-300 group-hover:scale-125">
+              {feature.icon}
+            </div>
             <h4 className="font-semibold text-lg text-gray-800 mb-1 dark:text-gray-300">
               {feature.title}
             </h4>

@@ -281,6 +281,23 @@ layer(base);
   background-color: #344054;
 }
 
+@keyframes scroll-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@utility scroll-up-animation {
+  animation: scroll-up 1.5s ease-in-out infinite;
+}
+
 @layer utilities {
   /* For Remove Date Icon */
   input[type='date']::-webkit-inner-spin-button,
@@ -811,6 +828,8 @@ span.flatpickr-weekday,
 
 html {
   font-size: 95%; /* Desktop default */
+  /* overflow: auto !important;
+  padding-right: 0 !important; */
 }
 
 @media (max-width: 1279px) {
@@ -828,8 +847,6 @@ html {
 }
 
 /* Ensure navigation stays visible */
-nav,
-header {
-  position: relative !important;
-  z-index: 9999 !important;
+nav {
+  z-index: 999 !important;
 }

@@ -1,5 +1,5 @@
 import { LoaderCircle } from 'lucide-react';
-import { FaArrowRightLong } from 'react-icons/fa6';
+import { FaAnglesUp, FaArrowRightLong } from 'react-icons/fa6';
 
 interface ICta {
   text: string;
@@ -10,11 +10,13 @@ interface ICta {
   isSubmitting?: boolean;
   submittingText?: string;
   isLoading?: boolean;
+  iconLeft?: boolean;
 }
 
 function Cta({
   text,
   variant = 'filled',
+  iconLeft = false,
   arrowRight = false,
   className = '',
   size = 'lg',
@@ -51,6 +53,11 @@ function Cta({
         {/* {text} */}
         {isSubmitting && <LoaderCircle className="animate-spin w-5 h-5" />}
         {arrowRight && <FaArrowRightLong className="text-xl" />}
+        {iconLeft && (
+          <div className="relative h-6 w-5 overflow-hidden">
+            <FaAnglesUp className="absolute text-xl scroll-up-animation" />
+          </div>
+        )}
       </div>
     </div>
   );

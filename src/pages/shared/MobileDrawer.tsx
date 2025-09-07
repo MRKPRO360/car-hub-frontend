@@ -4,6 +4,7 @@ import { FiMenu } from 'react-icons/fi';
 import { Link, NavLink } from 'react-router';
 import UserDropdown from '../../components/CHDashboard/header/UserDropdown';
 import Cta from './Cta';
+import { startLenis, stopLenis } from '../../App';
 import { IUser } from '../../types';
 
 interface IMobileDrawer {
@@ -51,9 +52,9 @@ const MobileDrawer = ({ items, user }: IMobileDrawer) => {
   // Prevent body scroll when drawer is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      stopLenis();
     } else {
-      document.body.style.overflow = 'auto';
+      startLenis();
     }
   }, [isOpen]);
 

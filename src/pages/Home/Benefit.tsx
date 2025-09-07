@@ -8,7 +8,7 @@ const Benefit = ({
   };
 }) => {
   return (
-    <div className="benefit bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)]  dark:hover:drop-shadow-[0_8px_16px_rgba(37,99,235,0.15)] transition duration-300 relative px-4 py-10">
+    <div className="benefit bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)]  dark:hover:drop-shadow-[0_8px_16px_rgba(37,99,235,0.15)] transition transform duration-300 relative px-4 py-10 hover:scale-105">
       <div className="mb-6 flex items-center justify-center">
         {benefit.icon}
       </div>

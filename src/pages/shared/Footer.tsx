@@ -4,7 +4,10 @@ import { FaFacebook, FaInstagram } from 'react-icons/fa6';
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { scrollToTop } from '../../App';
 import { useGSAP } from '@gsap/react';
+import Cta from './Cta';
+import { brandOptions } from '../../constant/car';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -182,21 +185,14 @@ const Footer = () => {
             Popular Makes
           </h4>
           <ul className="space-y-2 text-md">
-            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
-              Toyota
-            </li>
-            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
-              Hyundai
-            </li>
-            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
-              Mitsubishi
-            </li>
-            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
-              Mazda
-            </li>
-            <li className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline">
-              Kia
-            </li>
+            {brandOptions.map((el) => (
+              <li
+                key={el.value}
+                className="flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer hover:underline"
+              >
+                {el.label}
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -215,6 +211,15 @@ const Footer = () => {
             </li>
           </ul>
         </div>
+      </div>
+      <div className="pt-8 mt-8 text-center border-t border-gray-200 dark:border-gray-800">
+        <button
+          onClick={scrollToTop}
+          // className="px-4 py-2 text-sm font-medium text-white transition-colors duration-300 rounded-md bg-primary hover:bg-blue-700"
+          aria-label="Back to top"
+        >
+          <Cta iconLeft={true} text="Back to Top" size="sm" />
+        </button>
       </div>
     </footer>
   );

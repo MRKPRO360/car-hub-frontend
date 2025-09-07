@@ -1,4 +1,6 @@
 // react icons
+import { useEffect } from 'react';
+import { startLenis, stopLenis } from '../../App';
 import { RxCross1 } from 'react-icons/rx';
 interface IModal {
   isModalOpen: boolean;
@@ -6,6 +8,14 @@ interface IModal {
   setIsConfirm: (isOpen: boolean) => void;
 }
 const Modal = ({ isModalOpen, setIsModalOpen, setIsConfirm }: IModal) => {
+  useEffect(() => {
+    if (isModalOpen) {
+      stopLenis();
+    } else {
+      startLenis();
+    }
+  }, [isModalOpen]);
+
   return (
     <div
       className={`${

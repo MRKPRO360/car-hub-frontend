@@ -79,6 +79,7 @@ const WhyCarHub = () => {
             y: 0,
             stagger: 0.2,
             ease: 'power3.inOut',
+            clearProps: 'all',
           }
         );
       }

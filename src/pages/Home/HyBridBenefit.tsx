@@ -90,6 +90,7 @@ const HyBridBenefit = () => {
               duration: 0.4,
               stagger: 0.3,
               ease: 'power3.inOut',
+              clearProps: 'all',
               scrollTrigger: {
                 trigger: hybridBenefitsRef.current,
                 start: 'top 70%',
@@ -148,13 +149,21 @@ const HyBridBenefit = () => {
         {hybridBenefits.map((item, index) => (
           <div
             key={index}
-            className="bg-primary-50 p-10 first:pl-0 last:pr-0 flex justify-center flex-col items-center text-center"
+            className="group bg-primary-50 p-6 flex flex-col items-center text-center"
           >
-            <div className="mb-6 ">{item.icon}</div>
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-300  mb-3">
+            <div
+              className={`transform duration-300 mb-4  ${
+                item.title === 'Self-Charging on the Go'
+                  ? 'scale-120 group-hover:scale-150'
+                  : 'group-hover:scale-125'
+              }`}
+            >
+              {item.icon}
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-300 mb-3">
               {item.title}
             </h3>
-            <p className="text-gray-600 dark:text-gray-500 leading-tighter">
+            <p className="text-gray-600 dark:text-gray-500 leading-tight">
               {item.description}
             </p>
           </div>

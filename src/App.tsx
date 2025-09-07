@@ -3,7 +3,7 @@ import MainLayout from './components/layout/MainLayout';
 import Lenis from '@studio-freight/lenis';
 import ScrollToTop from './components/ScrollToTop';
 
-let lenisInstance: Lenis | null = null;
+export let lenisInstance: Lenis | null = null;
 
 function App() {
   useGSAP(() => {
@@ -42,4 +42,17 @@ export const scrollToTop = () => {
     });
   }
 };
+
+export const stopLenis = () => {
+  if (lenisInstance) {
+    lenisInstance.stop();
+  }
+};
+
+export const startLenis = () => {
+  if (lenisInstance) {
+    lenisInstance.start();
+  }
+};
+
 export default App;

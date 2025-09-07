@@ -13,6 +13,8 @@ import { ThemeToggleButton } from './ThemeToggleButton';
 import UserDropdown from '../../components/CHDashboard/header/UserDropdown';
 import { Heart } from 'lucide-react';
 import SearchBox from './SearchBox';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { lenisInstance } from '../../App';
 
 const publicNavItems = [
   {
@@ -31,6 +33,27 @@ const publicNavItems = [
 
 const Navbar = () => {
   const token = useAppSelector(selectCurrentToken);
+  const [show, setShow] = useState(true);
+  const lastScrollY = useRef(0);
+
+  const controlNavbar = useCallback(() => {
+    const currentScrollY = lenisInstance?.scroll ?? 0;
+
+    // A small threshold to prevent hiding on minimal scrolls at the top
+    if (currentScrollY > 100 && currentScrollY > lastScrollY.current) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+
+    lastScrollY.current = currentScrollY;
+  }, []);
+
+  useEffect(() => {
+    const lenis = lenisInstance;
+    lenis?.on('scroll', controlNavbar);
+    return () => lenis?.off('scroll', controlNavbar);
+  }, [controlNavbar]);
 
   let user;
 
@@ -39,7 +62,11 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="sticky top-0 left-0 z-50 transition duration-300 ">
+    <nav
+      className={`sticky top-0 w-full z-50 transition-transform duration-300 ease-in-out ${
+        show ? 'translate-y-0' : '-translate-y-full'
+      } [transform:translateZ(0)]`}
+    >
       {/* Mini Top Bar */}
       <div className="bg-primary text-white py-2  flex justify-between items-center text-xs xsm:text-[13px] px-4">
         <div className="flex items-center gap-1">
@@ -74,7 +101,7 @@ const Navbar = () => {
       </div>
 
       {/* Main Navbar */}
-      <div className="max-w-[1536px] mx-auto bg-white dark:bg-gray-900 dark:text-white">
+      <div className=" max-w-[1536px] mx-auto bg-white dark:bg-gray-900 dark:text-white">
         <div className="px-2 flex flex-wrap items-center justify-between border-b border-b-gray-300/50 dark:border-b-gray-700">
           {/* Logo */}
           <Link
@@ -124,11 +151,11 @@ const Navbar = () => {
               {user?.role ? (
                 <UserDropdown isDashboardLink={true} />
               ) : (
-                <ul>
+                <li>
                   <NavLink to="/login">
                     <Cta size="sm" text="Login" />
                   </NavLink>
-                </ul>
+                </li>
               )}
             </ul>
           </div>
