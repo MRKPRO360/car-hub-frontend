@@ -48,7 +48,7 @@ const WhyCarHub = () => {
           trigger: benefitsRef.current,
           start: 'top 65%',
           end: 'top 50%',
-          toggleActions: 'play none none reverse',
+          toggleActions: 'play none none none',
         },
       });
 

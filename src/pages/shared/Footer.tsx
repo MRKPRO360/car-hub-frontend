@@ -20,7 +20,7 @@ const Footer = () => {
           trigger: boxesRef.current,
           start: 'top 75%',
           end: 'bottom 20%',
-          toggleActions: 'play none none reverse',
+          toggleActions: 'play none none none',
         },
       });
       if (!boxesRef.current) return;

@@ -152,38 +152,6 @@ function Carousel({
   );
 }
 
-// function CarouselContent ({ className, ...props }: React.ComponentProps<'div'>) {
-//   const { carouselRef, orientation, canScrollPrev, canScrollNext } =
-//     useCarousel();
-
-//   const isHorizontal = orientation === 'horizontal';
-
-//   return (
-//     <div
-//       ref={carouselRef}
-//       className="overflow-hidden"
-//       data-slot="carousel-content"
-//     >
-//       {/* Fade Left */}
-//       {isHorizontal && canScrollPrev && (
-//         <div className="pointer-events-none absolute left-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent" />
-//       )}
-//       {/* Fade Right */}
-//       {isHorizontal && canScrollNext && (
-//         <div className="pointer-events-none  absolute right-0 top-0 h-full w-18 z-10 sm:bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent" />
-//       )}
-//       <div
-//         className={cn(
-//           'flex',
-//           orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
-//           className
-//         )}
-//         {...props}
-//       />
-//     </div>
-//   );
-// }
-
 const CarouselContent = React.forwardRef<
   HTMLDivElement, // 👈 the element type you want ref for
   React.ComponentProps<'div'> // 👈 props type
@@ -247,6 +215,7 @@ function CarouselPrevious({
 }: CarouselButtonProps) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
+  // if (!canScrollPrev) return;
   return (
     <button
       data-slot="carousel-previous"
@@ -270,6 +239,7 @@ function CarouselPrevious({
         style={{
           height: '2rem',
           width: '2rem',
+          color: '#062c41',
         }}
       />
       <span className="sr-only">Previous slide</span>
@@ -307,6 +277,7 @@ function CarouselNext({
         style={{
           height: '2rem',
           width: '2rem',
+          color: '#062c41',
         }}
       />
       <span className="sr-only">Next slide</span>

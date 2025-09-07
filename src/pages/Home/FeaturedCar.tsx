@@ -11,6 +11,7 @@ import CarouselCarCard from '../shared/CarouselCarCard';
 import CarouselSkeletonCard from '../shared/CarouselSkeletonCard';
 
 import { useRef } from 'react';
+
 import useCardStagger from '../../hooks/useCardStagger';
 
 const FeaturedCars = () => {
@@ -34,24 +35,23 @@ const FeaturedCars = () => {
           </h2>
         </div>
         <Carousel className="md:w-full">
-          {isLoading && (
+          {isLoading ? (
             <CarouselContent className="-ml-1 ">
               {Array.from({ length: 4 }).map((_, i) => (
                 <CarouselSkeletonCard key={i} />
               ))}
             </CarouselContent>
+          ) : (
+            <div ref={containerRef}>
+              <CarouselContent className="-ml-1 ">
+                {cars?.data?.map((car: ICar) => (
+                  <CarouselCarCard key={car._id} car={car} />
+                ))}
+              </CarouselContent>
+              <CarouselNext />
+              <CarouselPrevious />
+            </div>
           )}
-
-          {!isLoading && (
-            <CarouselContent className="-ml-1 " ref={containerRef}>
-              {cars?.data?.map((car: ICar) => (
-                <CarouselCarCard key={car._id} car={car} />
-              ))}
-            </CarouselContent>
-          )}
-
-          <CarouselPrevious />
-          <CarouselNext />
         </Carousel>
       </div>
     </section>

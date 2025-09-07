@@ -19,7 +19,7 @@ const useHeaderAnim = (headingRef: RefObject<HTMLHeadingElement>) => {
             start: 'top 80%',
             end: 'top 20%',
             markers: true,
-            toggleActions: 'play resume resume reset',
+            toggleActions: 'play none none none',
           },
         });
       }

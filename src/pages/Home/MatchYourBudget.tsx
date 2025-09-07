@@ -31,30 +31,29 @@ const MatchYourBudget = () => {
           <span className="text-blue-600">Budget</span>
         </h2>
       </div>
-      <Carousel className="md:w-full ">
-        {isLoading && (
-          <CarouselContent className="-ml-1">
+      <Carousel className="md:w-full">
+        {isLoading ? (
+          <CarouselContent className="-ml-1 ">
             {Array.from({ length: 4 }).map((_, i) => (
               <CarouselSkeletonCard key={i} />
             ))}
           </CarouselContent>
-        )}
+        ) : (
+          <div ref={containerRef}>
+            <CarouselContent className="-ml-1 ">
+              {cars?.data?.map((car: ICar) => (
+                <CarouselCarCard key={car._id} car={car} />
+              ))}
+            </CarouselContent>
+            <CarouselNext />
+            <CarouselPrevious />
 
-        {!isLoading && cars?.data && (
-          <CarouselContent className="-ml-1" ref={containerRef}>
-            {cars.data?.map((car: ICar) => (
-              <CarouselCarCard key={car._id} car={car} />
-            ))}
-          </CarouselContent>
+            <div className="text-center my-10 cta">
+              <Cta isLoading={isLoading} text="Browse All Cars Under $20K" />
+            </div>
+          </div>
         )}
-
-        <CarouselPrevious />
-        <CarouselNext />
       </Carousel>
-
-      <div className="text-center my-10">
-        <Cta isLoading={isLoading} text="Browse All Cars Under $20K" />
-      </div>
     </section>
   );
 };

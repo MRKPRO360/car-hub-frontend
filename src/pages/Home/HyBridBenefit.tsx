@@ -56,7 +56,7 @@ const HyBridBenefit = () => {
             ),
             start: 'top 80%',
             end: 'top 20%',
-            toggleActions: 'play resume resume reset',
+            toggleActions: 'play none none none',
           },
         });
         gsap.from(sectionRef.current!.querySelector('.right-col'), {
@@ -69,7 +69,7 @@ const HyBridBenefit = () => {
             // markers: true,
             start: 'top 40%',
             end: 'top 20%',
-            toggleActions: 'play resume resume reset',
+            toggleActions: 'play none none none',
           },
         });
 
@@ -94,7 +94,7 @@ const HyBridBenefit = () => {
                 trigger: hybridBenefitsRef.current,
                 start: 'top 70%',
                 end: 'top 20%',
-                toggleActions: 'play none none reverse',
+                toggleActions: 'play none none none',
               },
             }
           );

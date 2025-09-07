@@ -19,7 +19,7 @@ function LoveOnline() {
           trigger: sectionRef.current,
           start: 'top 40%',
           end: 'top 20%',
-          toggleActions: 'play none none reverse',
+          toggleActions: 'play none none none',
         },
       });
 
