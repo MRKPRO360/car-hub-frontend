@@ -53,7 +53,7 @@ export default function UserDropdown({
   }
 
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative z-999999" ref={dropdownRef}>
       <button
         type="button"
         onClick={(e) => {
@@ -79,7 +79,7 @@ export default function UserDropdown({
       </button>
 
       {isOpen && (
-        <ul className="absolute xsm:-left-[50%] transform xsm:translate-x-[20%] block rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 z-[1000] min-w-full w-max  max-h-96 overflow-auto bg-light-bg dark:bg-gray-900">
+        <ul className="absolute xsm:-left-[57%] transform xsm:translate-x-[20%] block rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 z-[1000] min-w-full w-max  max-h-96 overflow-auto bg-light-bg dark:bg-gray-900">
           <Link
             to={`/dashboard/profile`}
             className="dropdown-item py-2.5 px-5 flex items-center dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-900 dark:text-gray-300 text-sm cursor-pointer transition duration-300"

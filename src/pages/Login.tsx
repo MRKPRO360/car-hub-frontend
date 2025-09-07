@@ -22,6 +22,7 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FieldValues>({
     defaultValues: {
       email: '',
@@ -61,8 +62,43 @@ function Login() {
       </div>
 
       <div className="lg:py-36 lg:px-20 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-        <h1 className="text-2xl font-semibold mb-4">Login</h1>
+        <h1 className="text-2xl font-semibold mb-2">Login</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
+          {/* PROVIDED ROLE */}
+
+          <h3 className="mb-1 text-lg">Choose one of account</h3>
+          <div className="flex items-center gap-x-4 mb-4">
+            <button
+              onClick={async () => {
+                setValue('email', 'nill@jane.com');
+                setValue('password', 'admin12345');
+                await new Promise((res) => setTimeout(res, 100));
+                handleSubmit(onSubmit)();
+              }}
+              type="button"
+            >
+              <Cta
+                size="sm"
+                className="bg-indigo-500 hover:bg-indigo-600"
+                text="Admin"
+              ></Cta>
+            </button>
+            <button
+              type="button"
+              onClick={async () => {
+                setValue('email', 'marrycooper@gmail.com');
+                setValue('password', 'user12345');
+                await new Promise((res) => setTimeout(res, 100));
+                handleSubmit(onSubmit)();
+              }}
+            >
+              <Cta
+                className="bg-cyan-500 hover:bg-cyan-600"
+                size="sm"
+                text="User"
+              ></Cta>
+            </button>
+          </div>
           {/* Email Field */}
           <div className="mb-4">
             <label
