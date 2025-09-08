@@ -49,6 +49,20 @@ export default function AllCars() {
   }, [cars, data]);
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        !event.target ||
+        (!(event.target as HTMLElement).closest('.ch-table') &&
+          !(event.target as HTMLElement).closest('.action-btn'))
+      ) {
+        setOpenActionMenuId(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
     const performDelete = async () => {
       if (isConfirm && carToDelete) {
         const toastId = toast.loading('Deleting...');
@@ -236,29 +250,25 @@ export default function AllCars() {
                         : 'opacity-0 scale-90 z-[-1] hidden'
                     } ${
                       index > 0 ? 'bottom-[90%]' : '-top-10 '
-                    } zenui-table absolute right-[80%] p-2 rounded-md bg-white dark:bg-gray-900  shadow-md min-w-[160px] transition-all duration-100`}
+                    } ch-table absolute right-[80%] p-2 rounded-md bg-light dark:bg-gray-900 min-w-[160px] drop-shadow-[0_8px_8px_rgba(37,99,235,0.1)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.15)] dark:drop-shadow-[0_8px_4px_rgba(0,0,0,0.1)] dark:hover:drop-shadow-[0_8px_4px_rgba(0,0,0,0.3)] transition duration-300`}
                   >
                     <button
                       onClick={() => handleUpdate(car)}
-                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer 
-                      hover:bg-gray-100
-                      dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
+                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md cursor-pointer transition-all duration-200  dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-900 dark:text-gray-300"
                     >
                       <MdOutlineEdit />
                       Edit
                     </button>
                     <button
                       onClick={() => handleDeleteClick(car)}
-                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
-                      dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
+                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md cursor-pointer transition-all duration-200  dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-900 dark:text-gray-300"
                     >
                       <MdDeleteOutline />
                       Delete
                     </button>
                     <Link
                       to={`/cars/${car._id}`}
-                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
-                      dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
+                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md cursor-pointer transition-all duration-200  dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-900 dark:text-gray-300"
                     >
                       <IoEyeOutline />
                       View Details

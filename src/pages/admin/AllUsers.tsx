@@ -89,7 +89,7 @@ export default function AllUsers() {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         !event.target ||
-        (!(event.target as HTMLElement).closest('.zenui-table') &&
+        (!(event.target as HTMLElement).closest('.ch-table') &&
           !(event.target as HTMLElement).closest('.action-btn'))
       ) {
         setOpenActionMenuId(null);
@@ -284,7 +284,7 @@ export default function AllUsers() {
                           : 'opacity-0 scale-90 z-[-1] hidden'
                       } ${
                         index > 0 ? 'bottom-[90%]' : '-top-10 '
-                      }  absolute right-[80%] p-2 rounded-md bg-light dark:bg-gray-900 min-w-[160px] drop-shadow-[0_8px_8px_rgba(37,99,235,0.1)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.15)] transition duration-300`}
+                      } ch-table absolute right-[80%] p-2 rounded-md bg-light dark:bg-gray-900 min-w-[160px] drop-shadow-[0_8px_8px_rgba(37,99,235,0.1)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.15)] dark:drop-shadow-[0_8px_4px_rgba(0,0,0,0.1)] dark:hover:drop-shadow-[0_8px_4px_rgba(0,0,0,0.3)] transition duration-300`}
                     >
                       <button
                         onClick={() => handleDeleteClick(user)}
