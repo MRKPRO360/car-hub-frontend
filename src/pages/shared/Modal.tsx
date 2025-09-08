@@ -1,59 +1,91 @@
-// react icons
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { startLenis, stopLenis } from '../../App';
-import { RxCross1 } from 'react-icons/rx';
+
+import Cta from './Cta';
 interface IModal {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
   setIsConfirm: (isOpen: boolean) => void;
+  text?: string;
 }
-const Modal = ({ isModalOpen, setIsModalOpen, setIsConfirm }: IModal) => {
+const Modal = ({
+  isModalOpen,
+  setIsModalOpen,
+  setIsConfirm,
+  text = '',
+}: IModal) => {
+  const modalContentRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsModalOpen(false);
+      }
+    };
     if (isModalOpen) {
+      document.addEventListener('keydown', handleEscape);
       stopLenis();
     } else {
       startLenis();
     }
-  }, [isModalOpen]);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isModalOpen, setIsModalOpen]);
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        modalContentRef.current &&
+        !modalContentRef.current.contains(e.target as Node)
+      ) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isModalOpen, setIsModalOpen]);
 
   return (
     <div
       className={`${
         isModalOpen ? ' scale-[1] opacity-100' : ' scale-[0] opacity-0'
-      } w-full h-screen fixed top-0 left-0 z-[200000000] bg-blue/50 flex items-center justify-center transition-all duration-300`}
+      } w-full h-screen fixed top-0 left-0 z-[200000000] bg-white/15 backdrop-blur-xs dark:bg-gray-950 flex items-center justify-center transition-all duration-300`}
     >
-      <div className={`w-[90%] md:w-[30%] bg-light rounded-lg p-4`}>
-        <div className="w-full flex justify-between">
-          <div>
-            <h2 className="text-[1.7rem] font-[500] text-[#202020]">
-              Are you sure about it?
-            </h2>
-            <p className="text-[1rem] text-[#525252]">
-              You can"t undo this action anymore
-            </p>
-          </div>
-
-          <RxCross1
-            className="p-2 text-[2.5rem] hover:bg-[#e7e7e7] rounded-full transition-all duration-300 cursor-pointer"
-            onClick={() => setIsModalOpen(false)}
-          />
+      <div
+        ref={modalContentRef}
+        className={`w-[85%] md:w-[60%] lg:max-w-[40%] bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.1)] overflow-hidden hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.15)]  dark:hover:drop-shadow-[0_8px_16px_rgba(37,99,235,0.15)] transition duration-300  backdrop:blur-md dark:text-gray-300 p-4`}
+      >
+        <div className="space-y-1">
+          <h2 className="text-xl">
+            Are you sure about to delete {text && `${text}`}?
+          </h2>
+          <p className="text-base">
+            Once the oction is done you can't undo this anymore :)
+          </p>
         </div>
 
-        <div className="flex items-center gap-2 md:gap-3 w-full justify-end mt-6">
-          <button
-            className="px-4 py-2 hover:bg-gray-100 border border-[#a8a8a8] rounded-lg text-[#585858]"
-            onClick={() => setIsModalOpen(false)}
-          >
-            Cancel
+        <div className="flex items-center gap-2 md:gap-3 w-full justify-end mt-5">
+          <button type="button" onClick={() => setIsModalOpen(false)}>
+            <Cta
+              size="sm"
+              text="Cancel"
+              className="bg-red-600 hover:bg-red-700"
+            />
           </button>
           <button
-            className="px-4 py-2 bg-[#3B9DF8] rounded-lg text-[#fff]"
+            type="button"
             onClick={() => {
               setIsConfirm(true);
               setIsModalOpen(false);
             }}
           >
-            Confirm
+            <Cta size="sm" text="Confirm" />
           </button>
         </div>
       </div>

@@ -16,17 +16,20 @@ import {
   useGetAllCarsQuery,
 } from '../../redux/features/admin/carManagement.api';
 import { Link, useNavigate } from 'react-router';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Frown, LoaderCircle } from 'lucide-react';
+import Modal from '../shared/Modal';
 
 export default function AllCars() {
   const [openActionMenuId, setOpenActionMenuId] = useState<string | null>(null);
 
-  const { data: cars, isLoading } = useGetAllCarsQuery(undefined);
+  const { data: cars, isLoading, isError } = useGetAllCarsQuery(undefined);
   const navigate = useNavigate();
 
   const [deleteCar] = useDeleteACarMutation();
   const [data, setData] = useState<ICar[] | []>(cars?.data || []);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [carToDelete, setCarToDelete] = useState<ICar | null>(null);
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -46,37 +49,39 @@ export default function AllCars() {
   }, [cars, data]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        !event.target ||
-        (!(event.target as HTMLElement).closest('.zenui-table') &&
-          !(event.target as HTMLElement).closest('.action-btn'))
-      ) {
-        setOpenActionMenuId(null);
+    const performDelete = async () => {
+      if (isConfirm && carToDelete) {
+        const toastId = toast.loading('Deleting...');
+
+        try {
+          const res = (await deleteCar(carToDelete._id)) as IResponse<any>;
+
+          if (res.error) {
+            toast.error(res?.error?.data?.message, { id: toastId });
+          } else {
+            toast.success('Car deleted successfully!', {
+              id: toastId,
+              duration: 2000,
+            });
+          }
+        } catch (err) {
+          console.log(err);
+          toast.error('Something went wrong!', { id: toastId, duration: 2000 });
+          setIsOpen(false);
+          setCarToDelete(null);
+        } finally {
+          setIsOpen(false);
+          setIsConfirm(false);
+          setCarToDelete(null);
+        }
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
+    performDelete();
+  }, [isConfirm, carToDelete, deleteCar]);
 
-  const handleDelete = async (item: ICar) => {
-    const toastId = toast.loading('Deleting...');
-
-    try {
-      const res = (await deleteCar(item._id)) as IResponse<any>;
-
-      if (res.error) {
-        toast.error(res?.error?.data?.message, { id: toastId });
-      } else {
-        toast.success('Car deleted successfully!', {
-          id: toastId,
-          duration: 2000,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error('Something went wrong!', { id: toastId, duration: 2000 });
-    }
+  const handleDeleteClick = (item: ICar) => {
+    setCarToDelete(item);
+    setIsOpen(true);
   };
 
   const handleUpdate = async (item: ICar) => {
@@ -85,11 +90,43 @@ export default function AllCars() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-lg font-semibold text-gray-500">Loading...</p>
+      <div className="flex justify-center items-center min-h-[65vh]">
+        <p className="text-lg font-semibold text-gray-500">
+          <LoaderCircle
+            strokeWidth={2.5}
+            size={30}
+            className="text-gray-500 block dark:text-primary/80 animate-spin"
+          />
+        </p>
       </div>
     );
   }
+
+  if (!data)
+    return (
+      <div className="flex justify-center items-center min-h-[65vh] gap-2">
+        <Frown
+          className="text-gray-500 dark:text-primary/80"
+          strokeWidth={2.5}
+        />
+        <p className="text-lg font-semibold text-gray-500">
+          You don't have any cars yet. Try to add some car ):
+        </p>
+      </div>
+    );
+
+  if (isError && !isLoading)
+    return (
+      <div className="flex justify-center items-center h-64 gap-2">
+        <Frown
+          className="text-gray-500 dark:text-primary/80"
+          strokeWidth={2.5}
+        />
+        <p className="text-lg font-semibold text-gray-500">
+          Something unexpected occured. Try again later ):
+        </p>
+      </div>
+    );
 
   return (
     <div className=" rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -213,7 +250,7 @@ export default function AllCars() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(car)}
+                      onClick={() => handleDeleteClick(car)}
                       className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
                       dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
                     >
@@ -230,6 +267,7 @@ export default function AllCars() {
                     </Link>
                   </div>
                 </TableCell>
+                {/* HERE MODAL GOES */}
               </TableRow>
             ))}
           </TableBody>
@@ -291,6 +329,14 @@ export default function AllCars() {
           </div>
         )}
       </div>
+
+      <div />
+      <Modal
+        isModalOpen={isOpen}
+        setIsModalOpen={setIsOpen}
+        setIsConfirm={setIsConfirm}
+        text={carToDelete ? `${carToDelete.brand} ${carToDelete.model}` : ''}
+      />
     </div>
   );
 }

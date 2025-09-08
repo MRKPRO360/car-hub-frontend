@@ -1,5 +1,4 @@
 import { useModal } from '../../hooks/useModal';
-import { Modal } from '../ui/modal';
 
 import Label from '../ui/form/Label';
 import Input from '../ui/form/input/InputField';
@@ -16,6 +15,7 @@ import { useAppDispatch } from '../../redux/hooks';
 import { verifyToken } from '../../utils/verifyToken';
 import { setUser } from '../../redux/features/auth/authSlice';
 import { useUpdateMeMutation } from '../../redux/features/user/selfManagement';
+import { ContentModal } from '../ui/modal';
 
 export default function UserMetaCard({ user }: { user: IUser | null }) {
   const { isOpen, openModal, closeModal } = useModal();
@@ -118,7 +118,11 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
           </button>
         </div>
       </div>
-      <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
+      <ContentModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        className="max-w-[700px] m-4"
+      >
         <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
           <div className="px-2 pr-14">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
@@ -279,7 +283,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
             </div>
           </form>
         </div>
-      </Modal>
+      </ContentModal>
     </>
   );
 }

@@ -1,9 +1,10 @@
 import { useModal } from '../../hooks/useModal';
-import { Modal } from '../ui/modal';
+
 import Label from '../ui/form/Label';
 import Input from '../ui/form/input/InputField';
 import { IUser } from '../../types';
 import { Button } from '../ui/button/Button';
+import { ContentModal } from '../ui/modal';
 
 export default function UserAddressCard({ user }: { user: IUser | null }) {
   const {
@@ -69,7 +70,11 @@ export default function UserAddressCard({ user }: { user: IUser | null }) {
           </button> */}
         </div>
       </div>
-      <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
+      <ContentModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        className="max-w-[700px] m-4"
+      >
         <div className="relative w-full p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
           <div className="px-2 pr-14">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
@@ -113,7 +118,7 @@ export default function UserAddressCard({ user }: { user: IUser | null }) {
             </div>
           </form>
         </div>
-      </Modal>
+      </ContentModal>
     </>
   );
 }

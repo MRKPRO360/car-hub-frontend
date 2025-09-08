@@ -23,7 +23,7 @@ import Stock from '../pages/Stock';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import NotFound from '../pages/NotFound';
 import UserProfiles from '../pages/profile/UserProfiles';
-import BasicTables from '../pages/Tables/BasicTables';
+import BasicTables from '../pages/user/orders/MyOrders';
 import AdminStats from '../pages/admin/Stats/AdminStats';
 import CustomerOrders from '../pages/admin/CustomerOrders';
 import AllCars from '../pages/admin/AllCars';

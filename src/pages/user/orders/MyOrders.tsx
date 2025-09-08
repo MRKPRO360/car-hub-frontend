@@ -1,8 +1,8 @@
-import BasicTableOne from '../../components/tables/BasicTables/BasicTableOne';
-import PageBreadcrumb from '../shared/PageBreadCrumb';
-import PageMeta from '../shared/PageMeta';
+import UserOrdersTable from './UserOrdersTable';
+import PageBreadcrumb from '../../shared/PageBreadCrumb';
+import PageMeta from '../../shared/PageMeta';
 
-export default function BasicTables() {
+export default function MyOrders() {
   return (
     <>
       <PageMeta
@@ -11,7 +11,7 @@ export default function BasicTables() {
       />
       <PageBreadcrumb pageTitle="My orders" />
       <div className="space-y-6">
-        <BasicTableOne />
+        <UserOrdersTable />
       </div>
     </>
   );

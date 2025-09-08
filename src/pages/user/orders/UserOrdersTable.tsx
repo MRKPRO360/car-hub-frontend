@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useGetMyOrdersQuery } from '../../../redux/features/user/selfManagement';
-import Badge from '../../ui/badge/Badge';
+import Badge from '../../../components/ui/badge/Badge';
 import {
   Table,
   TableBody,
   TableCell,
   TableHeader,
   TableRow,
-} from '../../ui/table';
+} from '../../../components/ui/table';
 import { IOrder } from '../../../types';
+import { Frown, LoaderCircle } from 'lucide-react';
 
-export default function BasicTableOne() {
-  const { data: orders, isLoading } = useGetMyOrdersQuery(undefined);
+export default function UserOrdersTable() {
+  const { data: orders, isLoading, isError } = useGetMyOrdersQuery(undefined);
 
   const [data, setData] = useState<IOrder[] | []>(orders?.data || []);
 
@@ -23,11 +24,43 @@ export default function BasicTableOne() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-lg font-semibold text-gray-500">Loading...</p>
+      <div className="flex justify-center items-center min-h-[65vh]">
+        <p className="text-lg font-semibold text-gray-500">
+          <LoaderCircle
+            strokeWidth={2.5}
+            size={30}
+            className="text-gray-500 block dark:text-primary/80 animate-spin"
+          />
+        </p>
       </div>
     );
   }
+
+  if (!data)
+    return (
+      <div className="flex justify-center items-center min-h-[65vh] gap-2">
+        <Frown
+          className="text-gray-500 dark:text-primary/80"
+          strokeWidth={2.5}
+        />
+        <p className="text-lg font-semibold text-gray-500">
+          You don't have any orders yet. Try to order something ):
+        </p>
+      </div>
+    );
+
+  if (isError && !isLoading)
+    return (
+      <div className="flex justify-center items-center h-64 gap-2">
+        <Frown
+          className="text-gray-500 dark:text-primary/80"
+          strokeWidth={2.5}
+        />
+        <p className="text-lg font-semibold text-gray-500">
+          Something unexpected occured. Try again later ):
+        </p>
+      </div>
+    );
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">

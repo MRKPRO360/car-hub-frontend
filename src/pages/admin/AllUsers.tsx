@@ -18,12 +18,12 @@ import {
   useDeleteAUserMutation,
   useGetAllUsersQuery,
 } from '../../redux/features/admin/userManagement.api';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Frown, LoaderCircle } from 'lucide-react';
 
 export default function AllUsers() {
   const [openActionMenuId, setOpenActionMenuId] = useState<string | null>(null);
 
-  const { data: users, isLoading } = useGetAllUsersQuery(undefined);
+  const { data: users, isLoading, isError } = useGetAllUsersQuery(undefined);
 
   const [deleteUser] = useDeleteAUserMutation();
   const [blockUser] = useDeactivateUserMutation();
@@ -125,11 +125,43 @@ export default function AllUsers() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-lg font-semibold text-gray-500">Loading...</p>
+      <div className="flex justify-center items-center min-h-[65vh]">
+        <p className="text-lg font-semibold text-gray-500">
+          <LoaderCircle
+            strokeWidth={2.5}
+            size={30}
+            className="text-gray-500 block dark:text-primary/80 animate-spin"
+          />
+        </p>
       </div>
     );
   }
+
+  if (!data)
+    return (
+      <div className="flex justify-center items-center min-h-[65vh] gap-2">
+        <Frown
+          className="text-gray-500 dark:text-primary/80"
+          strokeWidth={2.5}
+        />
+        <p className="text-lg font-semibold text-gray-500">
+          There's no user yet ):
+        </p>
+      </div>
+    );
+
+  if (isError && !isLoading)
+    return (
+      <div className="flex justify-center items-center h-64 gap-2">
+        <Frown
+          className="text-gray-500 dark:text-primary/80"
+          strokeWidth={2.5}
+        />
+        <p className="text-lg font-semibold text-gray-500">
+          Something unexpected occured. Try again later ):
+        </p>
+      </div>
+    );
 
   return (
     <div className=" rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
