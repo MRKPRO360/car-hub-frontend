@@ -19,6 +19,7 @@ import {
   useGetAllUsersQuery,
 } from '../../redux/features/admin/userManagement.api';
 import { ChevronLeft, ChevronRight, Frown, LoaderCircle } from 'lucide-react';
+import Modal from '../shared/Modal';
 
 export default function AllUsers() {
   const [openActionMenuId, setOpenActionMenuId] = useState<string | null>(null);
@@ -28,14 +29,49 @@ export default function AllUsers() {
   const [deleteUser] = useDeleteAUserMutation();
   const [blockUser] = useDeactivateUserMutation();
   const [unBlockUser] = useActivateUserMutation();
-
   const [data, setData] = useState<IUser[] | []>(users?.data || []);
+
+  const [userToDelete, setUserToDelete] = useState<IUser | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
 
   useEffect(() => {
     if (users?.data?.length && data !== users.data) {
       setData(users?.data);
     }
   }, [users, data]);
+
+  useEffect(() => {
+    const performDelete = async () => {
+      if (isConfirm && userToDelete) {
+        const toastId = toast.loading('Deleting...');
+
+        try {
+          const res = (await deleteUser(userToDelete._id)) as IResponse<any>;
+
+          if (res.error) {
+            toast.error(res?.error?.data?.message, { id: toastId });
+          } else {
+            toast.success('User deleted successfully!', {
+              id: toastId,
+              duration: 2000,
+            });
+          }
+        } catch (err) {
+          console.log(err);
+          toast.error('Something went wrong!', {
+            id: toastId,
+            duration: 2000,
+          });
+        } finally {
+          setIsOpen(false);
+          setIsConfirm(false);
+          setUserToDelete(null);
+        }
+      }
+    };
+    performDelete();
+  }, [isConfirm, userToDelete, deleteUser]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,24 +99,9 @@ export default function AllUsers() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  const handleDelete = async (user: IUser) => {
-    const toastId = toast.loading('Deleting...');
-
-    try {
-      const res = (await deleteUser(user._id)) as IResponse<any>;
-
-      if (res.error) {
-        toast.error(res?.error?.data?.message, { id: toastId });
-      } else {
-        toast.success('User deleted successfully!', {
-          id: toastId,
-          duration: 2000,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error('Something went wrong!', { id: toastId, duration: 2000 });
-    }
+  const handleDeleteClick = (user: IUser) => {
+    setIsOpen(true);
+    setUserToDelete(user);
   };
 
   const handleBlock = async (user: IUser) => {
@@ -229,72 +250,72 @@ export default function AllUsers() {
                 </TableCell>
 
                 <TableCell
-                  className={`px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 ${
+                  className={`px-4 py-3  text-start text-theme-sm  ${
                     !user.isBlocked ? 'text-green-500' : 'text-red-500'
                   }`}
                 >
-                  {user.isBlocked ? 'Blocked' : 'Active'}
+                  {user.isDeleted ? ' ' : user.isBlocked ? 'Blocked' : 'Active'}
                 </TableCell>
 
                 <TableCell
-                  className={`px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 ${
+                  className={`px-4 py-3  text-start text-theme-sm  ${
                     !user.isDeleted ? 'text-green-500' : 'text-red-500'
                   }`}
                 >
                   {user?.isDeleted ? 'Deleted' : 'N/A'}
                 </TableCell>
 
-                <TableCell className="absolute translate-y-8 translate-x-4">
-                  <BsThreeDotsVertical
-                    onClick={() =>
-                      setOpenActionMenuId(
-                        openActionMenuId === user?._id
-                          ? null
-                          : (user._id as string)
-                      )
-                    }
-                    className="action-btn text-gray-600 cursor-pointer"
-                  />
-                  <div
-                    className={`${
-                      openActionMenuId === user._id
-                        ? 'opacity-100 scale-100 z-30 block'
-                        : 'opacity-0 scale-90 z-[-1] hidden'
-                    } ${
-                      index > 0 ? 'bottom-[90%]' : '-top-10 '
-                    } zenui-table absolute right-[80%] p-2 rounded-md bg-white dark:bg-gray-900 dark:text-white shadow-md min-w-[160px] transition-all duration-100`}
-                  >
-                    <button
-                      onClick={() => handleDelete(user)}
-                      className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
-                      dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
+                {!user.isDeleted && (
+                  <TableCell className="absolute translate-y-8 translate-x-4">
+                    <BsThreeDotsVertical
+                      onClick={() =>
+                        setOpenActionMenuId(
+                          openActionMenuId === user?._id
+                            ? null
+                            : (user._id as string)
+                        )
+                      }
+                      className="action-btn text-gray-600 cursor-pointer"
+                    />
+                    <div
+                      className={`${
+                        openActionMenuId === user._id
+                          ? 'opacity-100 scale-100 z-30 block'
+                          : 'opacity-0 scale-90 z-[-1] hidden'
+                      } ${
+                        index > 0 ? 'bottom-[90%]' : '-top-10 '
+                      }  absolute right-[80%] p-2 rounded-md bg-light dark:bg-gray-900 min-w-[160px] drop-shadow-[0_8px_8px_rgba(37,99,235,0.1)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.15)] transition duration-300`}
                     >
-                      <MdDeleteOutline />
-                      Delete
-                    </button>
-                    {!user.isBlocked && (
                       <button
-                        onClick={() => handleBlock(user)}
-                        className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
-                      dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
+                        onClick={() => handleDeleteClick(user)}
+                        className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md cursor-pointer transition-all duration-200  dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-900 dark:text-gray-300"
                       >
-                        <ImEyeBlocked />
-                        Block
+                        <MdDeleteOutline />
+                        Delete
                       </button>
-                    )}
+                      {!user.isBlocked && (
+                        <button
+                          onClick={() => handleBlock(user)}
+                          className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md cursor-pointer transition-all duration-200  dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-900 dark:text-gray-300"
+                        >
+                          <ImEyeBlocked />
+                          Block
+                        </button>
+                      )}
 
-                    {user.isBlocked && (
-                      <button
-                        onClick={() => handleUnBlock(user)}
-                        className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
+                      {user.isBlocked && (
+                        <button
+                          onClick={() => handleUnBlock(user)}
+                          className="flex items-center gap-[8px] text-[0.9rem] py-1.5 px-2 w-full rounded-md text-gray-700 cursor-pointer   hover:bg-gray-100
                       dark:hover:bg-gray-700 transition-all duration-200 dark:text-white dark:hover:text-gray-100"
-                      >
-                        <ImEyeBlocked />
-                        UnBlock
-                      </button>
-                    )}
-                  </div>
-                </TableCell>
+                        >
+                          <ImEyeBlocked />
+                          UnBlock
+                        </button>
+                      )}
+                    </div>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
@@ -357,6 +378,12 @@ export default function AllUsers() {
           </div>
         )}
       </div>
+      <Modal
+        isModalOpen={isOpen}
+        setIsModalOpen={setIsOpen}
+        setIsConfirm={setIsConfirm}
+        text={userToDelete ? userToDelete.name : ''}
+      />
     </div>
   );
 }

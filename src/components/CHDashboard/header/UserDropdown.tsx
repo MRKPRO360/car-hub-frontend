@@ -95,7 +95,7 @@ export default function UserDropdown({
         minWidth: 20,
       }}
       ref={portalRef}
-      className="block rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300  min-w-full w-max  max-h-96 overflow-auto bg-light-bg dark:bg-gray-900 z-99999"
+      className="block rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 min-w-full w-max max-h-96 overflow-auto bg-light dark:bg-gray-900 z-99999"
     >
       {pathname.startsWith('/dashboard') && (
         <Link

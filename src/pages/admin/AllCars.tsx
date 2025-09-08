@@ -67,8 +67,6 @@ export default function AllCars() {
         } catch (err) {
           console.log(err);
           toast.error('Something went wrong!', { id: toastId, duration: 2000 });
-          setIsOpen(false);
-          setCarToDelete(null);
         } finally {
           setIsOpen(false);
           setIsConfirm(false);
