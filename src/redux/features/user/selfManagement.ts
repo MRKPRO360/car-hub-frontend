@@ -1,5 +1,6 @@
 import { IQueryParam } from '../../../types';
 import { setUser } from '../auth/authSlice';
+import { verifyToken } from '../../../utils/verifyToken';
 import { baseApi } from '../../api/baseApi';
 
 const selfApi = baseApi.injectEndpoints({
@@ -60,13 +61,14 @@ const selfApi = baseApi.injectEndpoints({
         try {
           const { data: updateResult } = await queryFulfilled;
           const userPayload = updateResult?.data;
+          console.log(userPayload);
 
           if (userPayload?.user) {
             // If a new token is returned, update the auth slice first.
             if (userPayload.token) {
-              dispatch(
-                setUser({ user: userPayload.user, token: userPayload.token })
-              );
+              const user = verifyToken(userPayload.token);
+              console.log(user);
+              dispatch(setUser({ user, token: userPayload.token }));
             }
 
             // Update the 'getMe' query cache with the new user data.

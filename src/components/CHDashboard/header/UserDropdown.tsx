@@ -6,6 +6,8 @@ import {
   logout,
   selectCurrentToken,
 } from '../../../redux/features/auth/authSlice';
+import { googleLogout } from '@react-oauth/google';
+import { baseApi } from '../../../redux/api/baseApi';
 import { verifyToken } from '../../../utils/verifyToken';
 import {
   ChevronDown,
@@ -77,6 +79,11 @@ export default function UserDropdown({
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(baseApi.util.resetApiState());
+    // According to the @react-oauth/google docs, this is necessary to prevent
+    // automatic re-login issues when using Google One-Tap sign-in.
+    // See: https://www.npmjs.com/package/@react-oauth/google#logging-user-out
+    googleLogout();
   };
 
   let user;
