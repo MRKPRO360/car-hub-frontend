@@ -1,4 +1,5 @@
 import { IQueryParam } from '../../../types';
+import { RootState } from '../../store';
 import { setUser } from '../auth/authSlice';
 import { verifyToken } from '../../../utils/verifyToken';
 import { baseApi } from '../../api/baseApi';
@@ -43,11 +44,20 @@ const selfApi = baseApi.injectEndpoints({
     }),
 
     getMe: builder.query({
-      query: () => {
-        return {
+      queryFn: async (arg, api, extraOptions, baseQuery) => {
+        const { getState } = api;
+        const token = (getState() as RootState).auth.token;
+
+        if (!token) {
+          return {
+            error: { status: 401, data: 'Unauthorized: No token provided' },
+          };
+        }
+
+        return baseQuery({
           url: '/users/me',
           method: 'GET',
-        };
+        });
       },
       providesTags: ['profile'],
     }),
@@ -61,13 +71,12 @@ const selfApi = baseApi.injectEndpoints({
         try {
           const { data: updateResult } = await queryFulfilled;
           const userPayload = updateResult?.data;
-          console.log(userPayload);
 
           if (userPayload?.user) {
             // If a new token is returned, update the auth slice first.
             if (userPayload.token) {
               const user = verifyToken(userPayload.token);
-              console.log(user);
+
               dispatch(setUser({ user, token: userPayload.token }));
             }
 

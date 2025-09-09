@@ -1,10 +1,9 @@
 import {
-  BaseQueryApi,
   BaseQueryFn,
   createApi,
-  DefinitionType,
   FetchArgs,
   fetchBaseQuery,
+  FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 import { toast } from 'sonner';
@@ -25,10 +24,10 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWihRefreshToken: BaseQueryFn<
-  FetchArgs,
-  BaseQueryApi,
-  DefinitionType
-> = async (args, api, extraOptions): Promise<any> => {
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 404) {

@@ -80,9 +80,6 @@ export default function UserDropdown({
   const handleLogout = () => {
     dispatch(logout());
     dispatch(baseApi.util.resetApiState());
-    // According to the @react-oauth/google docs, this is necessary to prevent
-    // automatic re-login issues when using Google One-Tap sign-in.
-    // See: https://www.npmjs.com/package/@react-oauth/google#logging-user-out
     googleLogout();
   };
 
