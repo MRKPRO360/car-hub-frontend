@@ -1,9 +1,6 @@
 import { useModal } from '../../hooks/useModal';
 
-import Label from '../ui/form/Label';
-import Input from '../ui/form/input/InputField';
 import { IUser } from '../../types';
-import { Button } from '../ui/button/Button';
 import { FieldValues, useForm } from 'react-hook-form';
 import Cta from '../../pages/shared/Cta';
 import { useEffect } from 'react';
@@ -16,6 +13,9 @@ import { verifyToken } from '../../utils/verifyToken';
 import { setUser } from '../../redux/features/auth/authSlice';
 import { useUpdateMeMutation } from '../../redux/features/user/selfManagement';
 import { ContentModal } from '../ui/modal';
+import { RxPencil1 } from 'react-icons/rx';
+import { FaUser } from 'react-icons/fa6';
+import { MdEmail, MdHome, MdLocalPhone, MdLocationOn } from 'react-icons/md';
 
 export default function UserMetaCard({ user }: { user: IUser | null }) {
   const { isOpen, openModal, closeModal } = useModal();
@@ -36,21 +36,16 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
     const toastId = toast.loading('Updating...');
     const formData = new FormData();
 
-    formData.append('data', JSON.stringify(data));
-    const file = data.profileImg[0];
-    if (file) formData.append('file', file);
+    const { profileImg, ...userData } = data;
+    formData.append('data', JSON.stringify(userData));
+    const file = data.profileImg?.[0];
+
+    if (file && file instanceof File) {
+      formData.append('file', file);
+    }
 
     try {
-      const res = await update({ data: formData, id: user?._id }).unwrap();
-
-      console.log(res);
-
-      if (res?.data?.token) {
-        const updatedUser = verifyToken(res.data.token);
-        console.log({ updatedUser });
-
-        dispatch(setUser({ user: res.data.user, token: res.data.token }));
-      }
+      await update({ id: user?._id, data: formData }).unwrap();
 
       toast.success('Profile updated successfully', {
         id: toastId,
@@ -99,21 +94,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
             onClick={openModal}
             className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
           >
-            <svg
-              className="fill-current"
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M15.0911 2.78206C14.2125 1.90338 12.7878 1.90338 11.9092 2.78206L4.57524 10.116C4.26682 10.4244 4.0547 10.8158 3.96468 11.2426L3.31231 14.3352C3.25997 14.5833 3.33653 14.841 3.51583 15.0203C3.69512 15.1996 3.95286 15.2761 4.20096 15.2238L7.29355 14.5714C7.72031 14.4814 8.11172 14.2693 8.42013 13.9609L15.7541 6.62695C16.6327 5.74827 16.6327 4.32365 15.7541 3.44497L15.0911 2.78206ZM12.9698 3.84272C13.2627 3.54982 13.7376 3.54982 14.0305 3.84272L14.6934 4.50563C14.9863 4.79852 14.9863 5.2734 14.6934 5.56629L14.044 6.21573L12.3204 4.49215L12.9698 3.84272ZM11.2597 5.55281L5.6359 11.1766C5.53309 11.2794 5.46238 11.4099 5.43238 11.5522L5.01758 13.5185L6.98394 13.1037C7.1262 13.0737 7.25666 13.003 7.35947 12.9002L12.9833 7.27639L11.2597 5.55281Z"
-                fill=""
-              />
-            </svg>
+            <RxPencil1 className="text-xl text-current" strokeWidth={0.8} />
             Edit
           </button>
         </div>
@@ -121,23 +102,29 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
       <ContentModal
         isOpen={isOpen}
         onClose={closeModal}
-        className="max-w-[700px] m-4"
+        className="max-w-[700px]"
       >
-        <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
-          <div className="px-2 pr-14">
+        <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-lg bg-white p-4 2xsm:p-7 dark:bg-gray-900 lg:p-11">
+          <div className="px-2">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
               Edit Personal Information
             </h4>
-            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+            <p className="mb-6 text-base text-gray-500 dark:text-gray-400 lg:mb-7">
               Update your details to keep your profile up-to-date.
             </p>
           </div>
           <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
-              <div className="mt-7">
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Personal Information
-                </h5>
+              <div>
+                <div className="flex items-center justify-center mb-4">
+                  <span className="h-px w-full bg-gray-200"></span>
+                  <h5 className="text-lg text-center  font-medium text-gray-800 dark:text-white/90 w-full ">
+                    Personal Information
+                  </h5>
+                  {/* <span className="text-gray-200 font-normal">
+                  </span> */}
+                  <span className="h-px w-full bg-gray-200"></span>
+                </div>
 
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   {/* <div>
@@ -173,58 +160,236 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                   </div> */}
 
                   <div className="col-span-2">
-                    <Label>Full Name</Label>
-                    <Input {...register('name')} type="text" />
+                    <div className="relative">
+                      <label
+                        htmlFor="name"
+                        className="block text-gray-600 mb-1"
+                      >
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          id="name"
+                          type="text"
+                          placeholder="John Doe"
+                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                            errors.name
+                              ? 'border-red-500 focus:ring-red-200'
+                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                          }`}
+                          {...register('name', {
+                            required: 'Name is required',
+                          })}
+                        />
+                      </div>
+                      {errors.name && (
+                        <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                          {typeof errors.name.message === 'string'
+                            ? errors.name.message
+                            : 'Invalid name'}
+
+                          <CircleAlert
+                            className="text-red-800 dark:text-red-500"
+                            size={20}
+                          />
+                        </p>
+                      )}
+                    </div>
                   </div>
 
                   {/* IN LARGE VIEW IT"LL TAKE 2 COLUMNS BUT IN THE MOBILE VIEW IT"LL TAKE ONE COLUMN*/}
                   <div className="col-span-2 lg:col-span-1">
-                    <Label>Email Address</Label>
-                    <Input {...register('email')} type="text" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Phone</Label>
-                    <Input {...register('phone')} type="text" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Address</Label>
-                    <Input {...register('address')} type="text" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Country</Label>
-                    <select
-                      id="country"
-                      className={`py-2 px-3 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
-                        errors.country
-                          ? 'border-red-500'
-                          : 'border-gray-300 focus:border-primary'
-                      }
-                                    `}
-                      {...register('country')}
-                    >
-                      {/* Default unselected placeholder */}
-                      <option
-                        className="dark:text-gray-400"
-                        value=""
-                        disabled
-                        hidden
+                    <div className="relative">
+                      <label
+                        htmlFor="email"
+                        className="block text-gray-600 mb-1"
                       >
-                        -- Select a country (optional)--
-                      </option>
+                        Email
+                      </label>
+                      <div className="relative">
+                        <MdEmail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          id="email"
+                          type="email"
+                          placeholder="example@email.com"
+                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                            errors.email
+                              ? 'border-red-500 focus:ring-red-200'
+                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                          }`}
+                          {...register('email', {
+                            required: 'Email is required',
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: 'Invalid email address',
+                            },
+                          })}
+                        />
+                      </div>
+                      {errors.email && (
+                        <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                          {typeof errors.email.message === 'string'
+                            ? errors.email.message
+                            : 'Invalid email'}
 
-                      {countriesOptions.map((country, idx) => (
-                        <option
-                          className="dark:text-gray-800"
-                          key={idx}
-                          value={country}
+                          <CircleAlert
+                            className="text-red-800 dark:text-red-500"
+                            size={20}
+                          />
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-span-2 lg:col-span-1">
+                    <div className="relative">
+                      <label
+                        htmlFor="phone"
+                        className="block text-gray-600 mb-1"
+                      >
+                        Phone Number
+                      </label>
+                      <div className="relative">
+                        <MdLocalPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          id="phone"
+                          type="tel"
+                          placeholder="+1234567890"
+                          {...register('phone')}
+                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                            errors.phone
+                              ? 'border-red-500 focus:ring-red-200'
+                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                          }`}
+                          {...register('phone', {
+                            required: 'Phone is required',
+                            minLength: {
+                              value: 10,
+                              message: 'Phone must be at least 10 numbers',
+                            },
+                          })}
+                        />
+                      </div>
+                      {errors.phone && (
+                        <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                          {typeof errors.phone.message === 'string'
+                            ? errors.phone.message
+                            : 'Invalid phone number'}
+
+                          <CircleAlert
+                            className="text-red-800 dark:text-red-500"
+                            size={20}
+                          />
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-span-2 lg:col-span-1">
+                    <div className="relative">
+                      <label
+                        htmlFor="country"
+                        className="block text-gray-600 mb-1"
+                      >
+                        Country
+                      </label>
+
+                      <div className="relative">
+                        <MdLocationOn className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+
+                        <select
+                          id="country"
+                          className={`pl-10 pr-3 py-2 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
+                            errors.country
+                              ? 'border-red-500'
+                              : 'border-gray-300 focus:border-primary'
+                          } `}
+                          {...register('country', {
+                            required: 'Country is required',
+                            validate: (value) =>
+                              value !== '' || 'Please select your country',
+                          })}
+                          defaultValue=""
                         >
-                          {country}
-                        </option>
-                      ))}
-                    </select>
+                          <option
+                            className="dark:text-gray-400"
+                            value=""
+                            hidden
+                            disabled
+                          >
+                            --- Your country --
+                          </option>
+
+                          {countriesOptions.map((country, idx) => (
+                            <option
+                              className="dark:text-gray-800"
+                              key={idx}
+                              value={country}
+                            >
+                              {country}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      {errors?.country && (
+                        <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                          {typeof errors?.country.message === 'string'
+                            ? errors.country.message
+                            : 'Invalid country'}
+
+                          <CircleAlert
+                            className="text-red-800 dark:text-red-500"
+                            size={20}
+                          />
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-span-2 lg:col-span-1">
+                    <div className="relative">
+                      <label
+                        htmlFor="address"
+                        className="block text-gray-600 mb-1"
+                      >
+                        Address
+                      </label>
+                      <div className="relative">
+                        <MdHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          id="address"
+                          type="text"
+                          placeholder="Street Address"
+                          {...register('address')}
+                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                            errors.address
+                              ? 'border-red-500 focus:ring-red-200'
+                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                          }`}
+                          {...register('address', {
+                            required: 'Address is required',
+                            minLength: {
+                              value: 3,
+                              message: 'Please add your address',
+                            },
+                          })}
+                        />
+                      </div>
+
+                      {errors.address && (
+                        <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                          {typeof errors.address.message === 'string'
+                            ? errors.address.message
+                            : 'Invalid address'}
+
+                          <CircleAlert
+                            className="text-red-800 dark:text-red-500"
+                            size={20}
+                          />
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <div className="col-span-2">
                     <ImageUpload
@@ -250,9 +415,9 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     <input
                       type="hidden"
                       {...register('profileImg', {
-                        required: 'A car should have a cover image!',
+                        required: 'A person should have a profile image!',
                         validate: (files: File[] | string) =>
-                          files?.length > 0 || 'Please select a cover image',
+                          files?.length > 0 || 'Please select a profile image',
                       })}
                     />
                     {errors.profileImg && (
@@ -270,12 +435,17 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
               </div>
             </div>
             <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-              <Button size="sm" variant="outline" onClick={closeModal}>
-                Close
-              </Button>
+              <button type="button" onClick={() => closeModal()}>
+                <Cta
+                  size="sm"
+                  text="Cancel"
+                  className="bg-red-600 hover:bg-red-700"
+                />
+              </button>
               <button type="submit">
                 <Cta
                   isSubmitting={isSubmitting}
+                  submittingText="Updating"
                   text="Save Changes"
                   size="sm"
                 />

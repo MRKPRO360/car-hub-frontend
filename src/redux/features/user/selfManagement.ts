@@ -1,4 +1,5 @@
 import { IQueryParam } from '../../../types';
+import { setUser } from '../auth/authSlice';
 import { baseApi } from '../../api/baseApi';
 
 const selfApi = baseApi.injectEndpoints({
@@ -55,7 +56,37 @@ const selfApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: ['profile'],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data: updateResult } = await queryFulfilled;
+          const userPayload = updateResult?.data;
+
+          if (userPayload?.user) {
+            // If a new token is returned, update the auth slice first.
+            if (userPayload.token) {
+              dispatch(
+                setUser({ user: userPayload.user, token: userPayload.token })
+              );
+            }
+
+            // Update the 'getMe' query cache with the new user data.
+            // This avoids a refetch and the race condition.
+            dispatch(
+              selfApi.util.updateQueryData('getMe', undefined, (draft) => {
+                // The 'draft' is the cached response from 'getMe'.
+                // The error indicates the user object is at `draft.data`, not `draft.data.user`.
+                if (draft.data) {
+                  Object.assign(draft.data, userPayload.user);
+                }
+              })
+            );
+          }
+        } catch (err) {
+          console.log(err);
+
+          // The query was rejected, no cache update needed.
+        }
+      },
     }),
   }),
 });
