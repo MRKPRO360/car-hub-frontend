@@ -793,7 +793,12 @@ const AddACar = () => {
                 })}
               >
                 {/* Default unselected placeholder */}
-                <option className="dark:text-white/80" value="" disabled hidden>
+                <option
+                  className="dark:text-white/80 dark:bg-gray-300"
+                  value=""
+                  disabled
+                  hidden
+                >
                   -- Select a country --
                 </option>
 

@@ -8,9 +8,7 @@ import ImageUpload from '../ui/imageUpload/ImageUpload';
 import { CircleAlert } from 'lucide-react';
 import { countriesOptions } from '../../constant/city';
 import { toast } from 'sonner';
-import { useAppDispatch } from '../../redux/hooks';
-import { verifyToken } from '../../utils/verifyToken';
-import { setUser } from '../../redux/features/auth/authSlice';
+
 import { useUpdateMeMutation } from '../../redux/features/user/selfManagement';
 import { ContentModal } from '../ui/modal';
 import { RxPencil1 } from 'react-icons/rx';
@@ -20,8 +18,6 @@ import { MdEmail, MdHome, MdLocalPhone, MdLocationOn } from 'react-icons/md';
 export default function UserMetaCard({ user }: { user: IUser | null }) {
   const { isOpen, openModal, closeModal } = useModal();
   const [update] = useUpdateMeMutation();
-
-  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -117,13 +113,12 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
               <div>
                 <div className="flex items-center justify-center mb-4">
-                  <span className="h-px w-full bg-gray-200"></span>
-                  <h5 className="text-lg text-center  font-medium text-gray-800 dark:text-white/90 w-full ">
+                  <span className="h-px w-full bg-gray-200 dark:bg-gray-600"></span>
+                  <h5 className="text-lg text-center  font-medium text-gray-800 dark:text-white/80 w-full ">
                     Personal Information
                   </h5>
-                  {/* <span className="text-gray-200 font-normal">
-                  </span> */}
-                  <span className="h-px w-full bg-gray-200"></span>
+
+                  <span className="h-px w-full bg-gray-200 dark:bg-gray-600"></span>
                 </div>
 
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
@@ -138,7 +133,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                       type="text"
                       id="name"
                       placeholder="Mileage exmp. 14.5"
-                      className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
+                      className={`pl-10 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                         errors.name
                           ? 'border-red-800'
                           : 'border-gray-300 focus:border-primary'
@@ -163,7 +158,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     <div className="relative">
                       <label
                         htmlFor="name"
-                        className="block text-gray-600 mb-1"
+                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
                       >
                         Full Name
                       </label>
@@ -173,10 +168,10 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                           id="name"
                           type="text"
                           placeholder="John Doe"
-                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                          className={`pl-10 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                             errors.name
-                              ? 'border-red-500 focus:ring-red-200'
-                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                              ? 'border-red-800'
+                              : 'border-gray-300 focus:border-primary'
                           }`}
                           {...register('name', {
                             required: 'Name is required',
@@ -203,7 +198,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     <div className="relative">
                       <label
                         htmlFor="email"
-                        className="block text-gray-600 mb-1"
+                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
                       >
                         Email
                       </label>
@@ -213,10 +208,10 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                           id="email"
                           type="email"
                           placeholder="example@email.com"
-                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                          className={`pl-10 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                             errors.email
-                              ? 'border-red-500 focus:ring-red-200'
-                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                              ? 'border-red-800'
+                              : 'border-gray-300 focus:border-primary'
                           }`}
                           {...register('email', {
                             required: 'Email is required',
@@ -246,7 +241,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     <div className="relative">
                       <label
                         htmlFor="phone"
-                        className="block text-gray-600 mb-1"
+                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
                       >
                         Phone Number
                       </label>
@@ -257,10 +252,10 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                           type="tel"
                           placeholder="+1234567890"
                           {...register('phone')}
-                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                          className={`pl-10 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                             errors.phone
-                              ? 'border-red-500 focus:ring-red-200'
-                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
+                              ? 'border-red-800'
+                              : 'border-gray-300 focus:border-primary'
                           }`}
                           {...register('phone', {
                             required: 'Phone is required',
@@ -290,7 +285,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     <div className="relative">
                       <label
                         htmlFor="country"
-                        className="block text-gray-600 mb-1"
+                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
                       >
                         Country
                       </label>
@@ -300,11 +295,11 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
 
                         <select
                           id="country"
-                          className={`pl-10 pr-3 py-2 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
+                          className={`pl-10 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                             errors.country
-                              ? 'border-red-500'
+                              ? 'border-red-800'
                               : 'border-gray-300 focus:border-primary'
-                          } `}
+                          }`}
                           {...register('country', {
                             required: 'Country is required',
                             validate: (value) =>
@@ -313,7 +308,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                           defaultValue=""
                         >
                           <option
-                            className="dark:text-gray-400"
+                            className="dark:text-white/80"
                             value=""
                             hidden
                             disabled
@@ -323,7 +318,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
 
                           {countriesOptions.map((country, idx) => (
                             <option
-                              className="dark:text-gray-800"
+                              className="dark:text-gray-800 dark:bg-gray-300"
                               key={idx}
                               value={country}
                             >
@@ -351,7 +346,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     <div className="relative">
                       <label
                         htmlFor="address"
-                        className="block text-gray-600 mb-1"
+                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
                       >
                         Address
                       </label>
@@ -362,11 +357,12 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                           type="text"
                           placeholder="Street Address"
                           {...register('address')}
-                          className={`w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                          className={`pl-10 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                             errors.address
-                              ? 'border-red-500 focus:ring-red-200'
-                              : 'border-gray-300 focus:border-primary focus:ring-blue-200'
-                          }`}
+                              ? 'border-red-500'
+                              : 'border-gray-300 focus:border-primary'
+                          }
+              `}
                           {...register('address', {
                             required: 'Address is required',
                             minLength: {

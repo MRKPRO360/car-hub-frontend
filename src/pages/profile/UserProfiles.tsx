@@ -4,28 +4,27 @@ import UserMetaCard from '../../components/UserProfile/UserMetaCard';
 import { useGetMeQuery } from '../../redux/features/user/selfManagement';
 import PageBreadcrumb from '../shared/PageBreadCrumb';
 import PageMeta from '../shared/PageMeta';
-import { useEffect, useState } from 'react';
-import { IUser } from '../../types';
 import { useAppSelector } from '../../redux/hooks';
+import { LoaderCircle } from 'lucide-react';
 
 export default function UserProfiles() {
   const token = useAppSelector((state) => state.auth.token);
 
-  const { data: myInfo, isLoading } = useGetMeQuery(undefined, {
+  const { data, isLoading } = useGetMeQuery(undefined, {
     skip: !token,
   });
-  // const user = myInfo?.data;
-
-  const [user, setUser] = useState<IUser | null>(myInfo?.data);
-
-  useEffect(() => {
-    if (myInfo?.data) setUser(myInfo.data);
-  }, [myInfo]);
+  const user = data?.data ?? null;
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-lg font-semibold text-gray-500">Loading...</p>
+      <div className="flex justify-center items-center min-h-[65vh]">
+        <p className="text-lg font-semibold text-gray-500">
+          <LoaderCircle
+            strokeWidth={2.5}
+            size={30}
+            className="text-gray-500 block dark:text-primary/80 animate-spin"
+          />
+        </p>
       </div>
     );
   }

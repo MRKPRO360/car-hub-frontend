@@ -120,7 +120,7 @@ const UpdateCar = () => {
           <div>
             <label
               htmlFor="Model"
-              className="inline-block mb-1 text-[15px] text-text font-[400]"
+              className="inline-block mb-1 text-[15px]  font-[400]"
             >
               Model <span className="text-red-500">*</span>
             </label>
@@ -139,7 +139,7 @@ const UpdateCar = () => {
           <div>
             <label
               htmlFor="Price"
-              className="inline-block mb-1 text-[15px] text-text font-[400]"
+              className="inline-block mb-1 text-[15px]  font-[400]"
             >
               Price <span className="text-red-500">*</span>
             </label>
@@ -159,7 +159,7 @@ const UpdateCar = () => {
         <div>
           <label
             htmlFor="Quantity"
-            className="inline-block mb-1 text-[15px] text-text font-[400]"
+            className="inline-block mb-1 text-[15px]  font-[400]"
           >
             Quantity <span className="text-red-500">*</span>
           </label>
@@ -178,7 +178,7 @@ const UpdateCar = () => {
         <div className="w-full">
           <label
             htmlFor="description"
-            className="inline-block mb-1 text-[15px] text-text font-[400]"
+            className="inline-block mb-1 text-[15px]  font-[400]"
           >
             Car Description <span className="text-red-500">*</span>
           </label>

@@ -56,8 +56,6 @@ const UpdateACar = () => {
     }
   }, [car?.data, reset]);
 
-  console.log(car?.data);
-
   const {
     fields: featuresFilelds,
     append: addFeatures,

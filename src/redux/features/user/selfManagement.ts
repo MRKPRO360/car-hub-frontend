@@ -1,4 +1,4 @@
-import { IQueryParam } from '../../../types';
+import { IQueryParam, IUser } from '../../../types';
 import { RootState } from '../../store';
 import { setUser } from '../auth/authSlice';
 import { verifyToken } from '../../../utils/verifyToken';
@@ -43,7 +43,7 @@ const selfApi = baseApi.injectEndpoints({
       invalidatesTags: ['userOrders'],
     }),
 
-    getMe: builder.query({
+    getMe: builder.query<{ data: IUser }, void>({
       queryFn: async (arg, api, extraOptions, baseQuery) => {
         const { getState } = api;
         const token = (getState() as RootState).auth.token;
