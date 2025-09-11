@@ -11,8 +11,8 @@ import { IError } from '../../types';
 import { logout, setUser } from '../features/auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:5000/api/v1',
-  // baseUrl: 'https://car-hub-puce-three.vercel.app/api/v1',
+  // baseUrl: import.meta.env.VITE_API_BASE_URL,
+  baseUrl: import.meta.env.VITE_API_LOCAL_URL,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -40,17 +40,13 @@ const baseQueryWihRefreshToken: BaseQueryFn<
     // SENDING REFESH TOKEN
     console.log('SENDING REFRESH TOKEN');
 
-    toast.error((result.error as IError).data.message);
-
-    const res = await fetch(
-      'https://car-hub-puce-three.vercel.app/api/v1/auth/refresh-token',
-      {
-        method: 'POST',
-        credentials: 'include',
-      }
+    const refreshResult = await baseQuery(
+      { url: '/auth/refresh-token', method: 'POST' },
+      api,
+      extraOptions
     );
 
-    const data = await res.json();
+    const data = refreshResult.data as any;
 
     if (data?.data?.token) {
       const user = (api.getState() as RootState).auth.user;

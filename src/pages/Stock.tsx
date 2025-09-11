@@ -74,8 +74,6 @@ function Stock() {
       params.push({ name: 'price[gte]', value: filters.price[0].toString() });
       params.push({ name: 'price[lte]', value: filters.price[1].toString() });
     }
-    // Debug logging
-    console.log('Query params being sent:', params);
 
     return params;
   }, [currentPage, debouncedSearchTerm, filters]);
@@ -103,19 +101,19 @@ function Stock() {
 
   if (isError) {
     return (
-      <div className="px-2 min-h-screen pt-14 pb-4">
-        <div className="text-center py-10">
+      <div className="pt-14 min-h-screen px-2 pb-4">
+        <div className="py-10 text-center">
           <h3 className="text-lg font-medium text-red-600">
             Error loading cars
           </h3>
-          <p className="text-gray-500 mt-2">Please try again later</p>
+          <p className="mt-2 text-gray-500">Please try again later</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="px-2 min-h-screen pt-14 pb-4">
+    <div className="pt-14 min-h-screen px-2 pb-4">
       <div className="relative w-full">
         <input
           type="text"
@@ -132,7 +130,7 @@ function Stock() {
       shadow-xs hover:shadow-sm
     "
         />
-        <Search className="absolute right-3 top-3 h-5 w-5 text-primary" />
+        <Search className="right-3 top-3 text-primary absolute w-5 h-5" />
       </div>
 
       <div className="mt-4 text-sm text-gray-600">
@@ -147,7 +145,7 @@ function Stock() {
       </div>
 
       {/* Mobile filter toggle */}
-      <div className="lg:hidden relative my-5 ">
+      <div className="lg:hidden  relative my-5">
         <button
           onClick={() => setShowFilter((prev) => !prev)}
           className="
@@ -162,9 +160,9 @@ function Stock() {
           {showFilter ? 'Hide Filters' : 'Show Filters'}
           <span className="ml-2">
             {showFilter ? (
-              <X className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+              <X className="group-hover:scale-110 w-5 h-5 transition-transform duration-300" />
             ) : (
-              <Filter className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+              <Filter className="group-hover:scale-110 w-5 h-5 transition-transform duration-300" />
             )}
           </span>
         </button>
@@ -172,7 +170,7 @@ function Stock() {
 
       {/* Mobile Sidebar */}
       {showFilter && (
-        <div className="w-full mt-5 lg:hidden">
+        <div className="lg:hidden w-full mt-5">
           <FilterSidebar
             cars={cars || []}
             onFilterChange={handleFilterChange}
@@ -183,7 +181,7 @@ function Stock() {
 
       <div className="flex gap-8 mt-16 mb-10">
         {/* Desktop Sidebar */}
-        <div className="w-full max-w-xs hidden lg:block">
+        <div className="lg:block hidden w-full max-w-xs">
           <FilterSidebar
             cars={cars || []}
             onFilterChange={handleFilterChange}
@@ -194,26 +192,26 @@ function Stock() {
         {/* Car Listings */}
         <div className="flex-1">
           {isLoading ? (
-            <div className="grid grid-cols-1 2xsm:grid-cols-2 sm:grid-cols-3  2xl:grid-cols-4 gap-8">
+            <div className="2xsm:grid-cols-2 sm:grid-cols-3 2xl:grid-cols-4 grid grid-cols-1 gap-8">
               {Array.from({ length: itemsPerPage }).map((_, index: number) => (
                 <CarouselSkeletonCard key={index} />
               ))}
             </div>
           ) : cars.length === 0 ? (
-            <div className="text-center py-10">
+            <div className="py-10 text-center">
               <h3 className="text-lg font-medium">
                 {debouncedSearchTerm || Object.keys(filters).length > 0
                   ? 'No cars match your search criteria'
                   : 'No cars available'}
               </h3>
-              <p className="text-gray-500 mt-2">
+              <p className="mt-2 text-gray-500">
                 {debouncedSearchTerm || Object.keys(filters).length > 0
                   ? 'Try adjusting your search or filter criteria'
                   : 'Please check back later'}
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 2xsm:grid-cols-2 sm:grid-cols-3  2xl:grid-cols-4 gap-8">
+            <div className="2xsm:grid-cols-2 sm:grid-cols-3 2xl:grid-cols-4 grid grid-cols-1 gap-8">
               {cars?.map((car) => (
                 <CarCard car={car} key={car._id} />
               ))}
@@ -221,16 +219,16 @@ function Stock() {
           )}
 
           {/* {filteredCars && filteredCars.length === 0 ? (
-            <div className="text-center py-10">
+            <div className="py-10 text-center">
               <h3 className="text-lg font-medium">
                 No cars match your filters
               </h3>
-              <p className="text-gray-500 mt-2">
+              <p className="mt-2 text-gray-500">
                 Try adjusting your filter criteria
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 2xsm:grid-cols-2 sm:grid-cols-3  2xl:grid-cols-4 gap-8">
+            <div className="2xsm:grid-cols-2 sm:grid-cols-3 2xl:grid-cols-4 grid grid-cols-1 gap-8">
               {carsToDisplay?.map((car) => (
                 <CarCard car={car} key={car._id} />
               ))}
@@ -238,7 +236,7 @@ function Stock() {
           )} */}
 
           {totalPages > 1 && (
-            <div className="flex justify-center mt-8 space-x-2 text-xs xl:text-sm">
+            <div className="xl:text-sm flex justify-center mt-8 space-x-2 text-xs">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
@@ -251,7 +249,7 @@ function Stock() {
     ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}
   `}
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="w-5 h-5" />
                 Prev
               </button>
 
@@ -284,7 +282,7 @@ function Stock() {
   `}
               >
                 Next
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           )}

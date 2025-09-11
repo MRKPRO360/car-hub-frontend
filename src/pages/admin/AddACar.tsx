@@ -49,7 +49,7 @@ const AddACar = () => {
     fields: featuresFilelds,
     append: addFeatures,
     remove: removeFeatures,
-  } = useFieldArray<any>({
+  } = useFieldArray<ICarForm>({
     control,
     name: 'features',
   });
@@ -107,12 +107,12 @@ const AddACar = () => {
   };
 
   return (
-    <div className="w-full mx-auto p-6 ">
+    <div className=" w-full p-6 mx-auto">
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="md:grid-cols-2 grid gap-4">
           <div>
             <label
-              className="block text-gray-600 font-semibold text-base dark:text-white/80"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
               htmlFor="brand"
             >
               Brand
@@ -128,12 +128,17 @@ const AddACar = () => {
               `}
               {...register('brand', { required: 'Brand is required' })}
             >
-              <option value="" hidden disabled>
+              <option
+                className="dark:text-gray-800 dark:bg-gray-300"
+                value=""
+                hidden
+                disabled
+              >
                 -- Selct a brand --
               </option>
               {brandOptions.map((option) => (
                 <option
-                  className="dark:text-gray-800"
+                  className="dark:text-gray-800 dark:bg-gray-300"
                   key={option.value}
                   value={option.value}
                 >
@@ -146,7 +151,7 @@ const AddACar = () => {
                 {errors.brand.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -155,7 +160,7 @@ const AddACar = () => {
 
           <div>
             <label
-              className="block font-semibold text-gray-600 dark:text-white/80 font-base"
+              className="dark:text-white/80 font-base block font-semibold text-gray-600"
               htmlFor="category"
             >
               Category
@@ -178,7 +183,7 @@ const AddACar = () => {
               </option>
               {categoryOptions.map((option) => (
                 <option
-                  className="dark:text-gray-800"
+                  className="dark:text-gray-800 dark:bg-gray-300"
                   key={option.value}
                   value={option.value}
                 >
@@ -191,18 +196,18 @@ const AddACar = () => {
                 {errors.category.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
             )}
           </div>
         </div>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="md:grid-cols-2 grid gap-4">
           <div>
             <label
               htmlFor="Model"
-              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Model <span className="text-red-700">*</span>
             </label>
@@ -224,7 +229,7 @@ const AddACar = () => {
                 {errors.model.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -233,7 +238,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="Price"
-              className="block dark:text-white/80 text-gray-600 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Price <span className="text-red-700">*</span>
             </label>
@@ -255,7 +260,7 @@ const AddACar = () => {
                 {errors.price.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -265,7 +270,7 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="Quantity"
-            className="block font-semibold text-base text-gray-600 dark:text-white/80"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Quantity <span className="text-red-700">*</span>
           </label>
@@ -285,7 +290,7 @@ const AddACar = () => {
               {errors.quantity.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -294,7 +299,7 @@ const AddACar = () => {
         <div className="w-full">
           <label
             htmlFor="description"
-            className="block font-semibold text-base text-gray-600 dark:text-white/80"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Car Description <span className="text-red-700">*</span>
           </label>
@@ -316,17 +321,17 @@ const AddACar = () => {
               {errors.description.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
           )}
         </div>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="md:grid-cols-2 grid gap-4">
           <div>
             <label
               htmlFor="mileage"
-              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Mileage <span className="text-red-700">*</span>
             </label>
@@ -348,7 +353,7 @@ const AddACar = () => {
                 {errors.mileage.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -357,7 +362,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="enginge"
-              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Engine <span className="text-red-700">*</span>
             </label>
@@ -379,7 +384,7 @@ const AddACar = () => {
                 {errors.engine.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -390,11 +395,11 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="fuelType"
-            className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Fuel Type<span className="text-red-700">*</span>
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3">
+          <div className="sm:grid-cols-3 xl:grid-cols-6 grid grid-cols-1 gap-3">
             {fuelTypeOptions.map((type) => (
               <label
                 key={type}
@@ -410,9 +415,7 @@ const AddACar = () => {
            checked:border-[4px] checked:border-primary
            hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-brand focus:outline-hidden  focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-white/80 ">
-                  {type}
-                </span>
+                <span className="dark:text-white/80 text-gray-800">{type}</span>
               </label>
             ))}
           </div>
@@ -421,7 +424,7 @@ const AddACar = () => {
               {errors.fuelType.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -431,11 +434,11 @@ const AddACar = () => {
         <div>
           <label
             htmlFor="transmission"
-            className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Transmission<span className="text-red-700">*</span>
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="sm:grid-cols-2 grid grid-cols-1 gap-3">
             {transmissionOptions.map((transmission) => (
               <label
                 key={transmission}
@@ -451,7 +454,7 @@ const AddACar = () => {
            checked:border-[4px] checked:border-primary
            hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-brand focus:outline-hidden  focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-white/80">
+                <span className="dark:text-white/80 text-gray-800">
                   {transmission}
                 </span>
               </label>
@@ -462,18 +465,18 @@ const AddACar = () => {
               {errors.transmission.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
           )}
         </div>
         {/* COLOR & HORSEPOWER*/}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="sm:grid-cols-2 grid grid-cols-1 gap-4">
           <div>
             <label
               htmlFor="color"
-              className="font-semibold text-base block text-gray-600 dark:text-white/80"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Color
               <span className="text-red-700">*</span>
@@ -497,7 +500,7 @@ const AddACar = () => {
                 {errors.color.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -507,7 +510,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="horsepower"
-              className="font-semibold text-base block text-gray-600 dark:text-white/80"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Horsepower
               <span className="text-red-700">*</span>
@@ -531,7 +534,7 @@ const AddACar = () => {
                 {errors.horsepower.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -541,11 +544,11 @@ const AddACar = () => {
 
         {/* TORQUE AND SEATING CAPACITY */}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="sm:grid-cols-2 grid grid-cols-1 gap-4">
           <div>
             <label
               htmlFor="torque"
-              className="font-semibold text-base block text-gray-600 dark:text-white/80"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Torque
               <span className="text-red-700">*</span>
@@ -569,7 +572,7 @@ const AddACar = () => {
                 {errors.torque.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -579,7 +582,7 @@ const AddACar = () => {
           <div>
             <label
               htmlFor="seatingCapacity"
-              className="font-semibold text-base block text-gray-600"
+              className="block text-base font-semibold text-gray-600"
             >
               Seating Capacity
               <span className="text-red-700">*</span>
@@ -603,7 +606,7 @@ const AddACar = () => {
                 {errors.seatingCapacity.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -615,72 +618,73 @@ const AddACar = () => {
         <div className="space-y-3">
           <label
             htmlFor="features"
-            className="font-semibold text-base block text-gray-600"
+            className="block text-base font-semibold text-gray-600"
           >
             Features
             <span className="text-red-700">*</span>
           </label>
-          {featuresFilelds.map((field, index) => (
-            <div key={field.id}>
-              <div className="flex items-center gap-3">
-                <input
-                  type="text"
-                  placeholder={`Feature ${index + 1}`}
-                  {...register(`features.${index}.value`, {
-                    required:
-                      featuresFilelds.length <= 1 &&
-                      'At least one feature is required',
-                  })}
-                  className={`flex-1 py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
-                    errors.features?.[index]?.value?.message
-                      ? 'border-red-500'
-                      : 'border-gray-300 focus:border-primary'
-                  }`}
-                />
-
-                {featuresFilelds.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeFeatures(index)}
-                    className="text-red-700 hover:text-red-700"
-                    title="Remove"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={() => addFeatures({ value: '' })}
-                  className="flex items-center gap-2 text-primary hover:text-blue-700 font-medium"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Feature
-                </button>
-              </div>
-
-              {errors.features?.[index]?.value?.message && (
-                <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
-                  {errors.features?.[index]?.value?.message}
-
-                  <CircleAlert
-                    className="text-red-800 dark:text-red-500"
-                    size={20}
+          {featuresFilelds.map((field, index) => {
+            const fieldError = errors.features?.[index]?.value;
+            return (
+              <div key={field.id} className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    placeholder={`Feature ${index + 1}`}
+                    {...register(`features.${index}.value`, {
+                      required: 'Feature cannot be empty',
+                    })}
+                    className={`flex-1 py-2.5 px-4 dark:placeholder:text-white/30 appearance-none w-full outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800 focus:outline-hidden rounded-lg border placeholder:text-gray-400 dark:bg-gray-900 bg-transparent text-gray-800 border-gray-300 focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90 dark:focus:border-brand-800 ${
+                      fieldError
+                        ? 'border-red-500'
+                        : 'border-gray-300 focus:border-primary'
+                    }`}
                   />
-                </p>
-              )}
-            </div>
-          ))}
+
+                  {featuresFilelds.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeFeatures(index)}
+                      className="hover:text-red-700 text-red-700"
+                      title="Remove"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
+
+                {fieldError && (
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                    {fieldError.message}
+
+                    <CircleAlert
+                      className="dark:text-red-500 text-red-800"
+                      size={20}
+                    />
+                  </p>
+                )}
+              </div>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => addFeatures({ value: '' })}
+            className="text-primary hover:text-blue-700 flex items-center gap-2 mt-2 font-medium"
+          >
+            <Plus className="w-4 h-4" />
+            Add Feature
+          </button>
         </div>
 
         {/* CONDITION */}
         <div>
           <label
             htmlFor="condition"
-            className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Condition<span className="text-red-700">*</span>
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3">
+          <div className="sm:grid-cols-3 xl:grid-cols-6 grid grid-cols-1 gap-3">
             {conditionOptions.map((condition) => (
               <label
                 key={condition}
@@ -696,7 +700,7 @@ const AddACar = () => {
            checked:border-[4px] checked:border-primary
            hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-brand focus:outline-hidden  focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-white/80">
+                <span className="dark:text-white/80 text-gray-800">
                   {condition}
                 </span>
               </label>
@@ -707,7 +711,7 @@ const AddACar = () => {
               {errors.condition.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -720,7 +724,7 @@ const AddACar = () => {
           <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="city"
-              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               City
             </label>
@@ -744,7 +748,7 @@ const AddACar = () => {
                   : 'Invalid city'}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -753,7 +757,7 @@ const AddACar = () => {
           <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="street"
-              className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               State
             </label>
@@ -772,7 +776,7 @@ const AddACar = () => {
           <div className="flex-1 min-h-[90px]">
             <div>
               <label
-                className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+                className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
                 htmlFor="country"
               >
                 Country
@@ -820,7 +824,7 @@ const AddACar = () => {
                   : 'Invalid country'}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -860,7 +864,7 @@ const AddACar = () => {
               {errors.coverImage.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -897,7 +901,7 @@ const AddACar = () => {
               {errors.images.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>

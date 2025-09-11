@@ -8,7 +8,7 @@ import { IResponse, UpdateICarForm } from '../../types';
 import { useEffect } from 'react';
 import ImageUpload from '../../components/ui/imageUpload/ImageUpload';
 import Cta from '../shared/Cta';
-import { CircleAlert, Plus, Trash2 } from 'lucide-react';
+import { CircleAlert, LoaderCircle, Plus, Trash2 } from 'lucide-react';
 import { countriesOptions } from '../../constant/city';
 import { useNavigate, useParams } from 'react-router';
 import {
@@ -23,7 +23,7 @@ const UpdateACar = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const { data: car } = useGetACarQuery(id!, {
+  const { data: car, isLoading } = useGetACarQuery(id!, {
     refetchOnMountOrArgChange: true,
   });
   const [updateCar] = useUpdateCarMutation();
@@ -38,20 +38,22 @@ const UpdateACar = () => {
   } = useForm<UpdateICarForm>({
     // ENSURES OLD FEATURES ARE REPLACED PROPERLY
     shouldUnregister: true,
+    // Provide static defaults. The form will be populated with async data
+    // from the `useEffect` hook below.
     defaultValues: {
-      features: car?.data.features.map((feature) => ({ value: feature })) || [
-        { value: '' },
-      ],
+      features: [{ value: '' }],
     },
   });
 
   useEffect(() => {
     if (car?.data) {
+      const carFeatures = car.data.features || [];
       reset({
         ...car.data,
-        features: car.data.features.map((feature: string) => ({
-          value: feature,
-        })),
+        features:
+          carFeatures.length > 0
+            ? carFeatures.map((feature: string) => ({ value: feature }))
+            : [{ value: '' }],
       });
     }
   }, [car?.data, reset]);
@@ -60,7 +62,7 @@ const UpdateACar = () => {
     fields: featuresFilelds,
     append: addFeatures,
     remove: removeFeatures,
-  } = useFieldArray<any>({
+  } = useFieldArray<UpdateICarForm>({
     control,
     name: 'features',
   });
@@ -112,13 +114,26 @@ const UpdateACar = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[65vh]">
+        <p className="text-lg font-semibold text-gray-500">
+          <LoaderCircle
+            strokeWidth={2.5}
+            size={30}
+            className="dark:text-primary/80 animate-spin block text-gray-500"
+          />
+        </p>
+      </div>
+    );
+  }
   return (
-    <div className="w-full mx-auto p-6 ">
+    <div className=" w-full p-6 mx-auto">
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="md:grid-cols-2 grid gap-4">
           <div>
             <label
-              className="block text-gray-600 font-semibold text-base dark:text-gray-400"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
               htmlFor="brand"
             >
               Brand
@@ -126,7 +141,7 @@ const UpdateACar = () => {
             <select
               defaultValue=""
               id="brand"
-              className={`text-gray-600 dark:text-gray-400 py-2 px-3 rounded-md border w-full outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.brand
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -139,7 +154,7 @@ const UpdateACar = () => {
               </option>
               {brandOptions.map((option) => (
                 <option
-                  className="dark:text-gray-800"
+                  className="dark:text-gray-800 dark:bg-gray-300"
                   key={option.value}
                   value={option.value}
                 >
@@ -152,7 +167,7 @@ const UpdateACar = () => {
                 {errors.brand.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -161,7 +176,7 @@ const UpdateACar = () => {
 
           <div>
             <label
-              className="block font-semibold text-gray-600 dark:text-gray-400 font-base"
+              className="dark:text-gray-400 font-base block mb-1 font-semibold text-gray-600"
               htmlFor="category"
             >
               Category
@@ -169,7 +184,7 @@ const UpdateACar = () => {
             <select
               defaultValue=""
               id="category"
-              className={`py-2 px-3 text-gray-600 dark:text-gray-400 rounded-md border w-full outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800  ${
                 errors.category
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -179,12 +194,17 @@ const UpdateACar = () => {
                 required: 'Category is required',
               })}
             >
-              <option value="" disabled hidden>
+              <option
+                className="dark:text-gray-800 dark:bg-gray-300"
+                value=""
+                disabled
+                hidden
+              >
                 -- Select a category --
               </option>
               {categoryOptions.map((option) => (
                 <option
-                  className="dark:text-gray-800"
+                  className="dark:text-gray-800 dark:bg-gray-300"
                   key={option.value}
                   value={option.value}
                 >
@@ -197,18 +217,18 @@ const UpdateACar = () => {
                 {errors.category.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
             )}
           </div>
         </div>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="md:grid-cols-2 grid gap-4">
           <div>
             <label
               htmlFor="Model"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Model <span className="text-red-700">*</span>
             </label>
@@ -216,7 +236,7 @@ const UpdateACar = () => {
               type="text"
               id="model"
               placeholder="Car Model"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.model
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -230,7 +250,7 @@ const UpdateACar = () => {
                 {errors.model.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -239,7 +259,7 @@ const UpdateACar = () => {
           <div>
             <label
               htmlFor="Price"
-              className="block dark:text-gray-400 text-gray-600 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Price <span className="text-red-700">*</span>
             </label>
@@ -247,7 +267,7 @@ const UpdateACar = () => {
               type="number"
               id="price"
               placeholder="Car price exmp. 3000"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.price
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -261,7 +281,7 @@ const UpdateACar = () => {
                 {errors.price.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -271,7 +291,7 @@ const UpdateACar = () => {
         <div>
           <label
             htmlFor="Quantity"
-            className="block font-semibold text-base text-gray-600 dark:text-gray-400"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Quantity <span className="text-red-700">*</span>
           </label>
@@ -279,7 +299,7 @@ const UpdateACar = () => {
             type="number"
             id="quantity"
             placeholder="Car quantity exmp. 3"
-            className={`py-2 px-3 dark:text-gray-400 rounded-md w-full outline-none focus:outline-none border ${
+            className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
               errors.quantity
                 ? 'border-red-800'
                 : 'focus:border-primary border-gray-300'
@@ -291,7 +311,7 @@ const UpdateACar = () => {
               {errors.quantity.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -300,14 +320,14 @@ const UpdateACar = () => {
         <div className="w-full">
           <label
             htmlFor="description"
-            className="block font-semibold text-base text-gray-600 dark:text-gray-400"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Car Description <span className="text-red-700">*</span>
           </label>
           <textarea
             id="description"
             rows={4}
-            className={`py-2 px-3 dark:text-gray-400 rounded-md w-full outline-none focus:outline-none border ${
+            className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
               errors.description
                 ? 'border-red-800'
                 : 'focus:border-primary border-gray-300'
@@ -322,17 +342,17 @@ const UpdateACar = () => {
               {errors.description.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
           )}
         </div>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="md:grid-cols-2 grid gap-4">
           <div>
             <label
               htmlFor="mileage"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Mileage <span className="text-red-700">*</span>
             </label>
@@ -340,7 +360,7 @@ const UpdateACar = () => {
               type="number"
               id="mileage"
               placeholder="Mileage exmp. 14.5"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.mileage
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -354,7 +374,7 @@ const UpdateACar = () => {
                 {errors.mileage.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -363,7 +383,7 @@ const UpdateACar = () => {
           <div>
             <label
               htmlFor="enginge"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Engine <span className="text-red-700">*</span>
             </label>
@@ -371,7 +391,7 @@ const UpdateACar = () => {
               type="text"
               id="engine"
               placeholder="exmp. 2.2L mHawk Diesel"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.engine
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -385,7 +405,7 @@ const UpdateACar = () => {
                 {errors.engine.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -396,11 +416,11 @@ const UpdateACar = () => {
         <div>
           <label
             htmlFor="fuelType"
-            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Fuel Type<span className="text-red-700">*</span>
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3">
+          <div className="sm:grid-cols-3 xl:grid-cols-6 grid grid-cols-1 gap-3">
             {fuelTypeOptions.map((type) => (
               <label
                 key={type}
@@ -416,9 +436,7 @@ const UpdateACar = () => {
              checked:border-[4px] checked:border-primary
              hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-400 ">
-                  {type}
-                </span>
+                <span className="dark:text-gray-400 text-gray-800">{type}</span>
               </label>
             ))}
           </div>
@@ -427,7 +445,7 @@ const UpdateACar = () => {
               {errors.fuelType.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -437,11 +455,11 @@ const UpdateACar = () => {
         <div>
           <label
             htmlFor="transmission"
-            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Transmission<span className="text-red-700">*</span>
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="sm:grid-cols-2 grid grid-cols-1 gap-3">
             {transmissionOptions.map((transmission) => (
               <label
                 key={transmission}
@@ -457,7 +475,7 @@ const UpdateACar = () => {
              checked:border-[4px] checked:border-primary
              hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-400">
+                <span className="dark:text-gray-400 text-gray-800">
                   {transmission}
                 </span>
               </label>
@@ -468,18 +486,18 @@ const UpdateACar = () => {
               {errors.transmission.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
           )}
         </div>
         {/* COLOR & HORSEPOWER*/}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="sm:grid-cols-2 grid grid-cols-1 gap-4">
           <div>
             <label
               htmlFor="color"
-              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Color
               <span className="text-red-700">*</span>
@@ -488,7 +506,7 @@ const UpdateACar = () => {
             <input
               type="text"
               placeholder="color exmp. Daytona Grey"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.color
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -503,7 +521,7 @@ const UpdateACar = () => {
                 {errors.color.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -513,7 +531,7 @@ const UpdateACar = () => {
           <div>
             <label
               htmlFor="horsepower"
-              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Horsepower
               <span className="text-red-700">*</span>
@@ -522,7 +540,7 @@ const UpdateACar = () => {
             <input
               type="number"
               placeholder="exmp. 786"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.horsepower
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -537,7 +555,7 @@ const UpdateACar = () => {
                 {errors.horsepower.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -547,11 +565,11 @@ const UpdateACar = () => {
 
         {/* TORQUE AND SEATING CAPACITY */}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="sm:grid-cols-2 grid grid-cols-1 gap-4">
           <div>
             <label
               htmlFor="torque"
-              className="font-semibold text-base block text-gray-600 dark:text-gray-400"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Torque
               <span className="text-red-700">*</span>
@@ -560,7 +578,7 @@ const UpdateACar = () => {
             <input
               type="number"
               placeholder="exmp. 400"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.torque
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -575,7 +593,7 @@ const UpdateACar = () => {
                 {errors.torque.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -585,7 +603,7 @@ const UpdateACar = () => {
           <div>
             <label
               htmlFor="seatingCapacity"
-              className="font-semibold text-base block text-gray-600"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               Seating Capacity
               <span className="text-red-700">*</span>
@@ -594,7 +612,7 @@ const UpdateACar = () => {
             <input
               type="number"
               placeholder="exmp. 6"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.seatingCapacity
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -609,7 +627,7 @@ const UpdateACar = () => {
                 {errors.seatingCapacity.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -621,70 +639,73 @@ const UpdateACar = () => {
         <div className="space-y-3">
           <label
             htmlFor="features"
-            className="font-semibold text-base block text-gray-600"
+            className="block text-base font-semibold text-gray-600"
           >
             Features
             <span className="text-red-700">*</span>
           </label>
-          {featuresFilelds.map((field, index) => (
-            <div key={field.id}>
-              <div className="flex items-center gap-3">
-                <input
-                  type="text"
-                  placeholder={`Feature ${index + 1}`}
-                  {...register(`features.${index}.value`, {
-                    required: 'At least one feature is required',
-                  })}
-                  className={`flex-1 py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
-                    errors.features?.[index]?.value?.message
-                      ? 'border-red-500'
-                      : 'border-gray-300 focus:border-primary'
-                  }`}
-                />
-
-                {featuresFilelds.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeFeatures(index)}
-                    className="text-red-700 hover:text-red-700"
-                    title="Remove"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={() => addFeatures({ value: '' })}
-                  className="flex items-center gap-2 text-primary hover:text-blue-700 font-medium"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Feature
-                </button>
-              </div>
-
-              {errors.features?.[index]?.value?.message && (
-                <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
-                  {errors.features?.[index]?.value?.message}
-
-                  <CircleAlert
-                    className="text-red-800 dark:text-red-500"
-                    size={20}
+          {featuresFilelds.map((field, index) => {
+            const fieldError = errors.features?.[index]?.value;
+            return (
+              <div key={field.id} className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    placeholder={`Feature ${index + 1}`}
+                    {...register(`features.${index}.value`, {
+                      required: 'Feature cannot be empty',
+                    })}
+                    className={`flex-1 py-2.5 px-4 dark:placeholder:text-white/30 appearance-none w-full outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800 focus:outline-hidden rounded-lg border placeholder:text-gray-400 bg-transparent text-gray-800 border-gray-300 focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90 dark:focus:border-brand-800 ${
+                      fieldError
+                        ? 'border-red-500'
+                        : 'border-gray-300 focus:border-primary'
+                    }`}
                   />
-                </p>
-              )}
-            </div>
-          ))}
+
+                  {featuresFilelds.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeFeatures(index)}
+                      className="hover:text-red-700 text-red-700"
+                      title="Remove"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
+
+                {fieldError && (
+                  <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
+                    {fieldError.message}
+
+                    <CircleAlert
+                      className="dark:text-red-500 text-red-800"
+                      size={20}
+                    />
+                  </p>
+                )}
+              </div>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => addFeatures({ value: '' })}
+            className="text-primary hover:text-blue-700 flex items-center gap-2 mt-2 font-medium"
+          >
+            <Plus className="w-4 h-4" />
+            Add Feature
+          </button>
         </div>
 
         {/* CONDITION */}
         <div>
           <label
             htmlFor="condition"
-            className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+            className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
           >
             Condition<span className="text-red-700">*</span>
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3">
+          <div className="sm:grid-cols-3 xl:grid-cols-6 grid grid-cols-1 gap-3">
             {conditionOptions.map((condition) => (
               <label
                 key={condition}
@@ -700,7 +721,7 @@ const UpdateACar = () => {
              checked:border-[4px] checked:border-primary
              hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-1 focus:ring-primary transition"
                 />
-                <span className="text-gray-800 dark:text-gray-400">
+                <span className="dark:text-gray-400 text-gray-800">
                   {condition}
                 </span>
               </label>
@@ -711,7 +732,7 @@ const UpdateACar = () => {
               {errors.condition.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -724,7 +745,7 @@ const UpdateACar = () => {
           <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="city"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               City
             </label>
@@ -732,7 +753,7 @@ const UpdateACar = () => {
               type="text"
               id="city"
               placeholder="exmp. New York city"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.location?.city
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -750,7 +771,7 @@ const UpdateACar = () => {
                     : 'Invalid city'}
 
                   <CircleAlert
-                    className="text-red-800 dark:text-red-500"
+                    className="dark:text-red-500 text-red-800"
                     size={20}
                   />
                 </p>
@@ -760,7 +781,7 @@ const UpdateACar = () => {
           <div className="flex-1 min-h-[90px]">
             <label
               htmlFor="street"
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
             >
               State
             </label>
@@ -768,7 +789,7 @@ const UpdateACar = () => {
               type="text"
               id="state"
               placeholder="exmp. New York"
-              className={`py-2 px-3 dark:text-gray-400 rounded-md w-full border outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.location?.state
                   ? 'border-red-800'
                   : 'border-gray-300 focus:border-primary'
@@ -778,7 +799,7 @@ const UpdateACar = () => {
           </div>
           <div className="flex-1 min-h-[90px]">
             <label
-              className="block text-gray-600 dark:text-gray-400 font-semibold text-base mb-[1px]"
+              className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
               htmlFor="country"
             >
               Country
@@ -786,7 +807,7 @@ const UpdateACar = () => {
             <select
               defaultValue=""
               id="country"
-              className={`py-2 px-3 dark:text-gray-400 text-gray-600 rounded-md border w-full outline-none focus:outline-none ${
+              className={`py-2.5 px-4  dark:placeholder:text-white/30 appearance-none w-full  outline-none focus:outline-none focus:ring-3 shadow-theme-xs focus:border-brand-300 dark:focus-broder-brand-800  focus:outline-hidden  rounded-lg border    placeholder:text-gray-400  dark:bg-gray-900  bg-transparent text-gray-800 border-gray-300  focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800 ${
                 errors.location?.country
                   ? 'border-red-500'
                   : 'border-gray-300 focus:border-primary'
@@ -799,13 +820,18 @@ const UpdateACar = () => {
               })}
             >
               {/* Default unselected placeholder */}
-              <option className="dark:text-gray-400" value="" hidden disabled>
+              <option
+                className="dark:text-gray-800 dark:bg-gray-300"
+                value=""
+                hidden
+                disabled
+              >
                 -- Country --
               </option>
 
               {countriesOptions.map((country, idx) => (
                 <option
-                  className="dark:text-gray-800"
+                  className="dark:text-gray-800 dark:bg-gray-300"
                   key={idx}
                   value={country}
                 >
@@ -814,7 +840,7 @@ const UpdateACar = () => {
               ))}
             </select>
 
-            <div className="h-6 relative">
+            <div className="relative h-6">
               {errors.location?.country && (
                 <p className="bg-red-100/90 rounded-2xl text-red-800 dark:bg-red-900/30 dark:text-red-400 text-sm mt-1 inline-flex px-1 py-0.5 gap-0.5">
                   {typeof errors.location?.country.message === 'string'
@@ -822,7 +848,7 @@ const UpdateACar = () => {
                     : 'Invalid country'}
 
                   <CircleAlert
-                    className="text-red-800 dark:text-red-500"
+                    className="dark:text-red-500 text-red-800"
                     size={20}
                   />
                 </p>
@@ -858,7 +884,7 @@ const UpdateACar = () => {
               {errors.coverImage.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>
@@ -897,7 +923,7 @@ const UpdateACar = () => {
               {errors.images.message}
 
               <CircleAlert
-                className="text-red-800 dark:text-red-500"
+                className="dark:text-red-500 text-red-800"
                 size={20}
               />
             </p>

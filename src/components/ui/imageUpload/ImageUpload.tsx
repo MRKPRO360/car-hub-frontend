@@ -57,7 +57,7 @@ function ImageUpload({
 
   return (
     <div>
-      <label className="block text-base font-semibold text-gray-600 dark:text-gray-400 mb-4">
+      <label className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600">
         {label}
       </label>
 
@@ -71,10 +71,10 @@ function ImageUpload({
         )}
       >
         <ImagePlus
-          className="mx-auto text-gray-500 dark:text-gray-400"
+          className="dark:text-gray-400 mx-auto text-gray-500"
           size={32}
         />
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="dark:text-gray-400 text-gray-600">
           {multiple ? 'Select Images' : 'Select an Image'}
         </p>
       </div>
@@ -94,16 +94,16 @@ function ImageUpload({
 
       {/* PREVIEW */}
       {previews.length > 0 && (
-        <div className="my-4 grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 my-4">
           {previews.map((src, idx) => (
             <div className="relative" key={idx}>
               <img
                 src={src}
                 alt="preview"
-                className="w-full h-32 object-cover rounded-lg shadow-md hover:shadow-lg transtion duration-300"
+                className="hover:shadow-lg transtion object-cover w-full h-32 duration-300 rounded-lg shadow-md"
               />
               <button
-                className="absolute top-1 right-1 bg-white p-1 rounded-full shadow hover:bg-red-600 hover:text-white transition duration-150"
+                className="top-1 right-1 hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:bg-gray-400 absolute p-1 transition duration-300 bg-white rounded-full shadow"
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();

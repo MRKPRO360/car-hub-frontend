@@ -107,18 +107,18 @@ export default function AllCars() {
           <LoaderCircle
             strokeWidth={2.5}
             size={30}
-            className="text-gray-500 block dark:text-primary/80 animate-spin"
+            className="dark:text-primary/80 animate-spin block text-gray-500"
           />
         </p>
       </div>
     );
   }
 
-  if (!data)
+  if (!data.length)
     return (
       <div className="flex justify-center items-center min-h-[65vh] gap-2">
         <Frown
-          className="text-gray-500 dark:text-primary/80"
+          className="dark:text-primary/80 text-gray-500"
           strokeWidth={2.5}
         />
         <p className="text-lg font-semibold text-gray-500">
@@ -129,9 +129,9 @@ export default function AllCars() {
 
   if (isError && !isLoading)
     return (
-      <div className="flex justify-center items-center h-64 gap-2">
+      <div className="flex items-center justify-center h-64 gap-2">
         <Frown
-          className="text-gray-500 dark:text-primary/80"
+          className="dark:text-primary/80 text-gray-500"
           strokeWidth={2.5}
         />
         <p className="text-lg font-semibold text-gray-500">
@@ -142,50 +142,50 @@ export default function AllCars() {
 
   return (
     <div className=" rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
-      <div className="max-w-full overflow-x-auto py-4">
+      <div className="max-w-full py-4 overflow-x-auto">
         <Table>
           {/* Table Header */}
           <TableHeader className="border-b border-gray-100 dark:border-white/[0.05] ">
             <TableRow>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Car
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Brand
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Category
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 In Stock
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Quantity
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Price
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Action
               </TableCell>
@@ -196,25 +196,25 @@ export default function AllCars() {
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
             {paginatedData?.map((car, index) => (
               <TableRow className="relative" key={car?._id}>
-                <TableCell className="px-4 py-3 ">
+                <TableCell className=" px-4 py-3">
                   <Link to={`/cars/${car._id}`}>
                     <img
-                      className="w-10 h-10 sm:w-16 sm:h-16 rounded-full object-cover"
+                      className="sm:w-16 sm:h-16 object-cover w-10 h-10 rounded-full"
                       src={car?.coverImage as string}
                       alt={`${car?.category} ${car?.brand}`}
                     />
                   </Link>
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {car?.brand}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {car?.category}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   <span
                     className={`font-semibold ${
                       car.inStock ? 'text-green-500' : 'text-red-500'
@@ -224,15 +224,15 @@ export default function AllCars() {
                   </span>
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {car?.quantity}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                <TableCell className="text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {car?.price}
                 </TableCell>
 
-                <TableCell className="absolute translate-y-8 translate-x-4">
+                <TableCell className="absolute translate-x-4 translate-y-8">
                   <BsThreeDotsVertical
                     onClick={() =>
                       setOpenActionMenuId(
@@ -282,13 +282,13 @@ export default function AllCars() {
         </Table>
 
         {!paginatedData.length && (
-          <p className="text-sm text-gray-500 py-6 text-center w-full">
+          <p className="w-full py-6 text-sm text-center text-gray-500">
             No data found!
           </p>
         )}
 
         {totalPages > 1 && (
-          <div className="flex justify-center mt-8 space-x-2 text-xs xl:text-sm">
+          <div className="xl:text-sm flex justify-center mt-8 space-x-2 text-xs">
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
@@ -301,7 +301,7 @@ export default function AllCars() {
             ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}
           `}
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="w-5 h-5" />
               Prev
             </button>
 
@@ -332,7 +332,7 @@ export default function AllCars() {
           `}
             >
               Next
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         )}

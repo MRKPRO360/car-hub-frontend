@@ -4,7 +4,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { ICar, ICarFilters } from '../../types';
 import formatPrice from '../../utils/formatPrice';
-import useDebounce from '../../hooks/useDebounce';
+// import useDebounce from '../../hooks/useDebounce';
 
 type FilterSidebarProps = {
   cars: ICar[];
@@ -102,8 +102,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     maxPrice,
   ]);
 
-  const debouncedYearRange = useDebounce(yearRange, 500);
-  const debouncedPriceRange = useDebounce(priceRange, 500);
+  // const debouncedYearRange = useDebounce(yearRange, 500);
+  // const debouncedPriceRange = useDebounce(priceRange, 500);
 
   // Sync range sliders with current filters
   useEffect(() => {
@@ -193,11 +193,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   return (
     <div className=" bg-white dark:bg-gray-950 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)]  hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 w-full px-2 py-4 sticky top-4 dark:text-gray-300">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-300">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="dark:text-gray-300 text-xl font-semibold text-gray-800">
           Filters
           {hasActiveFilters && (
-            <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-600 rounded-full">
+            <span className="px-2 py-1 ml-2 text-xs text-blue-600 bg-blue-100 rounded-full">
               {Object.keys(currentFilters).length}
             </span>
           )}
@@ -205,7 +205,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         {hasActiveFilters && (
           <button
             onClick={clearAllFilters}
-            className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+            className="hover:text-blue-800 text-sm text-blue-600 transition-colors"
           >
             Clear all
           </button>
@@ -224,9 +224,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('brand')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">Brand</p>
+              <p className="dark:text-gray-300 text-xs text-gray-500">Brand</p>
               {currentFilters.brand?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                <p className="dark:text-gray-300 font-medium text-gray-800 truncate">
                   {currentFilters.brand.length === 1
                     ? currentFilters.brand[0]
                     : `${currentFilters.brand[0]} +${
@@ -234,19 +234,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       } more`}
                 </p>
               ) : (
-                <p className="text-gray-400 dark:text-gray-300">
+                <p className="dark:text-gray-300 text-gray-400">
                   Select brands
                 </p>
               )}
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.brand?.length ? (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('brand');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -265,7 +265,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {allBrands.map((brand) => (
                   <div
                     key={brand}
-                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    className="hover:bg-gray-100 dark:hover:bg-gray-900 flex items-center p-2 rounded cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleMultiSelect('brand', brand);
@@ -275,7 +275,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       type="checkbox"
                       checked={currentFilters.brand?.includes(brand) || false}
                       readOnly
-                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="focus:ring-blue-500 mr-2 text-blue-600 border-gray-300 rounded"
                       onChange={(e) => {
                         e.stopPropagation();
                         handleMultiSelect('brand', brand);
@@ -300,21 +300,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('price')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 text-xs text-gray-500">
                 Price Range
               </p>
-              <p className="font-medium text-gray-500 dark:text-gray-300 truncate">
+              <p className="dark:text-gray-300 font-medium text-gray-500 truncate">
                 {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
               </p>
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.price && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('price');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -331,10 +331,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="dark:text-gray-300 text-sm text-gray-600">
                     Min: {formatPrice(priceRange[0])}
                   </span>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="dark:text-gray-300 text-sm text-gray-600">
                     Max: {formatPrice(priceRange[1])}
                   </span>
                 </div>
@@ -362,21 +362,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('year')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 text-xs text-gray-500">
                 Year Range
               </p>
-              <p className="font-medium text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 font-medium text-gray-500">
                 {yearRange[0]} - {yearRange[1]}
               </p>
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.year && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('year');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -393,10 +393,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-950 border dark:border-blue-500 border-gray-200 rounded-lg drop-shadow-[0_8px_8px_rgba(37,99,235,0.05)] hover:drop-shadow-[0_8px_4px_rgba(37,99,235,0.1)] transition duration-300 p-4">
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="dark:text-gray-300 text-sm text-gray-600">
                     Min: {yearRange[0]}
                   </span>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="dark:text-gray-300 text-sm text-gray-600">
                     Max: {yearRange[1]}
                   </span>
                 </div>
@@ -424,11 +424,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('category')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 text-xs text-gray-500">
                 Category
               </p>
               {currentFilters.category?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                <p className="dark:text-gray-300 font-medium text-gray-800 truncate">
                   {currentFilters.category.length === 1
                     ? currentFilters.category[0]
                     : `${currentFilters.category[0]} +${
@@ -436,19 +436,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       } more`}
                 </p>
               ) : (
-                <p className="text-gray-400 dark:text-gray-300">
+                <p className="dark:text-gray-300 text-gray-400">
                   Select categories
                 </p>
               )}
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.category?.length ? (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('category');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -467,7 +467,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {allCategories.map((category) => (
                   <div
                     key={category}
-                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    className="hover:bg-gray-100 dark:hover:bg-gray-900 flex items-center p-2 rounded cursor-pointer"
                     onClick={() => handleMultiSelect('category', category)}
                   >
                     <input
@@ -476,7 +476,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         currentFilters.category?.includes(category) || false
                       }
                       readOnly
-                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="focus:ring-blue-500 mr-2 text-blue-600 border-gray-300 rounded"
                     />
                     <span className="dark:text-gray-300">{category}</span>
                   </div>
@@ -497,11 +497,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('fuelType')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 text-xs text-gray-500">
                 Fuel Type
               </p>
               {currentFilters.fuelType?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                <p className="dark:text-gray-300 font-medium text-gray-800 truncate">
                   {currentFilters.fuelType.length === 1
                     ? currentFilters.fuelType[0]
                     : `${currentFilters.fuelType[0]} +${
@@ -509,19 +509,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       } more`}
                 </p>
               ) : (
-                <p className="text-gray-400 dark:text-gray-300">
+                <p className="dark:text-gray-300 text-gray-400">
                   Select fuel types
                 </p>
               )}
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.fuelType?.length ? (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('fuelType');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -540,7 +540,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {allFuelTypes.map((fuelType) => (
                   <div
                     key={fuelType}
-                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    className="hover:bg-gray-100 dark:hover:bg-gray-900 flex items-center p-2 rounded cursor-pointer"
                     onClick={() => handleMultiSelect('fuelType', fuelType)}
                   >
                     <input
@@ -549,7 +549,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         currentFilters.fuelType?.includes(fuelType) || false
                       }
                       readOnly
-                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="focus:ring-blue-500 mr-2 text-blue-600 border-gray-300 rounded"
                     />
                     <span className="dark:text-gray-300">{fuelType}</span>
                   </div>
@@ -570,11 +570,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('transmission')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 text-xs text-gray-500">
                 Transmission
               </p>
               {currentFilters.transmission?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                <p className="dark:text-gray-300 font-medium text-gray-800 truncate">
                   {currentFilters.transmission.length === 1
                     ? currentFilters.transmission[0]
                     : `${currentFilters.transmission[0]} +${
@@ -582,19 +582,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       } more`}
                 </p>
               ) : (
-                <p className="text-gray-400 dark:text-gray-300">
+                <p className="dark:text-gray-300 text-gray-400">
                   Select transmission
                 </p>
               )}
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.transmission?.length ? (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('transmission');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -613,7 +613,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {allTransmissions.map((transmission) => (
                   <div
                     key={transmission}
-                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    className="hover:bg-gray-100 dark:hover:bg-gray-900 flex items-center p-2 rounded cursor-pointer"
                     onClick={() =>
                       handleMultiSelect('transmission', transmission)
                     }
@@ -625,7 +625,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         false
                       }
                       readOnly
-                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="focus:ring-blue-500 mr-2 text-blue-600 border-gray-300 rounded"
                     />
                     <span className="dark:text-gray-300">{transmission}</span>
                   </div>
@@ -646,11 +646,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('condition')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 text-xs text-gray-500">
                 Condition
               </p>
               {currentFilters.condition?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                <p className="dark:text-gray-300 font-medium text-gray-800 truncate">
                   {currentFilters.condition.length === 1
                     ? currentFilters.condition[0]
                     : `${currentFilters.condition[0]} +${
@@ -658,19 +658,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       } more`}
                 </p>
               ) : (
-                <p className="text-gray-400 dark:text-gray-300">
+                <p className="dark:text-gray-300 text-gray-400">
                   Select condition
                 </p>
               )}
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.condition?.length ? (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('condition');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -689,7 +689,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {allConditions.map((condition) => (
                   <div
                     key={condition}
-                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    className="hover:bg-gray-100 dark:hover:bg-gray-900 flex items-center p-2 rounded cursor-pointer"
                     onClick={() =>
                       handleMultiSelect('condition', condition as string)
                     }
@@ -702,7 +702,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         ) || false
                       }
                       readOnly
-                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="focus:ring-blue-500 mr-2 text-blue-600 border-gray-300 rounded"
                     />
                     <span className="dark:text-gray-300">{condition}</span>
                   </div>
@@ -723,11 +723,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             onClick={() => handleFilterToggle('location')}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 dark:text-gray-300">
+              <p className="dark:text-gray-300 text-xs text-gray-500">
                 Location
               </p>
               {currentFilters.location?.length ? (
-                <p className="font-medium text-gray-800 dark:text-gray-300 truncate">
+                <p className="dark:text-gray-300 font-medium text-gray-800 truncate">
                   {currentFilters.location.length === 1
                     ? currentFilters.location[0]
                     : `${currentFilters.location[0]} +${
@@ -735,19 +735,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       } more`}
                 </p>
               ) : (
-                <p className="text-gray-400 dark:text-gray-300">
+                <p className="dark:text-gray-300 text-gray-400">
                   Select locations
                 </p>
               )}
             </div>
-            <div className="flex items-center space-x-2 ml-2">
+            <div className="flex items-center ml-2 space-x-2">
               {currentFilters.location?.length ? (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     clearFilter('location');
                   }}
-                  className="text-gray-400 hover:text-gray-600 p-1"
+                  className="hover:text-gray-600 p-1 text-gray-400"
                 >
                   <FiX size={16} />
                 </button>
@@ -766,7 +766,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {allLocations.map((location) => (
                   <div
                     key={location}
-                    className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded cursor-pointer"
+                    className="hover:bg-gray-100 dark:hover:bg-gray-900 flex items-center p-2 rounded cursor-pointer"
                     onClick={() => handleMultiSelect('location', location)}
                   >
                     <input
@@ -775,7 +775,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         currentFilters.location?.includes(location) || false
                       }
                       readOnly
-                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="focus:ring-blue-500 mr-2 text-blue-600 border-gray-300 rounded"
                     />
                     <span className="dark:text-gray-300">{location}</span>
                   </div>

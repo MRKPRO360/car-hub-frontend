@@ -44,7 +44,7 @@ const selfApi = baseApi.injectEndpoints({
     }),
 
     getMe: builder.query<{ data: IUser }, void>({
-      queryFn: async (arg, api, extraOptions, baseQuery) => {
+      queryFn: async (_arg, api, _extraOptions, baseQuery) => {
         const { getState } = api;
         const token = (getState() as RootState).auth.token;
 
@@ -54,10 +54,14 @@ const selfApi = baseApi.injectEndpoints({
           };
         }
 
-        return baseQuery({
+        const result = await baseQuery({
           url: '/users/me',
           method: 'GET',
         });
+
+        if (result.error) return { error: result.error };
+
+        return { data: result.data as { data: IUser } };
       },
       providesTags: ['profile'],
     }),
@@ -67,7 +71,7 @@ const selfApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: data,
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data: updateResult } = await queryFulfilled;
           const userPayload = updateResult?.data;

@@ -3,7 +3,7 @@ export interface IUser {
   userID: string;
   name: string;
   email: string;
-  role: string;
+  role: 'user' | 'admin';
   profileImg: string | File[];
   phone: string;
   isBlocked: boolean;

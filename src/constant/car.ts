@@ -16,6 +16,8 @@ export const brandOptions = [
   { value: 'Tata', label: 'Tata' },
   { value: 'Mahindra', label: 'Mahindra' },
   { value: 'Hyundai', label: 'Hyundai' },
+  { value: 'Toyota', label: 'Toyota' },
+  { value: 'Skoda', label: 'Skoda' },
 ];
 
 export const fuelTypeOptions: TFuelType[] = [

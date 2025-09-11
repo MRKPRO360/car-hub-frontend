@@ -32,6 +32,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
     const toastId = toast.loading('Updating...');
     const formData = new FormData();
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { profileImg, ...userData } = data;
     formData.append('data', JSON.stringify(userData));
     const file = data.profileImg?.[0];
@@ -61,26 +62,26 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
 
   return (
     <>
-      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
-        <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-          <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
-            <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
+      <div className="rounded-2xl dark:border-gray-800 lg:p-6 p-5 border border-gray-200">
+        <div className="xl:flex-row xl:items-center xl:justify-between flex flex-col gap-5">
+          <div className="xl:flex-row flex flex-col items-center w-full gap-6">
+            <div className="dark:border-gray-800 w-20 h-20 overflow-hidden border border-gray-200 rounded-full">
               <img
                 className="object-cover w-full h-full"
                 src={user?.profileImg as string}
                 alt="user"
               />
             </div>
-            <div className="order-3 xl:order-2">
-              <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
+            <div className="xl:order-2 order-3">
+              <h4 className="dark:text-white/90 xl:text-left mb-2 text-lg font-semibold text-center text-gray-800">
                 {user?.name}
               </h4>
-              <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="xl:flex-row xl:gap-3 xl:text-left flex flex-col items-center gap-1 text-center">
+                <p className="dark:text-gray-400 text-sm text-gray-500">
                   {user?.role?.toUpperCase()}
                 </p>
                 <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="dark:text-gray-400 text-sm text-gray-500">
                   {user?.address}
                 </p>
               </div>
@@ -102,10 +103,10 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
       >
         <div className="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-lg bg-white p-4 2xsm:p-7 dark:bg-gray-900 lg:p-11">
           <div className="px-2">
-            <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+            <h4 className="dark:text-white/90 mb-2 text-2xl font-semibold text-gray-800">
               Edit Personal Information
             </h4>
-            <p className="mb-6 text-base text-gray-500 dark:text-gray-400 lg:mb-7">
+            <p className="dark:text-gray-400 lg:mb-7 mb-6 text-base text-gray-500">
               Update your details to keep your profile up-to-date.
             </p>
           </div>
@@ -113,19 +114,19 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
               <div>
                 <div className="flex items-center justify-center mb-4">
-                  <span className="h-px w-full bg-gray-200 dark:bg-gray-600"></span>
-                  <h5 className="text-lg text-center  font-medium text-gray-800 dark:text-white/80 w-full ">
+                  <span className="dark:bg-gray-600 w-full h-px bg-gray-200"></span>
+                  <h5 className="dark:text-white/80  w-full text-lg font-medium text-center text-gray-800">
                     Personal Information
                   </h5>
 
-                  <span className="h-px w-full bg-gray-200 dark:bg-gray-600"></span>
+                  <span className="dark:bg-gray-600 w-full h-px bg-gray-200"></span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                <div className="gap-x-6 gap-y-5 lg:grid-cols-2 grid grid-cols-1">
                   {/* <div>
                     <label
                       htmlFor="name"
-                      className="block text-gray-600 dark:text-white/80 font-semibold text-base"
+                      className="dark:text-white/80 block text-base font-semibold text-gray-600"
                     >
                       NAME <span className="text-red-700">*</span>
                     </label>
@@ -147,7 +148,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                 {errors.name.message}
 
                 <CircleAlert
-                  className="text-red-800 dark:text-red-500"
+                  className="dark:text-red-500 text-red-800"
                   size={20}
                 />
               </p>
@@ -158,12 +159,12 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     <div className="relative">
                       <label
                         htmlFor="name"
-                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
+                        className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
                       >
                         Full Name
                       </label>
                       <div className="relative">
-                        <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <FaUser className="left-3 top-1/2 absolute text-gray-400 transform -translate-y-1/2" />
                         <input
                           id="name"
                           type="text"
@@ -185,7 +186,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                             : 'Invalid name'}
 
                           <CircleAlert
-                            className="text-red-800 dark:text-red-500"
+                            className="dark:text-red-500 text-red-800"
                             size={20}
                           />
                         </p>
@@ -194,16 +195,16 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                   </div>
 
                   {/* IN LARGE VIEW IT"LL TAKE 2 COLUMNS BUT IN THE MOBILE VIEW IT"LL TAKE ONE COLUMN*/}
-                  <div className="col-span-2 lg:col-span-1">
+                  <div className="lg:col-span-1 col-span-2">
                     <div className="relative">
                       <label
                         htmlFor="email"
-                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
+                        className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
                       >
                         Email
                       </label>
                       <div className="relative">
-                        <MdEmail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <MdEmail className="left-3 top-1/2 absolute text-gray-400 transform -translate-y-1/2" />
                         <input
                           id="email"
                           type="email"
@@ -229,7 +230,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                             : 'Invalid email'}
 
                           <CircleAlert
-                            className="text-red-800 dark:text-red-500"
+                            className="dark:text-red-500 text-red-800"
                             size={20}
                           />
                         </p>
@@ -237,16 +238,16 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     </div>
                   </div>
 
-                  <div className="col-span-2 lg:col-span-1">
+                  <div className="lg:col-span-1 col-span-2">
                     <div className="relative">
                       <label
                         htmlFor="phone"
-                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
+                        className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
                       >
                         Phone Number
                       </label>
                       <div className="relative">
-                        <MdLocalPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <MdLocalPhone className="left-3 top-1/2 absolute text-gray-400 transform -translate-y-1/2" />
                         <input
                           id="phone"
                           type="tel"
@@ -273,7 +274,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                             : 'Invalid phone number'}
 
                           <CircleAlert
-                            className="text-red-800 dark:text-red-500"
+                            className="dark:text-red-500 text-red-800"
                             size={20}
                           />
                         </p>
@@ -281,17 +282,17 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     </div>
                   </div>
 
-                  <div className="col-span-2 lg:col-span-1">
+                  <div className="lg:col-span-1 col-span-2">
                     <div className="relative">
                       <label
                         htmlFor="country"
-                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
+                        className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
                       >
                         Country
                       </label>
 
                       <div className="relative">
-                        <MdLocationOn className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <MdLocationOn className="left-3 top-1/2 absolute text-gray-400 transform -translate-y-1/2" />
 
                         <select
                           id="country"
@@ -334,7 +335,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                             : 'Invalid country'}
 
                           <CircleAlert
-                            className="text-red-800 dark:text-red-500"
+                            className="dark:text-red-500 text-red-800"
                             size={20}
                           />
                         </p>
@@ -342,16 +343,16 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                     </div>
                   </div>
 
-                  <div className="col-span-2 lg:col-span-1">
+                  <div className="lg:col-span-1 col-span-2">
                     <div className="relative">
                       <label
                         htmlFor="address"
-                        className="block text-gray-600 dark:text-white/80 font-semibold text-base mb-1"
+                        className="dark:text-white/80 block mb-1 text-base font-semibold text-gray-600"
                       >
                         Address
                       </label>
                       <div className="relative">
-                        <MdHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <MdHome className="left-3 top-1/2 absolute text-gray-400 transform -translate-y-1/2" />
                         <input
                           id="address"
                           type="text"
@@ -380,7 +381,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                             : 'Invalid address'}
 
                           <CircleAlert
-                            className="text-red-800 dark:text-red-500"
+                            className="dark:text-red-500 text-red-800"
                             size={20}
                           />
                         </p>
@@ -421,7 +422,7 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                         {errors.profileImg.message}
 
                         <CircleAlert
-                          className="text-red-800 dark:text-red-500"
+                          className="dark:text-red-500 text-red-800"
                           size={20}
                         />
                       </p>
@@ -430,12 +431,12 @@ export default function UserMetaCard({ user }: { user: IUser | null }) {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
+            <div className="lg:justify-end flex items-center gap-3 px-2 mt-6">
               <button type="button" onClick={() => closeModal()}>
                 <Cta
                   size="sm"
                   text="Cancel"
-                  className="bg-red-600 hover:bg-red-700"
+                  className="hover:bg-red-700 bg-red-600"
                 />
               </button>
               <button type="submit">

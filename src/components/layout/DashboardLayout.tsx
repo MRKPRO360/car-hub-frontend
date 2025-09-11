@@ -10,9 +10,9 @@ const LayoutContent: React.FC = () => {
   const { data: myInfo } = useGetMeQuery(undefined);
 
   return (
-    <div className="min-h-screen xl:flex">
+    <div className="xl:flex min-h-screen">
       <div>
-        <AppSidebar role={myInfo?.data?.role} />
+        <AppSidebar role={myInfo?.data?.role as 'admin' | 'user'} />
         <Backdrop />
       </div>
       <div

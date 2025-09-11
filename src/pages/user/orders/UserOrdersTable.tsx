@@ -15,6 +15,7 @@ export default function UserOrdersTable() {
   const { data: orders, isLoading, isError } = useGetMyOrdersQuery(undefined);
 
   const [data, setData] = useState<IOrder[] | []>(orders?.data || []);
+  console.log(data);
 
   useEffect(() => {
     if (orders?.data?.length && data !== orders.data) {
@@ -29,18 +30,18 @@ export default function UserOrdersTable() {
           <LoaderCircle
             strokeWidth={2.5}
             size={30}
-            className="text-gray-500 block dark:text-primary/80 animate-spin"
+            className="dark:text-primary/80 animate-spin block text-gray-500"
           />
         </p>
       </div>
     );
   }
 
-  if (!data)
+  if (!data.length)
     return (
       <div className="flex justify-center items-center min-h-[65vh] gap-2">
         <Frown
-          className="text-gray-500 dark:text-primary/80"
+          className="dark:text-primary/80 text-gray-500"
           strokeWidth={2.5}
         />
         <p className="text-lg font-semibold text-gray-500">
@@ -51,9 +52,9 @@ export default function UserOrdersTable() {
 
   if (isError && !isLoading)
     return (
-      <div className="flex justify-center items-center h-64 gap-2">
+      <div className="flex items-center justify-center h-64 gap-2">
         <Frown
-          className="text-gray-500 dark:text-primary/80"
+          className="dark:text-primary/80 text-gray-500"
           strokeWidth={2.5}
         />
         <p className="text-lg font-semibold text-gray-500">
@@ -71,37 +72,37 @@ export default function UserOrdersTable() {
             <TableRow>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 User
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Email
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Car Name
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Transection Id
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Status
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="text-start text-theme-xs dark:text-gray-400 px-5 py-3 font-medium text-gray-500"
               >
                 Price
               </TableCell>
@@ -112,7 +113,7 @@ export default function UserOrdersTable() {
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
             {data?.map((order) => (
               <TableRow key={order?._id}>
-                <TableCell className="px-5 py-4 sm:px-6 text-start">
+                <TableCell className="sm:px-6 text-start px-5 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 overflow-hidden rounded-full">
                       <img
@@ -123,28 +124,28 @@ export default function UserOrdersTable() {
                       />
                     </div>
                     <div>
-                      <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                      <span className="text-theme-sm dark:text-white/90 block font-medium text-gray-800">
                         {order?.user.name}
                       </span>
-                      <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
+                      <span className="text-theme-xs dark:text-gray-400 block text-gray-500">
                         {order?.user.role}
                       </span>
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {order?.user.email}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {order?.cars[0].car.brand} {order?.cars[0].car.category}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {order?.transaction?.id}
                 </TableCell>
 
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="text-start text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   <Badge
                     size="sm"
                     color={
@@ -161,7 +162,7 @@ export default function UserOrdersTable() {
                     {order?.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                <TableCell className="text-theme-sm dark:text-gray-400 px-4 py-3 text-gray-500">
                   {order?.totalPrice}
                 </TableCell>
               </TableRow>
