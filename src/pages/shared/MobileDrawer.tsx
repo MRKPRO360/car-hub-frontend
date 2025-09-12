@@ -76,7 +76,7 @@ const MobileDrawer = ({ items, user }: IMobileDrawer) => {
       {/* Drawer */}
       <div
         id="mobile-drawer"
-        className={`fixed top-0 left-0 h-full w-64 bg-light-bg dark:bg-gray-900 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 min-h-screen w-64 bg-light-bg dark:bg-gray-900 shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

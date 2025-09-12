@@ -11,8 +11,8 @@ import { IError } from '../../types';
 import { logout, setUser } from '../features/auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: import.meta.env.VITE_API_BASE_URL,
-  baseUrl: import.meta.env.VITE_API_LOCAL_URL,
+  baseUrl: import.meta.env.VITE_API_BASE_URL,
+  // baseUrl: import.meta.env.VITE_API_LOCAL_URL,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;

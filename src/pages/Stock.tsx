@@ -95,6 +95,8 @@ function Stock() {
     isLoading,
   } = useGetAllCarsQuery(queryParams);
 
+  console.log(carsData);
+
   const cars = carsData?.data || [];
   const totalCars = carsData?.meta?.total || 0;
   const totalPages = carsData?.meta?.totalPage || 1;
@@ -145,7 +147,7 @@ function Stock() {
       </div>
 
       {/* Mobile filter toggle */}
-      <div className="lg:hidden  relative my-5">
+      <div className="lg:hidden relative my-5">
         <button
           onClick={() => setShowFilter((prev) => !prev)}
           className="

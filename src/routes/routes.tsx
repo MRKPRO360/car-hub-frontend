@@ -18,7 +18,7 @@ import ProtectedRoute from '../components/layout/ProtectedRoute';
 // import MyOrders from '../pages/user/MyOrders';
 import VerifyOrder from '../pages/user/VerifyOrder';
 import FilterCars from '../pages/Cars/FilterCars';
-import { HowItWorks } from '../pages/HowItWorks';
+import HowItWorks from '../pages/HowItWorks';
 import Stock from '../pages/Stock';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import NotFound from '../pages/NotFound';
